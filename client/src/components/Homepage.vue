@@ -1,6 +1,6 @@
 <template>
     <div>
-       <Carousel autoplay autoplay-speed="5000" loop>
+       <Carousel autoplay autoplay-speed:5000 loop>
             <CarouselItem>
                 <div class="demo-carousel">
                     <img class="ad-img" src="../assets/default.png">

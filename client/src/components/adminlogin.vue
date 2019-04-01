@@ -1,8 +1,8 @@
 <template>
     <div class="adminlogin">
         <div class="title">叶鲜生后台管理</div>
-        <Input class="block" v-model="value" placeholder="用户名" style="width: 300px" />
-        <Input class="block" v-model="value" placeholder="密码" style="width: 300px" />
+        <Input class="block"  placeholder="用户名" style="width: 300px" />
+        <Input class="block"  placeholder="密码" style="width: 300px" />
         <Button @click="adminlogin" class="block" type="primary">登陆</Button>
     </div>
 </template>

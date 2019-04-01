@@ -10,8 +10,8 @@
         <TabPane label="柚子" name="name6"></TabPane>
         <TabPane label="车厘子" name="name7"></TabPane>
     </Tabs>
-    <div @click="details" v-for="index1 in list" :key="index1" class="Goods">
-    <div class="Name">{{index1.id}}</div>
+    <div @click="details" v-for="index1 in list" :key="index1.id" class="Goods">
+    <div class="Name">{{index1.name}}</div>
         <div class="guess-goods" v-for="index of 5" :key="index">
         <Card style="width:160px">
             <div style="text-align:center">
@@ -34,13 +34,34 @@ export default {
   data () {
     return {
       list: [
-        {id: '香蕉'},
-        {id: '苹果'},
-        {id: '葡萄'},
-        {id: '西瓜'},
-        {id: '梨'},
-        {id: '柚子'},
-        {id: '车厘子'}
+        {
+          id:0,
+          name:'香蕉' 
+        },
+        {
+          id:1,
+          name:'苹果' 
+        },
+        {
+          id:2,
+          name:'葡萄' 
+        },
+        {
+          id:3,
+          name:'西瓜' 
+        },
+        {
+          id:4,
+          name:'梨' 
+        },
+        {
+          id:5,
+          name:'柚子' 
+        },
+        {
+          id:6,
+          name:'车厘子' 
+        },
       ]
     }
   },

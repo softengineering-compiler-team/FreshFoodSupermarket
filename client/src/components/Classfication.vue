@@ -31,9 +31,11 @@ export default {
     height:100px;
     margin:40px;
     border-radius: 50%;
+    cursor:pointer;
 }
 .c-intro{
     font-size: 20px;
     margin:50px;
+    cursor:pointer;
 }
 </style>

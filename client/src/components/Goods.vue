@@ -13,7 +13,7 @@
     <div @click="details" v-for="index1 in list" :key="index1.id" class="Goods">
     <div class="Name">{{index1.name}}</div>
         <div class="guess-goods" v-for="index of 5" :key="index">
-        <Card style="width:160px">
+        <Card style="width:160px;cursor:pointer">
             <div style="text-align:center">
                 <img class="goods-img" src="../assets/default.png">
                 <div class="money">￥200</div>

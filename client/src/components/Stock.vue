@@ -36,7 +36,11 @@ export default {
         },
         {
           title: "保质期",
-          key: "time"
+          key: "time1"
+        },
+        {
+          title: "新鲜度",
+          key: "time2"
         },
         {
           title: "库存剩余",
@@ -45,16 +49,16 @@ export default {
       ],
       data1: [
         {
-          time:6
+          time1:6
         },
         {
-          time:4
+          time1:4
         },
         {
-          time:2
+          time1:2
         },
         {
-          time:2
+          time1:2
         }
       ]
     };

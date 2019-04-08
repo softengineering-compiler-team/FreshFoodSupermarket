@@ -14,7 +14,7 @@
                 <div class="details-yuexiao">月销量</div>
                 <div class="details-count">数量</div>
                 <div class="details-buttons">
-                    <Button size="large" class="button" type="warning" icon="md-cart">加入购物车</Button>
+                    <Button @click="addcart" size="large" class="button" type="warning" icon="md-cart">加入购物车</Button>
                     <Button size="large" class="button" type="warning">立即购买</Button>
                 </div>
             </div>
@@ -26,6 +26,11 @@
 import Bottom from '@/components/bottom'
 import Top from '@/components/Top'
 export default {
+  methods:{
+    addcart () {
+         this.$router.push('shoppingcar');
+    }
+  },
   components: {
     Bottom,
     Top

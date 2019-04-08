@@ -1,16 +1,17 @@
 <template>
   <div id="main">
-    <div class="top">
-      <div class="top-left"><Icon type="md-home" /> 叶鲜生首页</div>
+    <!-- <div class="top">
+      <div @click="gomain" class="top-left"><Icon type="md-home" /> 叶鲜生首页</div>
       <div class="top-left">登陆</div>
       <div class="top-left">注册</div>
-      <div class="top-right">商家后台</div>
-      <div class="top-right"><Icon type="md-cart" /> 我的购物车</div>
-    </div>
-    <div class="search">
-      <img class="logo" src="../assets/logo.png">
+      <div @click="admin" class="top-right">商家后台</div>
+      <div @click="gocar" class="top-right"><Icon type="md-cart" /> 我的购物车</div>
+    </div> -->
+    <Top></Top>
+    <!-- <div class="search">
+      <img @click="gomain" class="logo" src="../assets/logo.png">
       <Input class="input" size="large" search enter-button="搜索" placeholder="输入你想要的生鲜" />
-    </div>
+    </div> -->
     <div class="main">
       <Tabs class="top-label" value="name1">
           <TabPane class="top-lebel-left" label="首页" name="name1">
@@ -32,16 +33,29 @@ import Homepage from '@/components/Homepage'
 import Classfication from '@/components/Classfication'
 import Guessyoulike from '@/components/Guessyoulike'
 import Bottom from '@/components/bottom'
+import Top from '@/components/Top'
 export default {
   data () {
     return {
     }
   },
+  methods: {
+    gocar (){
+      this.$router.push('shoppingcar')
+    },
+    gomain (){
+      this.$router.push('/')
+    },
+    admin () {
+      this.$router.push('admin')
+    },
+  },
   components: {
     Homepage,
     Classfication,
     Guessyoulike,
-    Bottom
+    Bottom,
+    Top
   }
 }
 </script>
@@ -63,11 +77,13 @@ export default {
 .top .top-left{
   display: inline;
   margin-left:50px;
+  cursor:pointer;
 }
 .top .top-right{
   display: inline-block;
   float: right;
   margin-right:100px;
+  cursor:pointer;
 }
 .search{
   height:100px;
@@ -79,6 +95,7 @@ export default {
   margin:40px;
   margin-top:20px;
   margin-left:100px;
+  cursor:pointer;
 }
 .input{
   float:right;

@@ -12,11 +12,6 @@ export default {
     return {
       columns4: [
         {
-          type: "selection",
-          width: 60,
-          align: "center"
-        },
-        {
           title: "生鲜分类",
           key: "classification"
         },

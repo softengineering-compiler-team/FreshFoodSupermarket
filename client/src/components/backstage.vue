@@ -10,18 +10,30 @@
                             <Icon type="ios-navigate"></Icon>
                             销售情况
                         </MenuItem>
+                        <MenuItem @click.native="order" name="3">
+                            <Icon type="ios-analytics"></Icon>
+                            订单管理
+                        </MenuItem>
                         <MenuItem @click.native="stock" name="2">
                             <Icon type="ios-keypad"></Icon>
                             库存
                         </MenuItem>
-                        <MenuItem @click.native="buy" name="3">
+                        <MenuItem @click.native="receive" name="4">
+                            <Icon type="ios-paper"></Icon>
+                            接单
+                        </MenuItem>
+                        <MenuItem @click.native="deliver" name="4">
+                            <Icon type="ios-paper"></Icon>
+                            配送
+                        </MenuItem>
+                        <!-- <MenuItem @click.native="buy" name="3">
                             <Icon type="ios-analytics"></Icon>
                             采购
                         </MenuItem>
                         <MenuItem @click.native="sell" name="4">
                             <Icon type="ios-paper"></Icon>
                             卖出
-                        </MenuItem>
+                        </MenuItem> -->
                     </div>
                 </Menu>
             </Header>
@@ -45,7 +57,16 @@ export default {
       this.$router.push('buy')
     },
     sell () {
-      this.$router.push('sell')
+    //   this.$router.push('sell')
+    },
+    order () {
+        this.$router.push('order')
+    },
+    receive(){
+        this.$router.push('receive')
+    },
+    deliver(){
+        this.$router.push('deliver')
     }
   }
 }
@@ -69,7 +90,7 @@ export default {
   left: 20px;
 }
 .layout-nav {
-  width: 420px;
+  width: 520px;
   margin: 0 auto;
   margin-right: 20px;
 }

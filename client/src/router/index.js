@@ -10,6 +10,10 @@ import Selling from '@/components/Selling'
 import Stock from '@/components/Stock'
 import Buy from '@/components/Buy'
 import Sell from '@/components/Sell'
+import Order from '@/components/Order'
+import Receive from '@/components/Receive'
+import Deliver from '@/components/Deliver'
+import Userorder from '@/components/Userorder'
 Vue.use(Router)
 
 export default new Router({
@@ -40,6 +44,11 @@ export default new Router({
       component: Adminlogin
     },
     {
+      path: '/userorder',
+      name: 'Userorder',
+      component: Userorder
+    },
+    {
       path: '/backstage',
       name: 'Backstage',
       component: Backstage,
@@ -63,6 +72,21 @@ export default new Router({
           path: '/sell',
           name: 'sell',
           component: Sell
+        },
+        {
+          path: '/order',
+          name: 'order',
+          component: Order
+        },
+        {
+          path: '/receive',
+          name: 'receive',
+          component: Receive
+        },
+        {
+          path: '/deliver',
+          name: 'deliver',
+          component: Deliver
         }
       ]
     }

@@ -7,38 +7,39 @@ const mysql = require('mysql'),
 	        'database': 'freshfood',
 	    });
 
-// async function db(sql) {
-// 	return new Promise((resolve, reject)=> {
-// 		pool.getConnection((err, connection)=> {
-// 			if(err) {
-// 				console.error(err)
-// 			}
-// 			connection.query(sql, (err, result)=> {
-// 				connection.release()
-// 				resolve(result)
-// 			})
-// 		})
-// 	}) 	
-// }
-
-async function fn(sql) {
-	pool.getConnection((err, connection)=> {
-		if(err) {
-			console.error(err)
-		}
-		connection.query(sql, (err, result)=> {
-			connection.release()
-			resolve(result)
-		})
-	})
-}
-
 async function db(sql) {
 	return new Promise((resolve, reject)=> {
-		
+		pool.getConnection((err, connection)=> {
+			if(err) {
+				console.error(err)
+			}
+			connection.query(sql, (err, result)=> {
+				connection.release()
+				resolve(result)
+			})
+		})
 	}) 	
 }
 
+// async function db(sql) {
+// 	var data = await pool.getConnection((err, connection)=> {
+// 		if(err) {
+// 			console.error(err)
+// 			return
+// 		} else {
+// 			connection.query(sql, (err, result)=> {
+// 				connection.release()
+// 				if(err) {
+// 					console.error(err)
+// 				} else {
+// 					return result
+// 				}
+// 			})
+// 		}
+// 	})
+// 	console.log(data);
+// 	return data
+// }
 
 module.exports = db
 

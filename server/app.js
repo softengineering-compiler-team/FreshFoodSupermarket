@@ -6,8 +6,7 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
-const index = require('./routes/index')
-const users = require('./routes/users')
+const login = require('./routes/login')
 const query = require('./routes/query')
 
 // error handler
@@ -17,6 +16,7 @@ onerror(app)
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
+
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
@@ -34,9 +34,9 @@ app.use(async (ctx, next) => {
 })
 
 // routes
-app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
+app.use(login.routes(), login.allowedMethods())
 app.use(query.routes(), query.allowedMethods())
+
 
 // error-handling
 app.on('error', (err, ctx) => {

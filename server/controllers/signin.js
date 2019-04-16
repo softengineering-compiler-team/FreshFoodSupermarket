@@ -1,6 +1,6 @@
 const db = require('../utils/db.js')
 
-async function login(ctx, next) {
+async function signin(ctx, next) {
 
 	let username = ctx.request.body.username
 	let password = ctx.request.body.password
@@ -27,4 +27,4 @@ async function login(ctx, next) {
 	}
 }
 
-module.exports = login
+module.exports = signin

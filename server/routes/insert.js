@@ -4,7 +4,6 @@ const controllers = require('require-all')({
 })
 
 router.post('/signup', controllers.signup)
-router.get('/buy', controllers.goods.all)
-
+router.post('/buy', controllers.buy)
 
 module.exports = router

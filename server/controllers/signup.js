@@ -19,8 +19,7 @@ async function signup(ctx, next) {
 		return
 	} else {
 		let sql2 = `insert into user (username, password, email) values ('${username}', '${password}', '${email}')`
-		let data2 = await db(sql2)
-		console.log(data2);
+		await db(sql2)
 		ctx.body = {
 			code: 0,
 			data: {

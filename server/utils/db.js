@@ -1,19 +1,18 @@
+const config = require('../config/config') 
 const mysql = require('mysql'),
-	    pool  = mysql.createPool({
-	        'host': 'localhost',
-	        'port': '3306',
-	        'user': 'root',
-	        'password': '158728',
-	        'database': 'freshfood',
-	    });
+      pool  = mysql.createPool(config);
 
 async function db(sql) {
 	return new Promise((resolve, reject)=> {
 		pool.getConnection((err, connection)=> {
 			if(err) {
 				console.error(err)
+				reject(err)
 			}
 			connection.query(sql, (err, result)=> {
+				if(err) {
+					reject(err)
+				}
 				connection.release()
 				resolve(result)
 			})
@@ -21,27 +20,8 @@ async function db(sql) {
 	}) 	
 }
 
-// async function db(sql) {
-// 	var data = await pool.getConnection((err, connection)=> {
-// 		if(err) {
-// 			console.error(err)
-// 			return
-// 		} else {
-// 			connection.query(sql, (err, result)=> {
-// 				connection.release()
-// 				if(err) {
-// 					console.error(err)
-// 				} else {
-// 					return result
-// 				}
-// 			})
-// 		}
-// 	})
-// 	console.log(data);
-// 	return data
-// }
-
 module.exports = db
+
 
 
 

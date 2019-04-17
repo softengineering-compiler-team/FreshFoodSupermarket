@@ -12,5 +12,6 @@ router.get('/seafoods', controllers.goods.seafoods)
 router.get('/meat', controllers.goods.meat)
 router.get('/dairy', controllers.goods.dairy)
 router.get('/address', controllers.user.address)
+router.get('/order', controllers.admin.order)
 
 module.exports = router

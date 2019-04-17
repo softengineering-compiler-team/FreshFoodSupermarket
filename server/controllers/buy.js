@@ -7,19 +7,16 @@ async function buy(ctx, next) {
 
 	let orderTime = (new Date()).toLocaleString()
 
-	let sql = `insert into receive (username, goodsNo, orderNo, num, orderTime, subtotal) values `
+	let sql = `insert into receive (username, goodsNo, orderNo, num, orderTime, subtotal, address) values `
 
 	for(let i=0; i<goodsList.length; i++) {
 		if(i < goodsList.length - 1) {
-			sql += `('${goodsList[i].username}', '${goodsList[i].goodsNo}', '${md5(goodsList[i].username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}), `
+			sql += `('${goodsList[i].username}', '${goodsList[i].goodsNo}', '${md5(goodsList[i].username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}'), `
 
 		} else {
-			sql += `('${goodsList[i].username}', '${goodsList[i].goodsNo}', '${md5(goodsList[i].username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal})`
-			console.log(sql);
+			sql += `('${goodsList[i].username}', '${goodsList[i].goodsNo}', '${md5(goodsList[i].username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}')`
 		}
 	}
-
-	console.log("sql", sql);
 
 	await db(sql)
 

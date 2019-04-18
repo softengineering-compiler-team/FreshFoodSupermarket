@@ -2,6 +2,7 @@ const db = require('../utils/db.js')
 
 async function order(ctx, next) {
 	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 0 order by orderTime desc, orderNo desc`
+<<<<<<< HEAD
 	//console.log(sql);
 	let data = await db(sql)
 	//console.log(data)
@@ -54,6 +55,15 @@ async function order(ctx, next) {
 	ctx.body = {
 		code: 0,
 		data: totalOrder
+=======
+	console.log(sql);
+	let data = await db(sql)
+	console.log(data)
+
+	ctx.body = {
+		code: 0,
+		data: data
+>>>>>>> e7619beae4581c2a57c9787ab65f011d2f00b6ad
 	}
 }
 

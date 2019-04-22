@@ -3,7 +3,8 @@ const controllers = require('require-all')({
 	dirname: 'D:/MyProjects/FreshFoodSuperMarket/server/controllers' 
 })
 
-router.post('/buy', controllers.buy)
-router.post('/address', controllers.user.insertAddress)
+router.post('/signup', controllers.user.signup)
+router.post('/signin', controllers.user.signin)
+router.post('/signin', controllers.user.signout)
 
 module.exports = router

@@ -5,13 +5,20 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-
-const signin = require('./routes/signin')
+const session = require("koa-session2")
+const Store = require('./utils/Store')
+const user = require('./routes/user')
 const query = require('./routes/query')
 const insert = require('./routes/insert')
 
 // error handler
 onerror(app)
+
+//session
+app.use(session({
+  store:new Store()
+}))
+
 
 // middlewares
 app.use(bodyparser({
@@ -26,6 +33,18 @@ app.use(views(__dirname + '/views', {
   extension: 'ejs'
 }))
 
+// //登陆拦截
+app.use(async (ctx, next) => {
+
+  if(!ctx.cookies.get('koa:sess') && ctx.path !== '/signin'){
+    await ctx.render('index',{
+      title:'请登录'
+    })
+    return
+  }
+  await next()
+})
+
 // logger
 app.use(async (ctx, next) => {
   const start = new Date()
@@ -35,7 +54,7 @@ app.use(async (ctx, next) => {
 })
 
 // routes
-app.use(signin.routes(), signin.allowedMethods())
+app.use(user.routes(), user.allowedMethods())
 app.use(query.routes(), query.allowedMethods())
 app.use(insert.routes(), insert.allowedMethods())
 

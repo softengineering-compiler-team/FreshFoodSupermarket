@@ -105,6 +105,7 @@ async function insertAddress(ctx, next) {
 module.exports = {
 	signup: signup,
 	signin: signin,
+	signout: signout,
 	address: address,
 	insertAddress: insertAddress
 }

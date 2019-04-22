@@ -10,10 +10,10 @@
         <TabPane label="柚子" name="name6"></TabPane>
         <TabPane label="车厘子" name="name7"></TabPane>
     </Tabs>
-    <div @click="details" v-for="index1 in list" :key="index1.id" class="Goods">
+    <div v-for="index1 in list" :key="index1.id" class="Goods">
     <div class="Name">{{index1.name}}</div>
         <div class="guess-goods" v-for="index of 5" :key="index">
-        <Card style="width:160px;cursor:pointer">
+        <Card @click="details" style="width:160px;cursor:pointer">
             <div style="text-align:center">
                 <img class="goods-img" src="../assets/default.png">
                 <div class="money">￥200</div>

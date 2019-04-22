@@ -14,6 +14,8 @@ import Order from '@/components/Order'
 import Receive from '@/components/Receive'
 import Deliver from '@/components/Deliver'
 import Userorder from '@/components/Userorder'
+import Login from '@/components/login'
+import PersonalCenter from '@/components/PersonalCenter'
 Vue.use(Router)
 
 export default new Router({
@@ -47,6 +49,16 @@ export default new Router({
       path: '/userorder',
       name: 'Userorder',
       component: Userorder
+    },
+    {
+      path:'/login',
+      name:'Login',
+      component:Login
+    },
+    {
+      path:'/personalcenter',
+      name:'PersonalCenter',
+      component:PersonalCenter
     },
     {
       path: '/backstage',

@@ -7,6 +7,12 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import echarts from 'echarts'
 import VueChart from 'vue-chart-js'
+//axios
+import axios from 'axios'
+import Qs from 'qs'
+ 
+Vue.prototype.axios = axios;
+Vue.prototype.qs = Qs;
 
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false

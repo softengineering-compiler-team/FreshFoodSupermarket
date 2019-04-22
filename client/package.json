@@ -11,8 +11,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "echarts": "^4.2.1",
     "iview": "^3.3.3",
+    "qs": "^6.7.0",
     "vue": "^2.5.2",
     "vue-chart-js": "^1.4.1",
     "vue-echart": "^1.0.5",

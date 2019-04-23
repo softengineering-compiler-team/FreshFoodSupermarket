@@ -5,8 +5,9 @@
                 <div class="login-title">
                     <img src="/static/logo.png" class="login-logo" alt="">
                 </div>
-                <Input size="large" placeholder="账户" class="username" v-model="username"/>
-                <Input size="large" placeholder="密码" class="password" type="password" v-model="password"/>
+                <Input size="large" placeholder="账户" class="username" v-model="data.username"/>
+                <Input size="large" placeholder="密码" class="password" type="password" v-model="data.password"/>
+                <div class="info_l">{{info_l}}</div>
                 <Button @click="login" size="large" class="login-btn" type="primary">登陆</Button>
                 <div class="login-href">没有账号？<a @click="goreg">注册</a></div>
             </div>
@@ -16,10 +17,11 @@
                     <img src="/static/logo.png" class="login-logo" alt="">
                 </div>
                 <Input size="large" placeholder="账户" class="username" v-model="username_r"/>
-                <Input size="large" placeholder="密码" class="password" type="password" v-model="password_r"/>
-                <Input size="large" placeholder="确认密码" class="password" type="password" v-model="password_r2"/>
-                <Input size="large" placeholder="电子邮箱" class="username" v-model="email_r"/>
-                <Button size="large" class="login-btn" type="primary">注册</Button>
+                <Input size="large" placeholder="密码" class="email" type="password" v-model="password_r"/>
+                <Input size="large" placeholder="确认密码" class="email" type="password" v-model="password_r2"/>
+                <Input size="large" placeholder="电子邮箱" class="password" v-model="email_r"/>
+                <div class="info_l">{{info_r}}</div>
+                <Button @click="register" size="large" class="login-btn" type="primary">注册</Button>
                 <div class="login-href">已有账号？<a @click="goreg">登陆</a></div>
             </div>
         </div>
@@ -29,8 +31,12 @@
 export default {
   data () {
     return {
-        username:'',
-        password:'', 
+        data:{
+            username:'',
+            password:'',
+        },
+        info_l:'',
+        info_r:'',
         loginswitch:true, 
         username_r:'',
         password_r:'',
@@ -44,27 +50,38 @@ export default {
     },
     login(){
         this.axios
-      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+      .post('http://www.datastreams.club:3000/signin',this.data)
       .then(res => {
-        console.log(res.data.chartName)
+        if(res.code==0){
+             this.$Message.success('登陆成功！');
+              this.info_l=""
+             this.$router.push('/')
+        }
+        else{
+            this.info_l="账户或密码错误"
+        }
       })
       .catch(error => {
+        this.$Message.success('登陆失败');
         console.log(error)
         // this.errored = true
       })
+    },
+    register(){
+        
     }
   },
   mounted:function(){
-      this.axios
-      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-      .then(res => {
-        console.log(res.data.chartName)
-      })
-      .catch(error => {
-        console.log(error)
-        // this.errored = true
-      })
-    //   .finally(() => this.loading = false)
+    //   this.axios
+    //   .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+    //   .then(res => {
+    //     console.log(res.data.chartName)
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //     // this.errored = true
+    //   })
+    // //   .finally(() => this.loading = false)
   }
 }
 </script>
@@ -87,6 +104,8 @@ export default {
     text-align: center;
     background: rgb(255, 255, 255);
     margin-top:7%;
+    border-radius: 5%;
+    opacity: 0.95;
 }
 .login-title{
     padding-top:7%;
@@ -103,6 +122,11 @@ export default {
 }
 .password{
     width:60%;
+    margin-bottom:1%;
+    display: inline-block;
+}
+.email{
+    width:60%;
     margin-bottom:5%;
     display: inline-block;
 }
@@ -114,6 +138,13 @@ export default {
 }
 .login-href{
     font-size:15px;
-    padding-bottom:3%;
+    padding-bottom:5%;
+    padding-top:1%;
+}
+.info_l{
+    color: rgb(182, 9, 9);
+    position: relative;
+    left:12%;
+    bottom:5%;
 }
 </style>

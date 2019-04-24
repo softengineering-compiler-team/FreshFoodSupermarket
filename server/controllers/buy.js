@@ -18,7 +18,7 @@ async function buy(ctx, next) {
 		}
 	}
 
-	await db(sql)
+	await db.MySQL_db(sql)
 
 	ctx.body = {
 		code: 0,

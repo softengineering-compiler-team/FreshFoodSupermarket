@@ -3,7 +3,7 @@ const db = require('../utils/db.js')
 async function order(ctx, next) {
 	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 0 order by orderTime desc, orderNo desc`
 	//console.log(sql);
-	let data = await db(sql)
+	let data = await db.MySQL_db(sql)
 	var totalData = []
 	let orderNo = data[0].orderNo
 	var orderNum = new Array()
@@ -20,7 +20,7 @@ async function order(ctx, next) {
 		let temporder = orderNum[i]
 		console.log(temporder)
 		let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = 0 AND orderNo = '${temporder}'`
-		let data1 = await db(sql1)
+		let data1 = await db.MySQL_db(sql1)
 		var goodsList = new Array()
 		var goodsObj = {}
 		var orderData = {}

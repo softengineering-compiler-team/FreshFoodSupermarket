@@ -7,6 +7,8 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require("koa-session2")
 const cors = require('koa-cors')
+const md5 = require('md5')
+const Redis_db = (require('./utils/db')).Redis_db
 const Store = require('./utils/Store')
 const user = require('./routes/user')
 const query = require('./routes/query')
@@ -34,7 +36,26 @@ app.use(views(__dirname + '/views', {
   extension: 'ejs'
 }))
 
-// //登陆拦截
+// 生成登录验证码token
+app.use(async (ctx, next) => {
+
+  if(!ctx.cookies.get('koa:sess') && ctx.path === '/gen_code'){
+    let token = md5((new Date()).toLocaleString()+ Math.random()) 
+    let check_code = md5(Math.random()).substring(0, 4)
+    Redis_db.set(token, check_code);
+    Redis_db.expire(token, 120);//验证码120s后失效
+    ctx.body = {
+      code: 0,
+      data: {
+        token: token
+      }
+    }
+    return 
+  }
+  await next()
+})
+
+// 登录拦截
 app.use(async (ctx, next) => {
 
   if(!ctx.cookies.get('koa:sess') && ctx.path !== '/signin'){
@@ -48,21 +69,13 @@ app.use(async (ctx, next) => {
 
 // logger
 app.use(async (ctx, next) => {
-  if(ctx.method === 'OPTIONS') {
-    ctx.body = {
-      code: 0,
-      data: {
-        msg: '跨域成功！'
-      }
-    }
-  }
   const start = new Date()
   await next()
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
-//解决跨域
+// 解决跨域
 app.use(cors())
 
 // routes

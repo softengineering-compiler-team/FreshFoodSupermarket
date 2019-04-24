@@ -1,8 +1,11 @@
-const config = require('../config/config') 
+const MySQL_config = require('../config/MySQL-config') 
+const Redis_config = require('../config/Redis-config') 
 const mysql = require('mysql'),
-      pool  = mysql.createPool(config);
+     	pool  = mysql.createPool(MySQL_config);
+const redis = require('redis'),
+		client = redis.createClient(Redis_config.rds_port, Redis_config.rds_host, Redis_config.rds_opts);
 
-async function db(sql) {
+async function MySQL_db(sql) {
 	return new Promise((resolve, reject)=> {
 		pool.getConnection((err, connection)=> {
 			if(err) {
@@ -20,7 +23,22 @@ async function db(sql) {
 	}) 	
 }
 
-module.exports = db
+client.on('error', function(err) {
+    if(err) { return console.error(err) }
+})
+
+client.on('ready', function(err) {
+	if(err) { return console.error(err) }
+})
+
+client.on('ready', function(err) {
+	if(err) { return console.error(err) }
+})
+
+module.exports = {
+	MySQL_db: MySQL_db,
+	Redis_db: client
+}
 
 
 

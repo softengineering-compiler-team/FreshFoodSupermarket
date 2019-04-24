@@ -49,10 +49,15 @@ export default {
         this.loginswitch=!this.loginswitch;
     },
     login(){
+    let config = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
         this.axios
-      .post('http://www.datastreams.club:3000/signin',this.data)
+      .post('http://localhost:3000/signin', this.qs.stringify(this.data), config)
       .then(res => {
-        if(res.code==0){
+        if(res.data.code==0){
              this.$Message.success('登陆成功！');
               this.info_l=""
              this.$router.push('/')

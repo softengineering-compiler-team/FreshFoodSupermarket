@@ -47,6 +47,5 @@ async function order(ctx, next) {
 }
 module.exports = {
 	order: order
-	
 }
 

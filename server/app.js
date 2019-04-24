@@ -6,6 +6,7 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require("koa-session2")
+const cors = require('koa-cors')
 const Store = require('./utils/Store')
 const user = require('./routes/user')
 const query = require('./routes/query')
@@ -47,11 +48,22 @@ app.use(async (ctx, next) => {
 
 // logger
 app.use(async (ctx, next) => {
+  if(ctx.method === 'OPTIONS') {
+    ctx.body = {
+      code: 0,
+      data: {
+        msg: '跨域成功！'
+      }
+    }
+  }
   const start = new Date()
   await next()
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+
+//解决跨域
+app.use(cors())
 
 // routes
 app.use(user.routes(), user.allowedMethods())

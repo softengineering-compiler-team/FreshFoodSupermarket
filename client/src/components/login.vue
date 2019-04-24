@@ -50,7 +50,7 @@ export default {
     },
     login(){
         this.axios
-      .post('http://www.datastreams.club:3000/signin',this.data)
+      .post('http://localhost:3000/signin',this.data)
       .then(res => {
         if(res.code==0){
              this.$Message.success('登陆成功！');

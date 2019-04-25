@@ -37,7 +37,7 @@ export default {
         },
         info_l:'',
         info_r:'',
-        loginswitch:true, 
+        loginswitch:'', 
         username_r:'',
         password_r:'',
         password_r2:'',
@@ -63,7 +63,7 @@ export default {
         }
       })
       .catch(error => {
-        this.$Message.success('登陆失败');
+        this.$Message.error('登陆失败');
         console.log(error)
         // this.errored = true
       })
@@ -89,7 +89,7 @@ export default {
                 }
             })
             .catch(error => {
-                this.$Message.success('注册失败');
+                this.$Message.error('注册失败');
                 console.log(error)
             })
         }
@@ -105,7 +105,6 @@ export default {
       if(this.$route.params.id){
           this.loginswitch=this.$route.params.id
       }
-      
   }
 }
 </script>

@@ -68,7 +68,7 @@ export default {
     },
     register(){
       this.$router.push({
-        name:'Register',
+        name:'Login',
         params:{
           id:false
         }

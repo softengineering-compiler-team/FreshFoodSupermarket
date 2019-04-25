@@ -35,11 +35,76 @@ async function signup(ctx, next) {
 
 /*找回密码*/
 async function retrieve(ctx, next) {
+
+	var params = {
+	    host: 'smtp.163.com',
+	    port: 465,
+	    sercure: true,
+	    auth: {
+	        user: '18365225454@163.com',
+	        pass: 'yetiandi123'
+	    }
+	}
+
 	let username = ctx.request.body.username
-	let sql = `select email from user where username = '${username}'`
-	let email = (await db.MySQL_db(sql))[0]
-	console.log(email);
-	return 
+	let sql = `select username, email from user where username = '${username}'`
+	let token = md5(username + (new Date()).toLocaleString() + Math.random())
+	let email = (await db.MySQL_db(sql))[0].email
+	const mailOptions = {
+        from: '18365225454@163.com', 
+        to: email, 
+        subject: '叶鲜生生鲜超市找回密码', 
+        html: `<a href='http://localhost:3000/reset.html?token=${token}'><b>请在五分钟内点击链接完成验证，并进行密码重置</b></a>` 
+    }
+
+    const transporter = nodemailer.createTransport(params)
+
+    await transporter.sendMail(mailOptions, async function(err, info) {
+
+        if (err) { return console.log(err) }
+        await Redis_db.set(token, username);
+        await Redis_db.expire(token, 300);
+        console.log(`Emial sent to ${username}: ${email} sent successfully!`); 
+    })
+
+   	ctx.body = {
+       	code: 0,
+       	data: {
+       		msg: '用户身份验证成功！'
+   		}
+    }
+}
+
+/*密码重置*/
+async function reset(ctx, next) {
+
+	let token = ctx.request.body.token
+
+	let password = ctx.request.body.password
+
+	let response = await Redis_db.exists(token)
+	var msg = ''
+
+	if(response === 1) {
+
+		let username = await Redis_db.get(token)
+
+		let sql = `update user set password = '${password}' where username = '${username}'`
+		await db.MySQL_db(sql)
+		await Redis_db.del(token)
+		msg = '密码重置成功！'
+		
+	} else if(response === 0){
+
+		msg = '邮箱验证链接已经过期！'
+	} 
+
+	ctx.body = {
+		code: 0,
+		data: {
+			msg: msg
+		}
+	}
 }
 
 /*登录*/
@@ -122,6 +187,7 @@ async function insertAddress(ctx, next) {
 module.exports = {
 	signup: signup,
 	retrieve: retrieve,
+	reset: reset,
 	signin: signin,
 	signout: signout,
 	address: address,

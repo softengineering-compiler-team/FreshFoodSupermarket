@@ -19,6 +19,7 @@ import Receive from '@/components/Receive'
 import Deliver from '@/components/Deliver'
 import Userorder from '@/components/Userorder'
 import Login from '@/components/login'
+import Register from '@/components/register'
 import PersonalCenter from '@/components/PersonalCenter'
 Vue.use(Router)
 
@@ -78,6 +79,11 @@ export default new Router({
       path:'/login',
       name:'Login',
       component:Login
+    },
+    {
+      path:'/register',
+      name:'Register',
+      component:Register
     },
     {
       path:'/personalcenter',

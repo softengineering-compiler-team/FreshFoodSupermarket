@@ -59,10 +59,20 @@ export default {
       this.$router.push('userorder')
     },
     login() {
-      this.$router.push('login')
+      this.$router.push({
+        name:'Login',
+        params:{
+          id:true
+        }
+      })
     },
-    register() {
-      this.$router.push('register')
+    register(){
+      this.$router.push({
+        name:'Register',
+        params:{
+          id:false
+        }
+      })
     }
   },
   components :{

@@ -5,10 +5,10 @@
                 <div class="register-title">
                     <img src="/static/logo.png" class="register-logo" alt="">
                 </div>
-                <Input size="large" placeholder="账户" class="username" v-model="data.username_r"/>
-                <Input size="large" placeholder="密码" class="email" type="password" v-model="data.password_r"/>
-                <Input size="large" placeholder="确认密码" class="email" type="password" v-model="data.password_r2"/>
-                <Input size="large" placeholder="电子邮箱" class="password" v-model="data.email_r"/>
+                <Input size="large" placeholder="账户" class="username" v-model="username_r"/>
+                <Input size="large" placeholder="密码" class="email" type="password" v-model="password_r"/>
+                <Input size="large" placeholder="确认密码" class="email" type="password" v-model="password_r2"/>
+                <Input size="large" placeholder="电子邮箱" class="password" v-model="email_r"/>
                 <div class="info_r">{{info_r}}</div>
                 <Button @click="register" size="large" class="register-btn" type="primary">注册</Button>
                 <div class="register-href">已有账号？<a @click="goreg">登陆</a></div>
@@ -18,8 +18,8 @@
                 <div class="register-title">
                     <img src="/static/logo.png" class="register-logo" alt="">
                 </div>
-                <Input size="large" placeholder="账户" class="username" v-model="username"/>
-                <Input size="large" placeholder="密码" class="password" type="password" v-model="password"/>
+                <Input size="large" placeholder="账户" class="username" v-model="data.username"/>
+                <Input size="large" placeholder="密码" class="password" type="password" v-model="data.password"/>
                 <div class="info_l">{{info_l}}</div>
                 <Button @click="login" size="large" class="register-btn" type="primary">登陆</Button>
                 <div class="register-href">没有账号？<a @click="goreg">注册</a></div>
@@ -32,42 +32,63 @@ export default {
   data () {
     return {
         data:{
-            username_r:'',
-            password_r:'',
-            password_r2:'',
-            email_r:'',
-            
+            username:'',
+            password:'',
         },
         info_l:'',
         info_r:'',
         loginswitch:true, 
-        username:'',
-        password:'',
+        username_r:'',
+        password_r:'',
+        password_r2:'',
+        email_r:'',
     }
   },
   methods:{
     goreg(){
         this.loginswitch=!this.loginswitch;
     },
+    //注册
     register(){
-        
-    },
-    login(){
-    let config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+        if(this.password_r==this.password_r2){
+            let data = {
+                username:this.username_r,
+                password:this.password_r,
+                email:this.email_r
             }
+            this.axios
+            .post('http://www.datastreams.club:3000/signup', this.qs.stringify(data), this.headconfig)
+            .then(res => {
+                if(res.data.code==0){
+                    this.$Message.success(res.data.data.msg);
+                    this.info_r=""
+                    this.$router.push('/')
+                }
+                else{
+                    this.info_l=res.data.data.msg
+                }
+            })
+            .catch(error => {
+                this.$Message.success('注册失败');
+                console.log(error)
+            })
         }
+        else{
+            this.info_r="两次输入的密码不一致"
+        }
+    },
+    //登陆
+    login(){
         this.axios
-      .post('http://localhost:3000/signin', this.qs.stringify(this.data), config)
+      .post('http://www.datastreams.club:3000/signin', this.qs.stringify(this.data), this.headconfig)
       .then(res => {
         if(res.data.code==0){
-             this.$Message.success('登陆成功！');
+             this.$Message.success(res.data.data.msg);
               this.info_l=""
              this.$router.push('/')
         }
         else{
-            this.info_l="账户或密码错误"
+            this.info_l=res.data.data.msg
         }
       })
       .catch(error => {
@@ -75,20 +96,15 @@ export default {
         console.log(error)
         // this.errored = true
       })
+    },
+    clearinfo_l(){
+        this.info_l=""
     }
-    
   },
   mounted:function(){
-    //   this.axios
-    //   .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-    //   .then(res => {
-    //     console.log(res.data.chartName)
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //     // this.errored = true
-    //   })
-    // //   .finally(() => this.loading = false)
+    if(this.$route.params.id){
+          this.loginswitch=this.$route.params.id
+      }
   }
 }
 </script>

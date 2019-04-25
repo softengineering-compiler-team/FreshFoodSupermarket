@@ -60,7 +60,7 @@ export default {
     },
     login() {
       this.$router.push({
-        path:'login',
+        name:'Login',
         params:{
           id:true
         }
@@ -68,7 +68,7 @@ export default {
     },
     register(){
       this.$router.push({
-        path:'login',
+        name:'Login',
         params:{
           id:false
         }

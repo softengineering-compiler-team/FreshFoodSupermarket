@@ -1,11 +1,11 @@
 <template>
     <div>
         <div>
-            <img @click="hreftwo" class="cimg" src="../assets/default.png">
-            <img class="cimg" src="../assets/default.png">
-            <img class="cimg" src="../assets/default.png">
-            <img class="cimg" src="../assets/default.png">
-            <img class="cimg" src="../assets/default.png">
+            <img @click="fruit" class="cimg" src="../assets/default.png">
+            <img @click="vegetables" class="cimg" src="../assets/default.png">
+            <img @click="seafood" class="cimg" src="../assets/default.png">
+            <img @click="meat" class="cimg" src="../assets/default.png">
+            <img @click="dairy_products" class="cimg" src="../assets/default.png">
         </div>
         <div>
             <span class="c-intro">新鲜水果</span>
@@ -19,8 +19,20 @@
 <script>
 export default {
   methods: {
-    hreftwo () {
-      this.$router.push('goods')
+    fruit () {
+      this.$router.push('fruit')//原goods
+    },
+    vegetables() {
+      this.$router.push('vegetables')
+    },
+    seafood () {
+      this.$router.push('seafood')
+    },
+    meat () {
+      this.$router.push('meat')
+    },
+    dairy_products () {
+      this.$router.push('dairy_products')
     }
   }
 }

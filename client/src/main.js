@@ -15,6 +15,11 @@ Vue.prototype.axios = axios;
 Vue.prototype.qs = Qs;
 
 Vue.prototype.$echarts = echarts
+Vue.prototype.headconfig = {
+  headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+  }
+}
 Vue.config.productionTip = false
 Vue.use(iView)
 Vue.use(VueChart)

@@ -5,8 +5,8 @@
                 <div class="login-title">
                     <img src="/static/logo.png" class="login-logo" alt="">
                 </div>
-                <Input size="large" placeholder="账户" class="username" v-model="data.username"/>
-                <Input size="large" placeholder="密码" class="password" type="password" v-model="data.password"/>
+                <Input @input="clearinfo_l" size="large" placeholder="账户" class="username" v-model="data.username"/>
+                <Input @input="clearinfo_l" size="large" placeholder="密码" class="password" type="password" v-model="data.password"/>
                 <div class="info_l">{{info_l}}</div>
                 <Button @click="login" size="large" class="login-btn" type="primary">登陆</Button>
                 <div class="login-href">没有账号？<a @click="goreg">注册</a></div>
@@ -50,21 +50,16 @@ export default {
     },
     //登陆
     login(){
-    let config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }
         this.axios
-      .post('http://www.datastreams.club:3000/signin', this.qs.stringify(this.data), config)
+      .post('http://www.datastreams.club:3000/signin', this.qs.stringify(this.data), this.headconfig)
       .then(res => {
         if(res.data.code==0){
-             this.$Message.success('登陆成功！');
+             this.$Message.success(res.data.data.msg);
               this.info_l=""
              this.$router.push('/')
         }
         else{
-            this.info_l="账户或密码错误"
+            this.info_l=res.data.data.msg
         }
       })
       .catch(error => {
@@ -75,11 +70,42 @@ export default {
     },
     //注册
     register(){
-        
+        if(this.password_r==this.password_r2){
+            let data = {
+                username:this.username_r,
+                password:this.password_r,
+                email:this.email_r
+            }
+            this.axios
+            .post('http://www.datastreams.club:3000/signup', this.qs.stringify(data), this.headconfig)
+            .then(res => {
+                if(res.data.code==0){
+                    this.$Message.success(res.data.data.msg);
+                    this.info_r=""
+                    this.$router.push('/')
+                }
+                else{
+                    this.info_l=res.data.data.msg
+                }
+            })
+            .catch(error => {
+                this.$Message.success('注册失败');
+                console.log(error)
+            })
+        }
+        else{
+            this.info_r="两次输入的密码不一致"
+        }
+    },
+    clearinfo_l(){
+        this.info_l=""
     }
   },
   mounted:function(){
-      this.loginswitch=this.$route.params.id
+      if(this.$route.params.id){
+          this.loginswitch=this.$route.params.id
+      }
+      
   }
 }
 </script>

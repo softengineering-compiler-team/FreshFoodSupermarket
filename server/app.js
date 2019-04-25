@@ -42,8 +42,8 @@ app.use(async (ctx, next) => {
   if(!ctx.cookies.get('koa:sess') && ctx.path === '/gen_code'){
     let token = md5((new Date()).toLocaleString()+ Math.random()) 
     let check_code = md5(Math.random()).substring(0, 4)
-    Redis_db.set(token, check_code);
-    Redis_db.expire(token, 120);//验证码120s后失效
+    await Redis_db.set(token, check_code);
+    await Redis_db.expire(token, 120);//验证码120s后失效
     ctx.body = {
       code: 0,
       data: {
@@ -58,7 +58,7 @@ app.use(async (ctx, next) => {
 // 登录拦截
 app.use(async (ctx, next) => {
 
-  if(!ctx.cookies.get('koa:sess') && ctx.path !== '/signin' && ctx.path !== '/signup'){
+  if(!ctx.cookies.get('koa:sess') && ctx.path !== '/signin' && ctx.path !== '/signup' && ctx.path !== '/retrieve' && ctx.path !== '/reset'){
     await ctx.render('index',{
       title:'请登录'
     })

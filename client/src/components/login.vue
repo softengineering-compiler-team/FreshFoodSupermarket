@@ -48,6 +48,7 @@ export default {
     goreg(){
         this.loginswitch=!this.loginswitch;
     },
+    //登陆
     login(){
     let config = {
             headers: {
@@ -55,7 +56,7 @@ export default {
             }
         }
         this.axios
-      .post('http://localhost:3000/signin', this.qs.stringify(this.data), config)
+      .post('http://www.datastreams.club:3000/signin', this.qs.stringify(this.data), config)
       .then(res => {
         if(res.data.code==0){
              this.$Message.success('登陆成功！');
@@ -72,21 +73,13 @@ export default {
         // this.errored = true
       })
     },
+    //注册
     register(){
         
     }
   },
   mounted:function(){
-    //   this.axios
-    //   .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-    //   .then(res => {
-    //     console.log(res.data.chartName)
-    //   })
-    //   .catch(error => {
-    //     console.log(error)
-    //     // this.errored = true
-    //   })
-    // //   .finally(() => this.loading = false)
+      this.loginswitch=this.$route.params.id
   }
 }
 </script>

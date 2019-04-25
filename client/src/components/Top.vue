@@ -3,7 +3,7 @@
       <div class="top">
       <div @click="gomain" class="top-left"><Icon type="md-home" /> 叶鲜生首页</div>
       <div @click="login" class="top-left">登陆</div>
-      <div class="top-left">注册</div>
+      <div @click="register" class="top-left">注册</div>
       <div @click="admin" class="top-right right">商家后台</div>
       <div @mouseenter="enterperson()" @mouseleave="leaveperson()" class="top-right"><Icon type="md-person" /> 个人中心
           <div v-if="showperson" class="person">
@@ -59,7 +59,20 @@ export default {
       this.$router.push('userorder')
     },
     login() {
-      this.$router.push('login')
+      this.$router.push({
+        path:'login',
+        params:{
+          id:true
+        }
+      })
+    },
+    register(){
+      this.$router.push({
+        path:'login',
+        params:{
+          id:false
+        }
+      })
     }
   },
   components :{

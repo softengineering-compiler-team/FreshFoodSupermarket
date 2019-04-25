@@ -10,7 +10,7 @@ import VueChart from 'vue-chart-js'
 //axios
 import axios from 'axios'
 import Qs from 'qs'
- 
+import $ from 'jquery'
 Vue.prototype.axios = axios;
 Vue.prototype.qs = Qs;
 

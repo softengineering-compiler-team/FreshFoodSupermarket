@@ -2,8 +2,6 @@
     <div>
         <Sigh class="sigh"></Sigh>
         <Table border ref="selection" :columns="columns4" :data="data1"></Table>
-        <Button @click="handleSelectAll(true)">Set all selected</Button>
-        <Button @click="handleSelectAll(false)">Cancel all selected</Button>
         <div class="stock-bottom">
             <Button size="large" class="button" type="primary" icon="md-cart">推荐订货</Button>
             <Button @click="sell" size="large" class="button" type="primary" icon="md-cart">一键卖出</Button>
@@ -64,9 +62,6 @@ export default {
     };
   },
   methods: {
-    handleSelectAll(status) {
-      this.$refs.selection.selectAll(status);
-    },
     buy () {
       this.$router.push('buy')
     },

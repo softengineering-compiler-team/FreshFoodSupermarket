@@ -1,17 +1,7 @@
 <template>
     <div>
         <div class="title">配送页面</div> 
-        <Tabs value="name1">
-            <TabPane label="常温" name="name1">
                 <Table border ref="selection" :columns="columns4" :data="data1"></Table>
-            </TabPane>
-            <TabPane label="冷冻" name="name2">
-                <Table border ref="selection" :columns="columns4" :data="data1"></Table>
-            </TabPane>
-            <TabPane label="冷藏" name="name3">
-                <Table border ref="selection" :columns="columns4" :data="data1"></Table>
-            </TabPane>
-        </Tabs>
         <!-- <Icon type="md-bicycle" /> -->
     </div>
 </template>
@@ -40,6 +30,10 @@ export default {
         {
           title: "下单用户",
           key: "user"
+        },
+        {
+            title:"用户地址",
+            key: "address"
         },
         {
           title: "状态",

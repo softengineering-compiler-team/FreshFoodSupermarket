@@ -5,6 +5,7 @@ const Redis_db = (require('../utils/db')).Redis_db
 
 /*注册*/
 async function signup(ctx, next) {
+	
 	let username = ctx.request.body.username
 	let password = ctx.request.body.password
 	let email = ctx.request.body.email

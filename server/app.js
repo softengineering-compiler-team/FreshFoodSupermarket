@@ -58,7 +58,7 @@ app.use(async (ctx, next) => {
 // 登录拦截
 app.use(async (ctx, next) => {
 
-  if(!ctx.cookies.get('koa:sess') && ctx.path !== '/signin'){
+  if(!ctx.cookies.get('koa:sess') && ctx.path !== '/signin' && ctx.path !== '/signup'){
     await ctx.render('index',{
       title:'请登录'
     })

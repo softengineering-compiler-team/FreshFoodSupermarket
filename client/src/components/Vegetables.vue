@@ -1,7 +1,7 @@
 <template>
     <div>
     <Top></Top>
-    <Tabs class="main" value="name1">
+    <Tabs @on-click="goVegetables($event)" class="main" value="name1">
         <TabPane label="茄子" name="name1"></TabPane>
         <TabPane label="黄瓜" name="name2"></TabPane>
         <TabPane label="小辣椒" name="name3"></TabPane>
@@ -10,7 +10,7 @@
         <TabPane label="毛豆" name="name6"></TabPane>
         <TabPane label="番茄" name="name7"></TabPane>
     </Tabs>
-    <div v-for="index1 in list" :key="index1.id" class="Goods">
+    <div v-for="index1 in list" :key="index1.id" class="Goods" :ref="'vegetables'+index1.id">
     <div class="Name">{{index1.name}}</div>
         <div class="guess-goods" v-for="index of 5" :key="index">
         <Card @click.native="details" style="width:160px;cursor:pointer">
@@ -24,6 +24,7 @@
         </Card>
         </div>
         </div>
+          <img @click="backtop" class="backtop" src="/static/backtop.png" alt="">
         <Bottom></Bottom>
     </div>
 </template>
@@ -68,12 +69,58 @@ export default {
   methods: {
     details () {
       this.$router.push('details')
+    },
+    goVegetables($event){
+      console.log($event);
+      console.log(this.$refs.vegetables0[0].offsetTop);
+      console.log(this.$refs.vegetables1[0].offsetTop);
+      switch ($event) {
+        case "name1":
+          {
+            $('html,body').animate({scrollTop:this.$refs.vegetables0[0].offsetTop },500)
+            break; 
+          }
+        case "name2":
+          {
+            $('html,body').animate({scrollTop:this.$refs.vegetables1[0].offsetTop },500)  
+            break;
+          }
+        case "name3":
+          {
+            $('html,body').animate({scrollTop:this.$refs.vegetables2[0].offsetTop },500)  
+            break;
+          }
+        case "name4":
+          {
+            $('html,body').animate({scrollTop:this.$refs.vegetables3[0].offsetTop },500) 
+            break; 
+          }
+        case "name5":
+          {
+            $('html,body').animate({scrollTop:this.$refs.vegetables4[0].offsetTop },500) 
+            break; 
+          }
+        case "name6":
+          {
+            $('html,body').animate({scrollTop:this.$refs.vegetables5[0].offsetTop },500)  
+            break;
+          }
+        case "name7":
+          {
+            $('html,body').animate({scrollTop:this.$refs.vegetables6[0].offsetTop },500)  
+            break;
+          }
+      }
+    },
+    backtop(){
+      $('html,body').animate({scrollTop:0 },500)
     }
   },
   components: {
     Bottom,
     Top
   }
+  
 }
 </script>
 <style>
@@ -110,5 +157,15 @@ export default {
   margin-right: 10px;
   font-size: 18px;
   color:red;
+}
+.backtop{
+  position: fixed;
+  top:75%;
+  right:20px;
+  box-shadow: 0 0 5px 5px rgb(210, 210, 210);
+  font-size:16px;
+  cursor: pointer;
+  width: 40px;
+  border-radius: 50%;
 }
 </style>

@@ -77,7 +77,10 @@ app.use(async (ctx, next) => {
 })
 
 // 解决跨域
-app.use(cors())
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:8000'
+}))
 
 // routes
 app.use(user.routes(), user.allowedMethods())

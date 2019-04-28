@@ -26,7 +26,7 @@
     "md5": "^2.2.1",
     "mysql": "^2.16.0",
     "nodemailer": "^6.1.1",
-    "require-all": "^3.0.0"
+    "require-dir-all": "^0.4.15"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"

@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 const controllers = require('require-all')({
-	dirname: 'D:/MyProjects/FreshFoodSuperMarket/server/controllers' 
+	dirname: 'C:/MyProjects/FreshFoodSuperMarket/server/controllers' 
 })
 
 //点击接单

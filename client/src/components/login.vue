@@ -16,10 +16,10 @@
                 <div class="login-title">
                     <img src="/static/logo.png" class="login-logo" alt="">
                 </div>
-                <Input size="large" placeholder="账户" class="username" v-model="username_r"/>
-                <Input size="large" placeholder="密码" class="email" type="password" v-model="password_r"/>
-                <Input size="large" placeholder="确认密码" class="email" type="password" v-model="password_r2"/>
-                <Input size="large" placeholder="电子邮箱" class="password" v-model="email_r"/>
+                <Input @input="clearinfo_r" size="large" placeholder="账户" class="username" v-model="username_r"/>
+                <Input @input="clearinfo_r" size="large" placeholder="密码" class="email" type="password" v-model="password_r"/>
+                <Input @input="clearinfo_r" size="large" placeholder="确认密码" class="email" type="password" v-model="password_r2"/>
+                <Input @input="clearinfo_r" size="large" placeholder="电子邮箱" class="password" v-model="email_r"/>
                 <div class="info_l">{{info_r}}</div>
                 <Button @click="register" size="large" class="login-btn" type="primary">注册</Button>
                 <div class="login-href">已有账号？<a @click="goreg">登陆</a></div>
@@ -51,7 +51,7 @@ export default {
     //登陆
     login(){
         this.axios
-      .post('http://www.datastreams.club:3000/signin', this.qs.stringify(this.data), this.headconfig)
+      .post(this.serverUrl+'/signin', this.qs.stringify(this.data), this.headconfig)
       .then(res => {
         if(res.data.code==0){
              this.$Message.success(res.data.data.msg);
@@ -70,6 +70,8 @@ export default {
     },
     //注册
     register(){
+        console.log(111);
+        
         if(this.password_r==this.password_r2){
             let data = {
                 username:this.username_r,
@@ -77,7 +79,7 @@ export default {
                 email:this.email_r
             }
             this.axios
-            .post('http://www.datastreams.club:3000/signup', this.qs.stringify(data), this.headconfig)
+            .post(this.serverUrl+'/signup', this.qs.stringify(data), this.headconfig)
             .then(res => {
                 if(res.data.code==0){
                     this.$Message.success(res.data.data.msg);
@@ -85,7 +87,7 @@ export default {
                     this.$router.push('/')
                 }
                 else{
-                    this.info_l=res.data.data.msg
+                    this.info_=res.data.data.msg
                 }
             })
             .catch(error => {
@@ -99,6 +101,9 @@ export default {
     },
     clearinfo_l(){
         this.info_l=""
+    },
+    clearinfo_r(){
+        this.info_r=""
     }
   },
   mounted:function(){

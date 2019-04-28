@@ -1,7 +1,7 @@
 <template>
     <div>
     <Top></Top>
-    <Tabs class="main" value="name1">
+    <Tabs @on-click="goDairy_products($event)" class="main" value="name1">
         <TabPane label="奶酪" name="name1"></TabPane>
         <TabPane label="奶油" name="name2"></TabPane>
         <TabPane label="奶粉" name="name3"></TabPane>
@@ -10,7 +10,7 @@
         <TabPane label="炼乳" name="name6"></TabPane>
         <TabPane label="冰淇淋" name="name7"></TabPane>
     </Tabs>
-    <div v-for="index1 in list" :key="index1.id" class="Goods">
+    <div v-for="index1 in list" :key="index1.id" class="Goods" :ref="'dairy_products'+index1.id">
     <div class="Name">{{index1.name}}</div>
         <div class="guess-goods" v-for="index of 5" :key="index">
         <Card @click.native="details" style="width:160px;cursor:pointer">
@@ -24,6 +24,7 @@
         </Card>
         </div>
         </div>
+          <img @click="backtop" class="backtop" src="/static/backtop.png" alt="">
         <Bottom></Bottom>
     </div>
 </template>
@@ -68,6 +69,51 @@ export default {
   methods: {
     details () {
       this.$router.push('details')
+    },
+    goDairy_products($event){
+      console.log($event);
+      console.log(this.$refs.dairy_products0[0].offsetTop);
+      console.log(this.$refs.dairy_products1[0].offsetTop);
+      switch ($event) {
+        case "name1":
+          {
+            $('html,body').animate({scrollTop:this.$refs.dairy_products0[0].offsetTop },500)
+            break; 
+          }
+        case "name2":
+          {
+            $('html,body').animate({scrollTop:this.$refs.dairy_products1[0].offsetTop },500)  
+            break;
+          }
+        case "name3":
+          {
+            $('html,body').animate({scrollTop:this.$refs.dairy_products2[0].offsetTop },500)  
+            break;
+          }
+        case "name4":
+          {
+            $('html,body').animate({scrollTop:this.$refs.dairy_products3[0].offsetTop },500) 
+            break; 
+          }
+        case "name5":
+          {
+            $('html,body').animate({scrollTop:this.$refs.dairy_products4[0].offsetTop },500) 
+            break; 
+          }
+        case "name6":
+          {
+            $('html,body').animate({scrollTop:this.$refs.dairy_products5[0].offsetTop },500)  
+            break;
+          }
+        case "name7":
+          {
+            $('html,body').animate({scrollTop:this.$refs.dairy_products6[0].offsetTop },500)  
+            break;
+          }
+      }
+    },
+    backtop(){
+      $('html,body').animate({scrollTop:0 },500)
     }
   },
   components: {
@@ -110,5 +156,15 @@ export default {
   margin-right: 10px;
   font-size: 18px;
   color:red;
+}
+.backtop{
+  position: fixed;
+  top:75%;
+  right:20px;
+  box-shadow: 0 0 5px 5px rgb(210, 210, 210);
+  font-size:16px;
+  cursor: pointer;
+  width: 40px;
+  border-radius: 50%;
 }
 </style>

@@ -2,7 +2,7 @@
     <div>
     <Top></Top>
     <Tabs @on-click="gofruit($event)" class="main" value="name1">
-        <TabPane  label="香蕉" name="name1"></TabPane>
+        <TabPane label="香蕉" name="name1"></TabPane>
         <TabPane label="苹果" name="name2"></TabPane>
         <TabPane label="葡萄" name="name3"></TabPane>
         <TabPane label="西瓜" name="name4"></TabPane>

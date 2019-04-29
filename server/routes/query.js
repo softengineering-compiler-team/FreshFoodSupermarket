@@ -12,4 +12,5 @@ router.get('/dairy', controllers.goods.dairy)
 router.get('/address', controllers.user.address)
 router.get('/order', controllers.admin.order)
 router.get('/delivery', controllers.admin.delivery)
+
 module.exports = router

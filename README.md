@@ -84,7 +84,9 @@ const controllers = require('require-dir-all')('../controllers')
 
 #### 8、连接服务器数据库
 
-1. Tencent Cloud Server安全组增加入栈规则![](D:\360MoveData\Users\pc\Desktop\Tencent.png)
+1. Tencent Cloud Server安全组增加入栈规则:
+
+   ![](D:\MyProjects\FreshFoodSupermarket\githubImages\Tencent.png)
 
 2. 服务器防火墙打开3306端口
 
@@ -95,3 +97,11 @@ const controllers = require('require-dir-all')('../controllers')
    GRANT ALL PRIVILEGES ON freshfood.* TO 'myuser'@'%'IDENTIFIED BY 'mypassword' WITH GRANT OPTION; 
    FLUSH PRIVILEGES 
    ```
+
+#### 9、个性化推荐
+
+计算用户相似度：
+
+![](D:\MyProjects\FreshFoodSupermarket\githubImages\cos1.png)
+
+![](D:\MyProjects\FreshFoodSupermarket\githubImages\cos2.png)

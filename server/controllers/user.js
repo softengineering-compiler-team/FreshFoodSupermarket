@@ -131,7 +131,7 @@ async function signin(ctx, next) {
 			signed: false,
            	domain:'localhost',
          	path:'*',   
-         	maxAge:1000*60*60*0.5,
+         	maxAge:1000*60*60*24*30,
          	httpOnly:false,
          	overwrite:false
 		})

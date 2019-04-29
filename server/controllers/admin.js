@@ -45,6 +45,7 @@ async function order(ctx, next) {
 		data: totalData
 	}
 }
+
 async function takeorder(ctx, next) {
 	let orderNo = ctx.request.body.orderNo
 	console.log(orderNo)
@@ -68,6 +69,7 @@ async function takeorder(ctx, next) {
 		}
 	}
 }
+
 async function delivery(ctx, next) {
 	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 1 order by orderTime desc, orderNo desc`
 	//console.log(sql);
@@ -113,6 +115,7 @@ async function delivery(ctx, next) {
 		data: totalData
 	}
 }
+
 module.exports = {
 	order: order,
 	takeorder: takeorder,

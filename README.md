@@ -9,7 +9,13 @@ _后端_：安装**koa-cors**模块，在**route前**加载该中间件
 _前端_：**content-type**改为：**'application/x-www-form-urlencoded'**
 
 #### 2、form-data格式
-_前端_： 安装**qs**模块，采用`this.qs.stringify(this.data)`修改数据格式
+_前端_： 安装**qs**模块，采用
+
+```javascript
+this.qs.stringify(this.data)
+```
+
+修改数据格式
 
 返回数据: 
 
@@ -38,7 +44,16 @@ module.exports = Redis_config
 ```
 
 #### 4、密码找回申请
-携带用户名发送**post**请求到后端，后端生成一对**key-value**键值对=>`{md5(username  + ....): username}`，`token = md5(username  + ....)`生存周期为**300s**
+携带用户名发送**post**请求到后端，后端生成一对**key-value**键值对
+
+```javascript
+{md5(username  + ....): username}
+```
+
+```javascript
+token = md5(username  + ....)	//生存周期为300s
+```
+
 #### 5、密码重置
 携带**token**发送**post**请求到后端，判断token**是否失效**，未失效的情况下，取到token对应的value=>username，在MySQL数据库中**重置密码**
 
@@ -79,7 +94,4 @@ const controllers = require('require-dir-all')('../controllers')
    mysql -h localhost -u root 
    GRANT ALL PRIVILEGES ON freshfood.* TO 'myuser'@'%'IDENTIFIED BY 'mypassword' WITH GRANT OPTION; 
    FLUSH PRIVILEGES 
-```
-   
-   
-
+   ```

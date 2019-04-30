@@ -21,7 +21,7 @@ onerror(app)
 //session
 app.use(session({
   key: 'FFSM',
-  domain:'localhost',
+  domain:'www.datastreams.club',
   path:'*',   
   httpOnly:true,
   overwrite:false,

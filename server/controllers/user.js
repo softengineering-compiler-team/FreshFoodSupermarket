@@ -129,7 +129,7 @@ async function signin(ctx, next) {
 
 		ctx.cookies.set('username', encodeURIComponent(username) , {
 			signed: false,
-           	domain:'localhost',
+           	domain:'www.datastreams.club',
          	path:'*',   
          	maxAge:1000*60*60*24*30,
          	httpOnly:false,

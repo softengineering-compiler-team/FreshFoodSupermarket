@@ -79,7 +79,7 @@ app.use(async (ctx, next) => {
 // 解决跨域
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:8000'
+  origin: 'http://www.datastreams.club:8000'
 }))
 
 // routes

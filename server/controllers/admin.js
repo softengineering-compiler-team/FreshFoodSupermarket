@@ -1,5 +1,139 @@
 const db = require('../utils/db.js')
-
+async function dayheat(ctx,next){
+	var data = new Array()
+	let sql1 = 'SELECT COUNT(*) as num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 24 HOUR) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY COUNT(*) DESC limit 5'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['num'] = dayData[i].num
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+	ctx.body = {
+		code:0,
+		data:data
+	}
+}
+async function weekheat(ctx,next){
+	var data = new Array()
+	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY COUNT(*) DESC limit 5'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['num'] = dayData[i].num
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+	ctx.body = {
+		code:0,
+		data:data
+	}
+}
+async function monthheat(ctx,next){
+	var data = new Array()
+	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY COUNT(*) DESC limit 5'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['num'] = dayData[i].num
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+	ctx.body = {
+		code:0,
+		data:data
+	}
+}
+async function daysale(ctx,next){
+	var data = new Array()
+	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+	ctx.body = {
+		code:0,
+		data:data
+	}
+}
+async function weeksale(ctx,next){
+	var data = new Array()
+	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+	ctx.body = {
+		code:0,
+		data:data
+	}
+}
+async function monthsale(ctx,next){
+	var data = new Array()
+	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+	ctx.body = {
+		code:0,
+		data:data
+	}
+}
+async function dayprofit(ctx,next){
+	var data = new Array()
+	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+	ctx.body = {
+		code:0,
+		data:data
+	}
+}
+async function weekprofit(ctx,next){
+	var data = new Array()
+	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+	ctx.body = {
+		code:0,
+		data:data
+	}
+}
+async function monthprofit(ctx,next){
+	var data = new Array()
+	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+	ctx.body = {
+		code:0,
+		data:data
+	}
+}
 async function order(ctx, next) {
 	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 0 order by orderTime desc, orderNo desc`
 	//console.log(sql);
@@ -116,6 +250,15 @@ async function delivery(ctx, next) {
 module.exports = {
 	order: order,
 	takeorder: takeorder,
-	delivery: delivery
+	delivery: delivery,
+	dayheat: dayheat,
+	weekheat: weekheat,
+	monthheat: monthheat,
+	daysale: daysale,
+	weeksale: weeksale,
+	monthsale: monthsale,
+	dayprofit: dayprofit,
+	weekprofit: weekprofit,
+	monthprofit: monthprofit
 }
 

@@ -86,7 +86,7 @@ const controllers = require('require-dir-all')('../controllers')
 
 1. Tencent Cloud Server安全组增加入栈规则:
 
-   ![](D:\MyProjects\FreshFoodSupermarket\githubImages\Tencent.png)
+   ![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/Tencent.png)
 
 2. 服务器防火墙打开3306端口
 
@@ -110,7 +110,7 @@ ctx.session.user = JSON.stringify({userName: data[0].username})
 this.redis.set(`SESSION:${sid}`, JSON.stringify(session), 'EX', maxAge / 10000)
 ```
 
-![](D:\MyProjects\FreshFoodSupermarket\githubImages\redis.PNG)
+![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/redis.PNG)
 
 cookie中包含sessionid和username，cookie失效时间为一个月，session失效时间同为30mins，session持久化在cookie中，关闭浏览器之后cookie依然保存在浏览器中，重启浏览器，拿到sessionid之后，用户可继续上次会话。
 
@@ -156,6 +156,6 @@ app.use(session({
 
 计算用户相似度：
 
-![](D:\MyProjects\FreshFoodSupermarket\githubImages\cos1.png)
+![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/cos1.png)
 
-![](D:\MyProjects\FreshFoodSupermarket\githubImages\cos2.png)
+![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/cos2.png)

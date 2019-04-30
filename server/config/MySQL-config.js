@@ -1,5 +1,5 @@
 module.exports = {
-	        'host': 'localhost',
+	        'host': 'www.datastreams.club',
 	        'port': '3306',
 	        'user': 'root',
 	        'password': '158728',

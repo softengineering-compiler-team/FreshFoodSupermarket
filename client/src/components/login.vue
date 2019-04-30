@@ -50,12 +50,17 @@ export default {
     },
     //登陆
     login(){
+        console.log(this.serverUrl);
+        
         this.axios
       .post(this.serverUrl+'/signin', this.qs.stringify(this.data), this.headconfig)
       .then(res => {
+          console.log(res);
+          
         if(res.data.code==0){
              this.$Message.success(res.data.data.msg);
               this.info_l=""
+              
              this.$router.push('/')
         }
         else{

@@ -68,45 +68,9 @@ export default {
   color: #2c3e50;
   min-width:1200px;
 }
-.top{
-  height:40px;
-  background-color: rgba(240, 240, 240, 1);
-  padding:12px;
-  padding-left:50px;
-}
-.top .top-left{
-  display: inline;
-  margin-left:50px;
-  cursor:pointer;
-}
-.top .top-right{
-  display: inline-block;
-  float: right;
-  margin-right:100px;
-  cursor:pointer;
-}
-.search{
-  height:100px;
-}
-.logo{
-  display: inline-block;
-  width:200px;
-  height:40px;
-  margin:40px;
-  margin-top:20px;
-  margin-left:100px;
-  cursor:pointer;
-}
-.input{
-  float:right;
-  width:500px;
-  margin:40px;
-  margin-top:20px;
-  margin-right:300px;
-}
 .main{
-  margin-left:100px;
-  margin-right:100px;
+  margin-left:10%;
+  margin-right:10%;
 }
 .top-label{
   text-align: center;

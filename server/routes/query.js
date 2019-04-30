@@ -21,4 +21,5 @@ router.get('/monthsale', controllers.admin.monthsale)//月销售额
 router.get('/dayprofit', controllers.admin.dayprofit)//日盈利额
 router.get('/weekprofit', controllers.admin.weekprofit)//周盈利额
 router.get('/monthprofit', controllers.admin.monthprofit)//月盈利额
+
 module.exports = router

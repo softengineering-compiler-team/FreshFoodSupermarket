@@ -5,7 +5,8 @@
       <div @click="login" class="top-left">登陆</div>
       <div @click="register" class="top-left">注册</div>
       <div @click="admin" class="top-right right">商家后台</div>
-      <div @mouseenter="enterperson()" @mouseleave="leaveperson()" class="top-right"><Icon type="md-person" /> 个人中心
+      <div @mouseenter="enterperson()" @mouseleave="leaveperson()" class="top-right"><Icon type="md-person" /> 
+      <div @click="gocenter" style="display:inline-block">个人中心</div> 
           <div v-if="showperson" class="person">
             <div @click="goorder" class="ordertitle">我的订单</div>
             <div class="ordertitle">修改信息</div>
@@ -73,6 +74,9 @@ export default {
           id:false
         }
       })
+    },
+    gocenter(){
+      this.$router.push('personalcenter')
     }
   },
   components :{
@@ -89,13 +93,13 @@ export default {
 }
 .top .top-left{
   display: inline;
-  margin-left:50px;
+  margin-left:5%;
   cursor:pointer;
 }
 .top .top-right{
   display: inline-block;
   float: right;
-  margin-right:100px;
+  margin-right:10%;
   cursor:pointer;
   height: 28px;
 }
@@ -110,7 +114,7 @@ export default {
   height:40px;
   margin:40px;
   margin-top:20px;
-  margin-left:100px;
+  margin-left:10%;
   cursor:pointer;
 }
 .input{
@@ -118,7 +122,7 @@ export default {
   width:350px;
   margin:38px;
   margin-top:20px;
-  margin-right:220px;
+  margin-right:20%;
 }
 .show{
   position: absolute;

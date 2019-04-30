@@ -126,7 +126,18 @@ async function signin(ctx, next) {
 		}
 		return 
 	} else {
+
+		ctx.cookies.set('username', encodeURIComponent(username) , {
+			signed: false,
+           	domain:'localhost',
+         	path:'*',   
+         	maxAge:1000*60*60*24*30,
+         	httpOnly:false,
+         	overwrite:false
+		})
+
 		ctx.session.user = JSON.stringify({userName: data[0].username})
+
 		ctx.body = {
 			code: 0,
 			data: {
@@ -141,10 +152,27 @@ async function signin(ctx, next) {
 /*增加超时机制*/
 /*暂时未手动删除redis数据库中sessionsid*/
 async function signout(ctx, next) {
-	ctx.session = {};
+	ctx.session = {}
+
+	ctx.cookies.set('username', '' , {
+		signed: false,
+       	domain:'localhost',
+     	path:'*',   
+     	maxAge: 0,
+     	httpOnly:false,
+     	overwrite:false
+ 	})
+
 	ctx.render('index', {
 		title: '请登录'
 	})
+
+	ctx.body = {
+		code: 0,
+		data: {
+			msg: "退出成功！"
+		}
+	}
 
 }
 

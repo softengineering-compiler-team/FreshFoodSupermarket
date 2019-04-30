@@ -1,7 +1,5 @@
 const router = require('koa-router')()
-const controllers = require('require-all')({
-	dirname: 'C:/MyProjects/FreshFoodSuperMarket/server/controllers' 
-})
+const controllers = require('require-dir-all')('../controllers')
 
 router.post('/signup', controllers.user.signup)
 router.post('/signin', controllers.user.signin)

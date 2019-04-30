@@ -1,7 +1,5 @@
 const router = require('koa-router')()
-const controllers = require('require-all')({
-	dirname: 'C:/MyProjects/FreshFoodSuperMarket/server/controllers' 
-})
+const controllers = require('require-dir-all')('../controllers')
 
 router.prefix('/query')
 
@@ -14,4 +12,5 @@ router.get('/dairy', controllers.goods.dairy)
 router.get('/address', controllers.user.address)
 router.get('/order', controllers.admin.order)
 router.get('/delivery', controllers.admin.delivery)
+
 module.exports = router

@@ -22,4 +22,6 @@ router.get('/dayprofit', controllers.admin.dayprofit)//日盈利额
 router.get('/weekprofit', controllers.admin.weekprofit)//周盈利额
 router.get('/monthprofit', controllers.admin.monthprofit)//月盈利额
 
+router.post('/fav', controllers.user.fav) //个人推荐（猜你喜欢）
+
 module.exports = router

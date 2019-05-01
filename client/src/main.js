@@ -14,7 +14,7 @@ import $ from 'jquery'
 axios.defaults.withCredentials=true
 Vue.prototype.axios = axios;
 Vue.prototype.qs = Qs;
-Vue.prototype.serverUrl = 'http://localhost:8000'
+Vue.prototype.serverUrl = 'http://localhost:3000'
 Vue.prototype.$echarts = echarts
 Vue.prototype.headconfig = {
   headers: {

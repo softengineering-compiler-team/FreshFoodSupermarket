@@ -2,6 +2,8 @@ const db = require('../utils/db.js')
 const nodemailer = require('nodemailer')
 const md5 = require('md5')
 const Redis_db = (require('../utils/db')).Redis_db
+const domain = require('../config/Domain-config')
+const batchUpdate = require('../utils/batchUpdate')
 
 /*注册*/
 async function signup(ctx, next) {
@@ -54,7 +56,7 @@ async function retrieve(ctx, next) {
         from: '18365225454@163.com', 
         to: email, 
         subject: '叶鲜生生鲜超市找回密码', 
-        html: `<a href='http://localhost:3000/reset.html?token=${token}'><b>请在五分钟内点击链接完成验证，并进行密码重置</b></a>` 
+        html: `<a href='http://${domain}:3000/reset.html?token=${token}'><b>请在五分钟内点击链接完成验证，并进行密码重置</b></a>` 
     }
 
     const transporter = nodemailer.createTransport(params)
@@ -129,7 +131,7 @@ async function signin(ctx, next) {
 
 		ctx.cookies.set('username', encodeURIComponent(username) , {
 			signed: false,
-           	domain:'www.datastreams.club',
+           	domain: domain,
          	path:'*',   
          	maxAge:1000*60*60*24*30,
          	httpOnly:false,
@@ -156,11 +158,11 @@ async function signout(ctx, next) {
 
 	ctx.cookies.set('username', '' , {
 		signed: false,
-       	domain:'localhost',
-     	path:'*',   
+       	domain: domain,
+     	path: '*',   
      	maxAge: 0,
-     	httpOnly:false,
-     	overwrite:false
+     	httpOnly: false,
+     	overwrite: false
  	})
 
 	ctx.render('index', {
@@ -212,13 +214,61 @@ async function insertAddress(ctx, next) {
 	}
 }
 
+/*用户购买商品*/
+async function buy(ctx, next) {
+	
+	let goodsList = ctx.request.body.goods
+
+	let orderTime = (new Date()).toLocaleString()
+
+	let sql = `insert into receive (username, goodsNo, orderNo, num, orderTime, subtotal, address) values `
+
+	for(let i=0; i<goodsList.length; i++) {
+		if(i < goodsList.length - 1) {
+			sql += `('${goodsList[i].username}', '${goodsList[i].goodsNo}', '${md5(goodsList[i].username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}'), `
+
+		} else {
+			sql += `('${goodsList[i].username}', '${goodsList[i].goodsNo}', '${md5(goodsList[i].username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}')`
+		}
+	}
+
+	await db.MySQL_db(sql)
+
+	ctx.body = {
+		code: 0,
+		data: {
+			msg: "下单成功！"
+		}
+	}
+	await batchUpdate(goodsList)
+
+}
+
+/*个人推荐（猜你喜欢）*/
+async function fav(ctx, next) {
+	let username = ctx.request.body.username
+	let sql = `select * from fav where username = '${username}'`
+	let vector = (await db.MySQL_db(sql))[0]
+	sql = `select * from fav`
+	let matrix = await db.MySQL_db(sql)
+	console.log("vector", vector)
+	console.log("matrix", matrix)
+	ctx.body = {
+		code: 0,
+		data: ""
+	}
+
+}
+
 module.exports = {
 	signup: signup,
 	retrieve: retrieve,
 	reset: reset,
 	signin: signin,
-	signout: signout,
+	fav: fav,
 	address: address,
-	insertAddress: insertAddress
+	insertAddress: insertAddress,
+	buy: buy,
+	signout: signout,	
 }
 

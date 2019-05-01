@@ -7,6 +7,7 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require("koa-session2")
 const cors = require('koa-cors')
+const domain = require('./config/Domain-config')
 const md5 = require('md5')
 const Redis_db = (require('./utils/db')).Redis_db
 const Store = require('./utils/Store')
@@ -21,12 +22,12 @@ onerror(app)
 //session
 app.use(session({
   key: 'FFSM',
-  domain:'www.datastreams.club',
-  path:'*',   
-  httpOnly:true,
-  overwrite:false,
+  domain: domain,
+  path: '*',   
+  httpOnly: true,
+  overwrite: false,
   signed: false,
-  store:new Store(),
+  store: new Store(),
   maxAge: 1000*60*60*24*30
 }))
 
@@ -86,7 +87,7 @@ app.use(async (ctx, next) => {
 // 解决跨域
 app.use(cors({
   credentials: true,
-  origin: 'http://www.datastreams.club:8000'
+  origin: 'http://' + domain + ':8000'
 }))
 
 // routes

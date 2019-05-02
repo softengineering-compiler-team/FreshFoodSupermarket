@@ -1,6 +1,8 @@
 # FreshFoodSuperMarket
 This is a project for a fresh food supermarket.
 
+![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/title.png)
+
 [TOC]
 
 #### 1、跨域请求
@@ -159,3 +161,4 @@ app.use(session({
 ![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/cos1.png)
 
 ![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/cos2.png)
+

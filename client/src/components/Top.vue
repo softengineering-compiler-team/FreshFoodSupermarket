@@ -2,8 +2,10 @@
     <div>
       <div class="top">
       <div @click="gomain" class="top-left"><Icon type="md-home" /> 叶鲜生首页</div>
-      <div @click="login" class="top-left">登陆</div>
-      <div @click="register" class="top-left">注册</div>
+      <div v-if="!username" @click="login" class="top-left">登陆</div>
+      <div v-if="!username" @click="register" class="top-left">注册</div>
+      <div v-if="username" class="top-left hello">你好，{{username}}</div>
+      <div v-if="username" @click="logout" class="top-left">注销</div>
       <div @click="admin" class="top-right right">商家后台</div>
       <div @mouseenter="enterperson()" @mouseleave="leaveperson()" class="top-right"><Icon type="md-person" /> 
       <div @click="gocenter" style="display:inline-block">个人中心</div> 
@@ -27,11 +29,14 @@
 </template>
 <script>
 import SmallCart from '@/components/SmallCart'
+import store from "../store/store.js";
 export default {
+  store,
   data () {
     return {
       showperson:false,
       show:false,
+      username:''
     }
   },
   methods: {
@@ -75,10 +80,37 @@ export default {
         }
       })
     },
+    logout(){
+      this.axios
+      .post(this.serverUrl+'/signout',null, this.headconfig)
+      .then(res => {
+          console.log(res);
+          
+        if(res.data.code==0){
+             this.$Message.success(res.data.data.msg);
+              this.info_l=""
+            //   this.$store.state.username=this.data.username
+            this.username=null
+        }
+        else{
+            this.info_l=res.data.data.msg
+        }
+      })
+      .catch(error => {
+        this.$Message.error('注销失败');
+        console.log(error)
+        // this.errored = true
+      })
+    },
     gocenter(){
       this.$router.push('personalcenter')
     }
   },
+  created:function(){
+    // console.log(this.$store.state.username=='');
+    console.log(this.$cookies.get("username"));
+    this.username=this.$cookies.get("username")
+    },
   components :{
     SmallCart
   }
@@ -153,5 +185,8 @@ export default {
 }
 .ordertitle:hover{
   background-color: rgba(109, 210, 250,0.2);
+}
+.hello{
+  cursor:default;
 }
 </style>

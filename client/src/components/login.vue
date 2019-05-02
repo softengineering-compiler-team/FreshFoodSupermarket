@@ -28,7 +28,9 @@
     </div>
 </template>
 <script>
+import store from "../store/store.js";
 export default {
+    store,
   data () {
     return {
         data:{
@@ -60,7 +62,7 @@ export default {
         if(res.data.code==0){
              this.$Message.success(res.data.data.msg);
               this.info_l=""
-              
+            //   this.$store.state.username=this.data.username
              this.$router.push('/')
         }
         else{

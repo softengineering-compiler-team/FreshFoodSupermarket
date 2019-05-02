@@ -240,6 +240,7 @@ async function buy(ctx, next) {
 			msg: "下单成功！"
 		}
 	}
+
 	await batchUpdate(goodsList)
 
 }
@@ -251,11 +252,74 @@ async function fav(ctx, next) {
 	let vector = (await db.MySQL_db(sql))[0]
 	sql = `select * from fav`
 	let matrix = await db.MySQL_db(sql)
-	console.log("vector", vector)
-	console.log("matrix", matrix)
+	
+	/*除数不为零！可能出错！*/
+	let mul = 0
+	let div1 = 0
+	let div2 = 0
+	let similarity = 0
+	let keys = Object.keys(vector)
+	for(let i=0; i<matrix.length; i++) {
+		mul = 0
+		div1 = 0
+		div2 = 0
+		for(let j=0; j<keys.length-1; j++) {
+			mul = mul + vector[keys[j]]*(matrix[i])[keys[j]]
+			div1 +=  Math.pow(vector[keys[j]], 2) 
+			div2 +=  Math.pow((matrix[i])[keys[j]], 2)
+
+		}
+		similarity = 100*mul/(Math.sqrt(div1)*Math.sqrt(div2))
+		sql = `update similarity set \`${matrix[i].username}\` = '${similarity}' where username = '${username}'`
+		await db.MySQL_db(sql)
+		
+	}
+
+	sql = `select * from similarity where username = '${username}'`
+	let similarity_obj = (await db.MySQL_db(sql))[0]
+
+	let lst = new Array()
+
+	let names = Object.keys(similarity_obj).slice(1, Object.keys(similarity_obj).length)
+
+	let goods1 = null
+	let goods2 = null
+	/*按照相似度排序未实现*/
+	for(i=0; i<names.length; i++) {
+		if(names[i] != username && similarity_obj[names[i]]>=50) {
+
+			sql = `select username, goodsNo, sum(num) as num from receive where username = '${names[i]}' group by username, goodsNo order by num desc limit 2`
+
+			goods1 = ((await db.MySQL_db(sql))[0]).goodsNo
+
+			if(lst.indexOf(goods1) === -1) {
+				lst.push(goods1)
+			}
+
+			goods2 = ((await db.MySQL_db(sql))[1]).goodsNo
+
+			if(lst.indexOf(goods2) === -1) {
+				lst.push(goods2)
+			}
+		}
+	}
+
+	sql = `select * from goods where goodsNo in (`
+	for(i=0; i<lst.length; i++) {
+		if(i != lst.length-1) {
+			sql += lst[i] + `,`
+		} else {
+			sql += `${lst[i]})`
+		}
+	}
+	
+	console.log(lst)
+	console.log(sql)
+	let data = await db.MySQL_db(sql)
+
 	ctx.body = {
 		code: 0,
-		data: ""
+		data: data
 	}
 
 }

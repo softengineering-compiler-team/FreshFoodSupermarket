@@ -125,13 +125,13 @@ export default {
 </script>
 <style>
 .main{
-  margin-left:100px;
-  margin-right:100px;
+  margin-left:10%;
+  margin-right:10%;
 }
 .Goods{
   text-align: center;
-  margin-left:100px;
-  margin-right:100px;
+  margin-left:10%;
+  margin-right:10%;
 }
 .Name{
   font-size:20px;

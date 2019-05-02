@@ -84,7 +84,9 @@ const controllers = require('require-dir-all')('../controllers')
 
 #### 8、连接服务器数据库
 
-1. Tencent Cloud Server安全组增加入栈规则![](D:\360MoveData\Users\pc\Desktop\Tencent.png)
+1. Tencent Cloud Server安全组增加入栈规则:
+
+   ![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/Tencent.png)
 
 2. 服务器防火墙打开3306端口
 
@@ -95,3 +97,65 @@ const controllers = require('require-dir-all')('../controllers')
    GRANT ALL PRIVILEGES ON freshfood.* TO 'myuser'@'%'IDENTIFIED BY 'mypassword' WITH GRANT OPTION; 
    FLUSH PRIVILEGES 
    ```
+
+#### 9、cookie中保存用户个人信息（username）
+
+```javascript
+ctx.session.user = JSON.stringify({userName: data[0].username})
+```
+
+**触发向redis数据库中存入session事件：**
+
+```javascript
+this.redis.set(`SESSION:${sid}`, JSON.stringify(session), 'EX', maxAge / 10000)
+```
+
+![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/redis.PNG)
+
+cookie中包含sessionid和username，cookie失效时间为一个月，session失效时间同为30mins，session持久化在cookie中，关闭浏览器之后cookie依然保存在浏览器中，重启浏览器，拿到sessionid之后，用户可继续上次会话。
+
+**登录：**
+
+```javascript
+ctx.cookies.set('username', encodeURIComponent(username) , {
+			signed: false,
+           	domain:'localhost',
+         	path:'*',   
+         	maxAge:1000*60*60*24*30,
+         	httpOnly:false,
+         	overwrite:false
+		})
+```
+
+**退出：**
+
+```javascript
+ctx.cookies.set('username', '' , {
+		signed: false,
+       	domain:'localhost',
+     	path:'*',   
+     	maxAge: 0,
+     	httpOnly:false,
+     	overwrite:false
+ 	})
+```
+
+**重点：session初始化时切记要设置session存活时间！（redis数据库中sessionid存活时间是另一回事！）否则，关闭浏览器之后cookie中session自动消失！**
+
+```javascript
+app.use(session({
+  key: 'FFSM',
+  store:new Store(),
+  maxAge: 1000*60*60*24*30
+}))
+```
+
+
+
+#### 10、个性化推荐
+
+计算用户相似度：
+
+![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/cos1.png)
+
+![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/cos2.png)

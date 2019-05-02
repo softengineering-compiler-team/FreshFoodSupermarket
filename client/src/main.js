@@ -11,10 +11,12 @@ import VueChart from 'vue-chart-js'
 import axios from 'axios'
 import Qs from 'qs'
 import $ from 'jquery'
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
 axios.defaults.withCredentials=true
 Vue.prototype.axios = axios;
 Vue.prototype.qs = Qs;
-Vue.prototype.serverUrl = 'http://www.datastreams.club:3000'
+Vue.prototype.serverUrl = 'http://localhost:3000'
 Vue.prototype.$echarts = echarts
 Vue.prototype.headconfig = {
   headers: {

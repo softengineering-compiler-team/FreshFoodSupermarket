@@ -18,6 +18,7 @@
     "qs": "^6.7.0",
     "vue": "^2.5.2",
     "vue-chart-js": "^1.4.1",
+    "vue-cookies": "^1.5.13",
     "vue-echart": "^1.0.5",
     "vue-router": "^3.0.1",
     "vuex": "^3.1.0"

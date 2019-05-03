@@ -6,7 +6,7 @@
         <TabPane label="奶油" name="name2"></TabPane>
         <TabPane label="奶粉" name="name3"></TabPane>
         <TabPane label="酸奶" name="name4"></TabPane>
-        <TabPane label="巴氏奶" name="name5"></TabPane>
+        <TabPane label="巴氏鲜奶" name="name5"></TabPane>
         <TabPane label="炼乳" name="name6"></TabPane>
         <TabPane label="冰淇淋" name="name7"></TabPane>
     </Tabs>
@@ -53,7 +53,7 @@ export default {
         },
         {
           id:4,
-          name:'巴氏奶' 
+          name:'巴氏鲜奶' 
         },
         {
           id:5,

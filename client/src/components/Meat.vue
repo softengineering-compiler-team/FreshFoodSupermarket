@@ -6,9 +6,9 @@
         <TabPane label="牛肉" name="name2"></TabPane>
         <TabPane label="羊肉" name="name3"></TabPane>
         <TabPane label="烤鸭" name="name4"></TabPane>
-        <TabPane label="烤鹅" name="name5"></TabPane>
+        <TabPane label="鹅肉" name="name5"></TabPane>
         <TabPane label="乳猪" name="name6"></TabPane>
-        <TabPane label="兔肉" name="name7"></TabPane>
+        <TabPane label="鸡肉" name="name7"></TabPane>
     </Tabs>
     <div v-for="index1 in list" :key="index1.id" class="Goods":ref="'meat'+index1.id">
     <div class="Name">{{index1.name}}</div>
@@ -53,15 +53,15 @@ export default {
         },
         {
           id:4,
-          name:'烤鹅' 
+          name:'鹅肉' 
         },
         {
           id:5,
-          name:'乳猪' 
+          name:'猪肉' 
         },
         {
           id:6,
-          name:'兔肉' 
+          name:'鸡肉' 
         },
       ]
     }

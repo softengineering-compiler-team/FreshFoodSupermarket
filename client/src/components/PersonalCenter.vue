@@ -6,7 +6,7 @@
         </Tabs>
         <div class="centerbody">
           <div class="centerbody-left">
-            <Menu :active-name="menuname">
+            <Menu :active-name="centershow">
                   <MenuItem @click.native="personinfo" name="0">
                       修改个人信息
                   </MenuItem>
@@ -16,7 +16,7 @@
             </Menu>
           </div>
           <div class="centerbody-right">
-            <div v-if="centershow==0" class="center-info">
+            <div v-if="centershow=='0'" class="center-info">
               <div class="center-info-title">收货地址</div>
               <div class="center-info-subtitle">地址信息*</div>
               <div class="center-info-info">
@@ -37,7 +37,7 @@
               <div class="center-info-title">已保存地址</div>
               <Table :columns="addrtable" :data="resaddr"></Table>
             </div>
-            <div v-if="centershow==1" class="center-pass">
+            <div v-if="centershow=='1'" class="center-pass">
               密码模块
             </div>
           </div>
@@ -56,8 +56,7 @@ export default {
   store,
   data () {
     return {
-      centershow:0,
-      menuname:'0',
+      centershow:'0',
       address:[],
       pcaa: pcaa,
       addrdetails:'',
@@ -103,10 +102,10 @@ export default {
   },
   methods: {
     personinfo(){ 
-      this.centershow=0
+      this.centershow='0'
     },
     personpass(){
-      this.centershow=1
+      this.centershow='1'
     },
     saveaddr(){
       let isdefault
@@ -153,28 +152,27 @@ export default {
     }
   },
   created:function(){
-    if(this.$route.params){ //如果从Top栏中的修改信息或修改密码栏进入会传参数判断
+    console.log(this.$route.params);
+    
+    if(this.$route.params.centershow){ //如果从Top栏中的修改信息或修改密码栏进入会传参数判断
           this.centershow=this.$route.params.centershow
-          if(this.centershow==1){
-            this.menuname='1'
-          }else{
-            this.menuname='0'
-          }
+          console.log(2);
       }
-
+      console.log(this.centershow);
+      
     let data={
       username:this.$cookies.get("username"),
     }
     this.axios
       .get(this.serverUrl+'/query/address',{params:data},this.headconfig)
       .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
         if(res.data.code==0){
             this.resaddr=res.data.data
             for (const key in this.resaddr) {
               this.resaddr[key].area = this.resaddr[key].province+' '+this.resaddr[key].city+' '+this.resaddr[key].county
             }
-            console.log(this.resaddr);
+            // console.log(this.resaddr);
         }
         else{
             this.$Message.error('获取地址信息失败');

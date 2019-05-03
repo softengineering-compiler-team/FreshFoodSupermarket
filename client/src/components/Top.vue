@@ -135,7 +135,7 @@ export default {
       this.$router.push({
         name:'PersonalCenter',
         params:{
-          centershow:0
+          centershow:'0'
         }
       })
     },
@@ -143,7 +143,7 @@ export default {
        this.$router.push({
         name:'PersonalCenter',
         params:{
-          centershow:1
+          centershow:'1'
         }
       })
     }

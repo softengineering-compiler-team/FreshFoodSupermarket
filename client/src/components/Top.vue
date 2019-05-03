@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     shoppingcar () {
-      if (this.$cookies.get("username")){
+      if (this.$cookies.get("FFSM")){
         this.$router.push('shoppingcar')
       }
       else{
@@ -60,7 +60,7 @@ export default {
       this.$router.push('/')
     },
     entercart () {
-      if (this.$cookies.get("username")){
+      if (this.$cookies.get("FFSM")){
         this.show=true;
       }
     },
@@ -68,7 +68,7 @@ export default {
       this.show=false;
     },
     enterperson () {
-       if (this.$cookies.get("username")){
+       if (this.$cookies.get("FFSM")){
           this.showperson=true;
        }
     },
@@ -118,7 +118,7 @@ export default {
       })
     },
     gocenter(){//进入个人中心(默认修改信息页)
-      if (this.$cookies.get("username"))
+      if (this.$cookies.get("FFSM"))
       {
         this.$router.push('personalcenter')
       }
@@ -151,7 +151,10 @@ export default {
   created:function(){
     // console.log(this.$store.state.username=='');
     // console.log(this.$cookies.get("username"));
-    this.username=this.$cookies.get("username")
+    if (this.$cookies.get("FFSM")) {
+      // console.log(this.$cookies.get("FFSM"));
+      this.username=this.$cookies.get("username")
+    }
     },
   components :{
     SmallCart

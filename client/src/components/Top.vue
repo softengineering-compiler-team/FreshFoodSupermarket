@@ -11,9 +11,9 @@
       <div @click="gocenter" style="display:inline-block">个人中心</div> 
           <div v-if="showperson" class="person">
             <div @click="goorder" class="ordertitle">我的订单</div>
-            <div class="ordertitle">修改信息</div>
-            <div class="ordertitle">修改密码</div>
-            <div class="ordertitle">注销</div>
+            <div @click="goinfo" class="ordertitle">修改信息</div>
+            <div @click="gopass" class="ordertitle">修改密码</div>
+            <div @click="logout" class="ordertitle">注销</div>
           </div>
       </div>
       <div  @mouseenter="entercart()" @mouseleave="leavecart()"  class="top-right">
@@ -41,7 +41,17 @@ export default {
   },
   methods: {
     shoppingcar () {
-      this.$router.push('shoppingcar')
+      if (this.$cookies.get("username")){
+        this.$router.push('shoppingcar')
+      }
+      else{
+        this.$router.push({
+        name:'Login',
+        params:{
+          id:true
+        }
+      })
+      }
     },
     admin () {
       this.$router.push('admin')
@@ -50,13 +60,17 @@ export default {
       this.$router.push('/')
     },
     entercart () {
-      this.show=true;
+      if (this.$cookies.get("username")){
+        this.show=true;
+      }
     },
     leavecart() {
       this.show=false;
     },
     enterperson () {
-      this.showperson=true;
+       if (this.$cookies.get("username")){
+          this.showperson=true;
+       }
     },
     leaveperson() {
       this.showperson=false;
@@ -84,13 +98,14 @@ export default {
       this.axios
       .post(this.serverUrl+'/signout',null, this.headconfig)
       .then(res => {
-          console.log(res);
+          // console.log(res);
           
         if(res.data.code==0){
              this.$Message.success(res.data.data.msg);
               this.info_l=""
             //   this.$store.state.username=this.data.username
             this.username=null
+            this.$router.push('/')
         }
         else{
             this.info_l=res.data.data.msg
@@ -102,13 +117,40 @@ export default {
         // this.errored = true
       })
     },
-    gocenter(){
-      this.$router.push('personalcenter')
+    gocenter(){//进入个人中心(默认修改信息页)
+      if (this.$cookies.get("username"))
+      {
+        this.$router.push('personalcenter')
+      }
+      else{
+        this.$router.push({
+        name:'Login',
+        params:{
+          id:true
+        }
+      })
+      }
+    },
+    goinfo(){
+      this.$router.push({
+        name:'PersonalCenter',
+        params:{
+          centershow:'0'
+        }
+      })
+    },
+    gopass(){
+       this.$router.push({
+        name:'PersonalCenter',
+        params:{
+          centershow:'1'
+        }
+      })
     }
   },
   created:function(){
     // console.log(this.$store.state.username=='');
-    console.log(this.$cookies.get("username"));
+    // console.log(this.$cookies.get("username"));
     this.username=this.$cookies.get("username")
     },
   components :{

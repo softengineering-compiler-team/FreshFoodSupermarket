@@ -12,8 +12,14 @@ import axios from 'axios'
 import Qs from 'qs'
 import $ from 'jquery'
 import VueCookies from 'vue-cookies'
-Vue.use(VueCookies)
-axios.defaults.withCredentials=true
+import AreaData from 'area-data' //地区插件
+import 'vue-area-linkage/dist/index.css'; //地区插件
+import VueAreaLinkage from 'vue-area-linkage';//地区插件
+Vue.use(VueAreaLinkage);//地区插件
+
+
+Vue.use(VueCookies) //cookie插件
+axios.defaults.withCredentials=true 
 Vue.prototype.axios = axios;
 Vue.prototype.qs = Qs;
 Vue.prototype.serverUrl = 'http://localhost:3000'

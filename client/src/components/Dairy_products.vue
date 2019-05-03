@@ -116,6 +116,24 @@ export default {
       $('html,body').animate({scrollTop:0 },500)
     }
   },
+  mounted:function(){
+    this.axios
+      .get(this.serverUrl+'/query/dairy',this.headconfig)
+      .then(res => {
+        if(res.data.code==0){
+             console.log(res.data);
+             
+        }
+        else{
+            this.$Message.error('获取信息失败');
+        }
+      })
+      .catch(error => {
+        this.$Message.error('获取信息失败');
+        console.log(error)
+        // this.errored = true
+      })
+    },
   components: {
     Bottom,
     Top

@@ -133,12 +133,12 @@ async function signin(ctx, next) {
 			signed: false,
            	domain: domain,
          	path:'*',   
-         	maxAge:1000*60*60*24*30,
+         	maxAge:1000*60*30,
          	httpOnly:false,
          	overwrite:false
 		})
 
-		ctx.session.user = JSON.stringify({userName: data[0].username})
+		ctx.session.user = {userName: data[0].username}
 
 		ctx.body = {
 			code: 0,
@@ -165,10 +165,6 @@ async function signout(ctx, next) {
      	overwrite: false
  	})
 
-	ctx.render('index', {
-		title: '请登录'
-	})
-
 	ctx.body = {
 		code: 0,
 		data: {
@@ -180,6 +176,7 @@ async function signout(ctx, next) {
 
 /*查询个人地址*/
 async function address(ctx, next) {
+	ctx.session.refresh()
 
 	let username = ctx.request.query.username
 
@@ -194,6 +191,7 @@ async function address(ctx, next) {
 
 /*新增个人地址*/
 async function insertAddress(ctx, next) {
+	ctx.session.refresh()
 
 	let username = ctx.request.body.username
 	let province = ctx.request.body.province
@@ -216,6 +214,7 @@ async function insertAddress(ctx, next) {
 
 /*用户购买商品*/
 async function buy(ctx, next) {
+	ctx.session.refresh()
 	
 	let goodsList = ctx.request.body.goods
 
@@ -247,6 +246,8 @@ async function buy(ctx, next) {
 
 /*个人推荐（猜你喜欢）*/
 async function fav(ctx, next) {
+	ctx.session.refresh()
+
 	let username = ctx.request.body.username
 	let sql = `select * from fav where username = '${username}'`
 	let vector = (await db.MySQL_db(sql))[0]
@@ -312,9 +313,7 @@ async function fav(ctx, next) {
 			sql += `${lst[i]})`
 		}
 	}
-	
-	console.log(lst)
-	console.log(sql)
+
 	let data = await db.MySQL_db(sql)
 
 	ctx.body = {

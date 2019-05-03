@@ -1,5 +1,7 @@
 const db = require('../utils/db.js')
 async function dayheat(ctx,next){
+	ctx.session.refresh()
+
 	var data = new Array()
 	let sql1 = 'SELECT COUNT(*) as num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 24 HOUR) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY COUNT(*) DESC limit 5'
 	let dayData = await db.MySQL_db(sql1)
@@ -14,7 +16,11 @@ async function dayheat(ctx,next){
 		data:data
 	}
 }
+
+
 async function weekheat(ctx,next){
+	ctx.session.refresh()
+
 	var data = new Array()
 	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY COUNT(*) DESC limit 5'
 	let dayData = await db.MySQL_db(sql1)
@@ -29,7 +35,11 @@ async function weekheat(ctx,next){
 		data:data
 	}
 }
+
+
 async function monthheat(ctx,next){
+	ctx.session.refresh()
+
 	var data = new Array()
 	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY COUNT(*) DESC limit 5'
 	let dayData = await db.MySQL_db(sql1)
@@ -44,7 +54,11 @@ async function monthheat(ctx,next){
 		data:data
 	}
 }
+
+
 async function daysale(ctx,next){
+	ctx.session.refresh()
+
 	var data = new Array()
 	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
 	let dayData = await db.MySQL_db(sql1)
@@ -59,7 +73,11 @@ async function daysale(ctx,next){
 		data:data
 	}
 }
+
+
 async function weeksale(ctx,next){
+	ctx.session.refresh()
+
 	var data = new Array()
 	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
 	let dayData = await db.MySQL_db(sql1)
@@ -74,7 +92,11 @@ async function weeksale(ctx,next){
 		data:data
 	}
 }
+
+
 async function monthsale(ctx,next){
+	ctx.session.refresh()
+
 	var data = new Array()
 	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
 	let dayData = await db.MySQL_db(sql1)
@@ -89,7 +111,11 @@ async function monthsale(ctx,next){
 		data:data
 	}
 }
+
+
 async function dayprofit(ctx,next){
+	ctx.session.refresh()
+
 	var data = new Array()
 	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
 	let dayData = await db.MySQL_db(sql1)
@@ -104,7 +130,11 @@ async function dayprofit(ctx,next){
 		data:data
 	}
 }
+
+
 async function weekprofit(ctx,next){
+	ctx.session.refresh()
+
 	var data = new Array()
 	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
 	let dayData = await db.MySQL_db(sql1)
@@ -119,7 +149,11 @@ async function weekprofit(ctx,next){
 		data:data
 	}
 }
+
+
 async function monthprofit(ctx,next){
+	ctx.session.refresh()
+
 	var data = new Array()
 	let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
 	let dayData = await db.MySQL_db(sql1)
@@ -134,9 +168,12 @@ async function monthprofit(ctx,next){
 		data:data
 	}
 }
+
+
 async function order(ctx, next) {
+	ctx.session.refresh()
+
 	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 0 order by orderTime desc, orderNo desc`
-	//console.log(sql);
 	let data = await db.MySQL_db(sql)
 	var totalData = []
 	let orderNo = data[0].orderNo
@@ -152,7 +189,6 @@ async function order(ctx, next) {
 	}
 	for(let i=0;i<orderNum.length;i++){
 		let temporder = orderNum[i]
-		console.log(temporder)
 		let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = 0 AND orderNo = '${temporder}'`
 		let data1 = await db.MySQL_db(sql1)
 		var goodsList = new Array()
@@ -180,9 +216,11 @@ async function order(ctx, next) {
 	}
 }
 
+
 async function takeorder(ctx, next) {
+	ctx.session.refresh()
+
 	let orderNo = ctx.request.body.orderNo
-	console.log(orderNo)
 	let sql = `UPDATE receive SET STATUS = 1 WHERE orderNo = '${orderNo}'`
 	let data = await db.MySQL_db(sql)
 	if (data.length === 0) {
@@ -204,9 +242,11 @@ async function takeorder(ctx, next) {
 	}
 }
 
+
 async function delivery(ctx, next) {
+	ctx.session.refresh()
+	
 	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 1 order by orderTime desc, orderNo desc`
-	//console.log(sql);
 	let data = await db.MySQL_db(sql)
 	var totalData = []
 	let orderNo = data[0].orderNo
@@ -222,7 +262,6 @@ async function delivery(ctx, next) {
 	}
 	for(let i=0;i<orderNum.length;i++){
 		let temporder = orderNum[i]
-		console.log(temporder)
 		let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = 1 AND orderNo = '${temporder}'`
 		let data1 = await db.MySQL_db(sql1)
 		var goodsList = new Array()

@@ -24,11 +24,11 @@ app.use(session({
   key: 'FFSM',
   domain: domain,
   path: '*',   
-  httpOnly: true,
+  httpOnly: false,
   overwrite: false,
   signed: false,
   store: new Store(),
-  maxAge: 1000*60*60*24*30
+  maxAge: 1000*60*5
 }))
 
 

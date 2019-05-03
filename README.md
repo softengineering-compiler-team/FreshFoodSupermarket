@@ -103,18 +103,24 @@ const controllers = require('require-dir-all')('../controllers')
 #### 9、cookie中保存用户个人信息（username）
 
 ```javascript
-ctx.session.user = JSON.stringify({userName: data[0].username})
+ctx.session.user = {userName: data[0].username}
 ```
 
 **触发向redis数据库中存入session事件：**
 
 ```javascript
-this.redis.set(`SESSION:${sid}`, JSON.stringify(session), 'EX', maxAge / 10000)
+this.redis.set(`SESSION:${sid}`, JSON.stringify(session), 'EX', maxAge / 1000)
 ```
 
 ![](https://github.com/TDYe123/FreshFoodSupermarket/blob/master/githubImages/redis.PNG)
 
-cookie中包含sessionid和username，cookie失效时间为一个月，session失效时间同为30mins，session持久化在cookie中，关闭浏览器之后cookie依然保存在浏览器中，重启浏览器，拿到sessionid之后，用户可继续上次会话。
+cookie中包含sessionid和username，session失效时间同为5mins，即两次操作之间的时间间隔最大为5mins，否则session失效，session持久化在cookie中，关闭浏览器之后cookie依然保存在浏览器中，重启浏览器，拿到sessionid之后，用户可继续上次会话。
+
+**用户进一步操作时，刷新session，失效时间重置为5mins:**
+
+```
+ctx.session.refresh()
+```
 
 **登录：**
 
@@ -123,7 +129,7 @@ ctx.cookies.set('username', encodeURIComponent(username) , {
 			signed: false,
            	domain:'localhost',
          	path:'*',   
-         	maxAge:1000*60*60*24*30,
+         	maxAge:1000*60*30,
          	httpOnly:false,
          	overwrite:false
 		})
@@ -142,13 +148,13 @@ ctx.cookies.set('username', '' , {
  	})
 ```
 
-**重点：session初始化时切记要设置session存活时间！（redis数据库中sessionid存活时间是另一回事！）否则，关闭浏览器之后cookie中session自动消失！**
+**重点：session初始化时切记要设置session存活时间！否则，关闭浏览器之后cookie中session自动消失！**
 
 ```javascript
 app.use(session({
   key: 'FFSM',
   store:new Store(),
-  maxAge: 1000*60*60*24*30
+  maxAge: 1000*60*30
 }))
 ```
 

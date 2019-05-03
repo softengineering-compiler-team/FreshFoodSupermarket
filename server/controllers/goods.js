@@ -1,6 +1,8 @@
 const db = require('../utils/db.js')
 
 async function all(ctx, next) {
+	ctx.session.refresh()
+
 	let goodsName = ctx.request.query.goodsName
 	let sql = `select * from goods where goodsName = '${goodsName}'`
 	let data = await db.MySQL_db(sql)
@@ -12,6 +14,8 @@ async function all(ctx, next) {
 
 
 async function fruits(ctx, next) {
+	ctx.session.refresh()
+
 	var subtypeList = ['香蕉', '苹果', '葡萄', '西瓜', '梨', '柚子', '车厘子']
 	var data = new Array()
 	for(let subtype of subtypeList) {
@@ -19,8 +23,6 @@ async function fruits(ctx, next) {
 		let sub_data = await db.MySQL_db(sql)
 		data.push(sub_data)
 	}
-	
-	console.log(data);
 
 	ctx.body = {
 		code: 0,
@@ -29,6 +31,8 @@ async function fruits(ctx, next) {
 }
 
 async function vegetables(ctx, next) {
+	ctx.session.refresh()
+
 	var subtypeList = ['香蕉', '苹果', '葡萄', '西瓜', '梨', '柚子', '车厘子']
 	var data = new Array()
 	for(let subtype of subtypeList) {
@@ -44,6 +48,8 @@ async function vegetables(ctx, next) {
 }
 
 async function seafoods(ctx, next) {
+	ctx.session.refresh()
+
 	var subtypeList = ['香蕉', '苹果', '葡萄', '西瓜', '梨', '柚子', '车厘子']
 	var data = new Array()
 	for(let subtype of subtypeList) {
@@ -59,6 +65,8 @@ async function seafoods(ctx, next) {
 }
 
 async function meat(ctx, next) {
+	ctx.session.refresh()
+
 	var subtypeList = ['香蕉', '苹果', '葡萄', '西瓜', '梨', '柚子', '车厘子']
 	var data = new Array()
 	for(let subtype of subtypeList) {
@@ -74,6 +82,8 @@ async function meat(ctx, next) {
 }
 
 async function dairy(ctx, next) {
+	ctx.session.refresh()
+	
 	var subtypeList = ['香蕉', '苹果', '葡萄', '西瓜', '梨', '柚子', '车厘子']
 	var data = new Array()
 	for(let subtype of subtypeList) {

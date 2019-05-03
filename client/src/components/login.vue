@@ -3,7 +3,7 @@
         <div class="background">
             <div class="login" v-if="loginswitch">
                 <div class="login-title">
-                    <img src="/static/logo.png" class="login-logo" alt="">
+                    <img @click="gomain" src="/static/logo.png" class="login-logo" alt="">
                 </div>
                 <Input @input="clearinfo_l" size="large" placeholder="账户" class="username" v-model="data.username"/>
                 <Input @input="clearinfo_l" size="large" placeholder="密码" class="password" type="password" v-model="data.password"/>
@@ -14,7 +14,7 @@
 
             <div class="login" v-if="!loginswitch">
                 <div class="login-title">
-                    <img src="/static/logo.png" class="login-logo" alt="">
+                    <img @click="gomain" src="/static/logo.png" class="login-logo" alt="">
                 </div>
                 <Input @input="clearinfo_r" size="large" placeholder="账户" class="username" v-model="username_r"/>
                 <Input @input="clearinfo_r" size="large" placeholder="密码" class="email" type="password" v-model="password_r"/>
@@ -39,7 +39,7 @@ export default {
         },
         info_l:'',
         info_r:'',
-        loginswitch:'', 
+        loginswitch:true, 
         username_r:'',
         password_r:'',
         password_r2:'',
@@ -49,6 +49,9 @@ export default {
   methods:{
     goreg(){
         this.loginswitch=!this.loginswitch;
+    },
+    gomain(){
+        this.$router.push('/')
     },
     //登陆
     login(){
@@ -77,7 +80,7 @@ export default {
     },
     //注册
     register(){
-        console.log(111);
+        // console.log(111);
         
         if(this.password_r==this.password_r2){
             let data = {
@@ -91,7 +94,10 @@ export default {
                 if(res.data.code==0){
                     this.$Message.success(res.data.data.msg);
                     this.info_r=""
-                    this.$router.push('/')
+                    this.data.username=data.username
+                    this.data.password=data.password
+                    setTimeout(this.login(),1000)
+                    
                 }
                 else{
                     this.info_=res.data.data.msg
@@ -113,8 +119,8 @@ export default {
         this.info_r=""
     }
   },
-  mounted:function(){
-      if(this.$route.params.id){
+  created:function(){
+      if(this.$route.params){
           this.loginswitch=this.$route.params.id
       }
   }
@@ -148,6 +154,7 @@ export default {
 }
 .login-logo{
     width:60%;
+    cursor: pointer;
 }
 .username{
     width:60%;

@@ -4,10 +4,10 @@
         <div @click="details" class="guess-goods" v-for="index of 10" :key="index">
         <Card style="width:160px;cursor:pointer;">
             <div style="text-align:center">
-                <img class="goods-img" src="../assets/default.png">
-                <div class="money">￥200</div>
-                <Icon type="md-star" /><span>12234</span>
-                <div class="goods-intro">介绍介绍介介绍介绍介绍介绍介绍介绍介绍
+                <img class="guess-img" src="../assets/default.png">
+                <div class="guess-money">￥200</div>
+                <Icon type="guess-md-star" /><span>12234</span>
+                <div class="guess-intro">介绍介绍介介绍介绍介绍介绍介绍介绍介绍
                 
                 </div>
             </div>
@@ -34,15 +34,15 @@ export default {
 .guessname{
   font-size:20px;
   position: relative;
-  right:500px;
+  right:45%;
   margin-top:50px;
 }
-.goods-img {
+.guess-img {
   width: 120px;
   height: 120px;
   margin: 10px;
 }
-.goods-intro {
+.guess-intro {
   font-size: 12px;
   margin-top: 10px;
 }
@@ -50,7 +50,7 @@ export default {
   margin:20px;
   display: inline-block;
 }
-.money{
+.guess-money{
   display: inline-block;
   margin-right: 10px;
   font-size: 18px;

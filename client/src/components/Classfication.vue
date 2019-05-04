@@ -1,11 +1,11 @@
 <template>
     <div>
         <div>
-            <img @click="fruit" class="cimg" src="../assets/default.png">
-            <img @click="vegetables" class="cimg" src="../assets/default.png">
-            <img @click="seafood" class="cimg" src="../assets/default.png">
-            <img @click="meat" class="cimg" src="../assets/default.png">
-            <img @click="dairy_products" class="cimg" src="../assets/default.png">
+            <img @click="goods('fruits')" class="cimg" src="../assets/default.png">
+            <img @click="goods('vegetables')" class="cimg" src="../assets/default.png">
+            <img @click="goods('seafoods')" class="cimg" src="../assets/default.png">
+            <img @click="goods('meat')" class="cimg" src="../assets/default.png">
+            <img @click="goods('dairy')" class="cimg" src="../assets/default.png">
         </div>
         <div>
             <span class="c-intro">新鲜水果</span>
@@ -19,20 +19,14 @@
 <script>
 export default {
   methods: {
-    fruit () {
-      this.$router.push('fruit')//原goods
-    },
-    vegetables() {
-      this.$router.push('vegetables')
-    },
-    seafood () {
-      this.$router.push('seafood')
-    },
-    meat () {
-      this.$router.push('meat')
-    },
-    dairy_products () {
-      this.$router.push('dairy_products')
+    goods(index){
+      this.$store.state.classification=index
+      this.$router.push({
+        name:'Fruit',
+        params:{
+          id:index
+        }
+      })
     }
   }
 }

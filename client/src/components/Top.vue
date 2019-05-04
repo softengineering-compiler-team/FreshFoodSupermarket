@@ -94,7 +94,7 @@ export default {
         }
       })
     },
-    logout(){
+    logout(){ 
       this.axios
       .post(this.serverUrl+'/signout',null, this.headconfig)
       .then(res => {

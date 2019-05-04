@@ -38,7 +38,19 @@
               <Table :columns="addrtable" :data="resaddr"></Table>
             </div>
             <div v-if="centershow=='1'" class="center-pass">
-              密码模块
+              <div class="center-info-title">修改密码</div>
+              <Button @click="changepass" type="primary">点击发送邮件</Button>
+              <div class="center-pass-intro">
+                <div class="center-pass-intro-title">步骤：</div>
+                <ul>
+                  <li>点击上方按钮</li>
+                  <li>成功后，会往您注册时填写的邮箱中发送一条邮件</li>
+                  <li>打开邮件，进入修改密码页面</li>
+                  <li>输入新密码</li>
+                  <li>完成</li>
+                </ul>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -149,6 +161,36 @@ export default {
         // this.errored = true
       })
       }
+    },
+    changepass(){
+      let data = {
+        username:this.$cookies.get("username")
+      }
+      this.axios
+      .get(this.serverUrl+'/query/address',this.qs.stringify(data),this.headconfig)
+      .then(res => {
+          console.log(res.data);
+        if(res.data.code==0){
+          this.$Modal.success({
+              title: '发送成功',
+              content: '请进入邮箱确认邮件'
+          });
+        }
+        else{
+            this.$Modal.error({
+              title: '发送失败',
+              content: '请稍后再试'
+          });
+        }
+      })
+      .catch(error => {
+        this.$Modal.error({
+              title: '发送失败',
+              content: '请稍后再试'
+          });
+        console.log(error)
+        // this.errored = true
+      })
     }
   },
   created:function(){
@@ -211,7 +253,7 @@ export default {
   float:right;
 }
 .ivu-menu-vertical{
-  height:100%;
+  height:400px;
 }
 .center-info-title{
   font-size: 16px;
@@ -256,7 +298,15 @@ export default {
   width: 70px;
   margin-bottom:20px;
 }
-
+.center-pass-intro{
+  margin-left:0%;
+  margin-bottom:20px;
+  font-size:14px;
+}
+.center-pass-intro-title{
+  margin-top:50px;
+  margin-bottom:10px
+}
 
 /* area插件样式 */
 .area-selectable-list .area-select-option.selected{

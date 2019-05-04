@@ -113,6 +113,23 @@ export default {
         return total;
     },
   },
+  created:function(){
+      this.axios
+      .get(this.serverUrl+'/query/order',this.headconfig)
+      .then(res => {
+        if(res.data.code==0){
+             console.log(res.data.data);
+        }
+        else{
+            this.$Message.error('获取信息失败');
+        }
+      })
+      .catch(error => {
+        this.$Message.error('获取信息失败');
+        console.log(error)
+        // this.errored = true
+      })
+  },
   components: {
     Bottom,
     Top

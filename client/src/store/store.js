@@ -6,7 +6,8 @@ const state = {
   count: 0
 };
 var vuexStore = new Vuex.Store({
-  classification:''
+  classification:'',
+  goodsName:''
 });
 // 使用 export default 封装，让外部可以访问
 export default vuexStore;

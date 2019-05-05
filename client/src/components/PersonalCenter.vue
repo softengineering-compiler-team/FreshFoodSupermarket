@@ -167,7 +167,7 @@ export default {
         username:this.$cookies.get("username")
       }
       this.axios
-      .get(this.serverUrl+'/query/address',this.qs.stringify(data),this.headconfig)
+      .post(this.serverUrl+'/retrieve',this.qs.stringify(data),this.headconfig)
       .then(res => {
           console.log(res.data);
         if(res.data.code==0){

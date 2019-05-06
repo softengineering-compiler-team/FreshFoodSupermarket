@@ -152,7 +152,39 @@ export default {
     },
     methods:{
     addcart () {
-         this.$router.push('shoppingcar');
+         let data = {
+             username:'',
+             goodsNo:this.Goods.goodsNo,
+             goodsName:this.Goods.goodsName,
+             price:this.Goods.price,
+             num:this.goodscount,
+             subtotal:this.countprice(this.Goods.price,this.goodscount),
+             url:"/static/default.png",
+             address:'',
+         }
+         if(!this.$store.state.goodsList){
+            this.$store.state.goodsList=[]
+         }
+         
+        if(this.$store.state.goodsList.length>0){
+            for (const key in this.$store.state.goodsList) {
+                if(data.goodsNo==this.$store.state.goodsList[key].goodsNo){
+                    this.$store.state.goodsList[key].num+=data.num
+                    this.$store.state.goodsList[key].subtotal+=this.countprice(data.price,data.num),
+                    this.$Message.success('已加入购物车')
+                    break;
+                }
+                if(key==this.$store.state.goodsList.length-1){
+                    this.$store.state.goodsList.push(data)
+                    this.$Message.success('已加入购物车')
+                }
+            }
+        }
+        else{
+            this.$store.state.goodsList.push(data)
+            this.$Message.success('已加入购物车')
+        }
+        console.log(this.$store.state.goodsList);
     },
     clickbuy(){
         let data={
@@ -279,7 +311,8 @@ export default {
   },
   created:function(){
       let name = this.$route.params.name
-      if(this.$store.state.goodsName){
+
+      if(this.$store.state.goodsName&&!name){
           name=this.$store.state.goodsName
       }
       if(name){

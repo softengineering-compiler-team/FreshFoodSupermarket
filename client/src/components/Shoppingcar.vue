@@ -4,7 +4,7 @@
             <Tabs class="tabs" value="name1">
                 <TabPane label="购物车" name="name1"></TabPane>
             </Tabs>
-        <div class="car">
+        <div class="car" v-if="listshow">
             <Checkbox
             class="checkall"
             :indeterminate="indeterminate"
@@ -16,18 +16,18 @@
             <div class="subtotal">小计</div>
             <div class="deletetitle">删除</div>
             <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
-                <div class="list" v-for="index in list" :key="index.id">
-                    <Checkbox class="checkbox" :label="index.name"></Checkbox>
-                    <div class="imgbox"><img class="img" :src="index.url"></div>
-                    <div class="introbox"><div class="intro">{{index.intro}}</div></div>
-                    <div class="pricebox"><div class="price">￥{{index.price}}</div></div>
+                <div class="list" v-for="(goods,index) in list" :key="index">
+                    <Checkbox class="checkbox" :label="index"></Checkbox>
+                    <div class="imgbox"><img class="img" :src="goods.url"></div>
+                    <div class="introbox"><div class="intro">{{goods.goodsName}}</div></div>
+                    <div class="pricebox"><div class="price">￥{{goods.price}}</div></div>
                     <div class="countbox">
                         <div class="count">
-                            <InputNumber  :min="1" :step="1" v-model="index.count"></InputNumber>
+                            <InputNumber :on-change="numchange(index)" :min="1" :step="1" v-model="goods.num"></InputNumber>
                         </div>
                     </div>
-                    <div class="pricebox1"><div class="price1">￥{{price1(index.price,index.count)}}</div></div>
-                    <div class="deletebox"><div class="delete"><Icon @click="icon(index.id)" class="icon" size="20" type="md-close" /></div></div>
+                    <div class="pricebox1"><div class="price1">￥{{goods.subtotal}}</div></div>
+                    <div class="deletebox"><div class="delete"><Icon @click="icon(index)" class="icon" size="20" type="md-close" /></div></div>
                 </div>          
             </CheckboxGroup>
             <!-- <Modal
@@ -37,7 +37,7 @@
                 @on-cancel="cancel">
                 <div>删除后无法恢复</div>
             </Modal> -->
-            <Modal v-model="modal"
+            <Modal v-model="modal2"
                 @on-ok="ok"
                 @on-cancel="cancel"
                 width="360">
@@ -54,52 +54,162 @@
                 </div>
             </Modal>
         </div>
-        <div class="totalbox">
+        <div v-if="listshow" class="totalbox">
             <div class="total">
                 <div class="totalprice">总计：￥{{totalprice()}}</div>
-                <Button @click="goorder" class="totalicon" size="large" type="warning">结算</Button>
+                <Button @click="settleaccount" class="totalicon" size="large" type="warning">结算</Button>
             </div>
         </div>
+        <div v-if="!listshow" class="nolist">这里空空如也，快去买买买吧</div>
+        <Modal v-model="modal"
+                width="600"
+                style="z-index:1001">
+                <p slot="header" style="color:#f60;text-align:center;">
+                    <Icon type="ios-information-circle"></Icon>
+                    <span>地址确认</span>
+                </p>
+                <div class="modal-body">
+                    <div class="modal-body-content1">
+                        当前地址：{{currentaddr}}
+                        <a @click="changeaddrbtn">修改地址</a>
+                        <a @click="addaddrbtn">新增地址</a>
+                    </div>
+                    <div v-if="showaddr" class="modal-body-change-body">
+                        <Table :columns="addrtable" :data="resaddr"></Table>
+                    </div>
+                </div>
+                <div slot="footer">
+                    <Button type="primary" size="large" @click="buyaffirm">确认购买</Button>
+                </div>
+                <Modal v-model="modal1"
+                width="600"
+                style="z-index:1002;">
+                    <p slot="header" style="color:#f60;text-align:center;">
+                    <Icon type="ios-information-circle"></Icon>
+                    <span>添加地址</span>
+                    </p>
+                    <div>
+                        <div class="center-info-subtitle">地址信息*</div>
+                         <div class="center-info-info">
+                            <area-select :level='2' type='text' v-model='address' :data="pcaa"></area-select>
+                        </div>
+                        <div class="center-info-subtitle">详细地址*</div>
+                        <div class="center-info-detail">
+                            <Input v-model="addrdetails" class="center-info-detail-input"/>
+                        </div>
+                        <div class="center-info-subtitle">备注</div>
+                        <div class="center-info-remarks">
+                            <Select size="large" v-model="remarks" style="width:200px">
+                                <Option v-for="item in remarksList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            </Select>
+                        </div>
+                        <Checkbox class="center-info-default" v-model="defaultaddr">默认地址</Checkbox>
+                    </div>
+                    <div slot="footer">
+                    <Button @click="saveaddr" type="primary" size="large">确认添加</Button>
+                    </div>
+                </Modal>
+            </Modal>
         <bottom></bottom>
     </div>
 </template>
 <script>
 import Bottom from '@/components/bottom'
 import Top from '@/components/Top'
+import { AreaCascader } from "vue-area-linkage"
+import { pca, pcaa } from 'area-data';
 export default {
   data () {
     return {
       modal:false,
+      modal1:false,
+      modal2:false,
+      currentaddr:'',
       indeterminate: false,
       checkAll: true,
-      checkAllGroup: ['1', '2', '3'],
+      listshow:true,
+      checkAllGroup: [],
       deleteid:-1,
       list: [
         {
-          id:0,
-          name:'1',
           url:"/static/default.png",
-          count:2,
+          num:2,
           price:200,
-          intro:"介绍介绍介绍介绍介绍介绍介绍介绍"
+          goodsName:"介绍介绍介绍介绍介绍介绍介绍介绍",
+          subtotal:0
         },
         {
-          id:1,
-          name:'2',
           url:"/static/default.png",
-          count:1,
+          num:1,
           price:100,
-          intro:"介绍介绍介绍介绍介绍介绍介绍介绍"
+          goodsName:"介绍介绍介绍介绍介绍介绍介绍介绍",
+          subtotal:0
         },
         {
-          id:2,
-          name:'3' ,
           url:"/static/default.png",
-          count:1,
+          num:1,
           price:50,
-          intro:"介绍介绍介绍介绍介绍介绍介绍介绍"
+          goodsName:"介绍介绍介绍介绍介绍介绍介绍介绍",
+          subtotal:0
         },
-      ]
+      ],
+      resaddr:[
+                {
+                    area:'',
+                    street:''
+                }
+            ],
+            // currentaddr:'',
+            showaddr:false,
+            addrtable: [
+          {
+              title: '所在地区',
+              key: 'area',
+              width:150
+          },
+          {
+              title: '详细地址',
+              key: 'street',
+              width:200
+          },
+          {
+              title:'操作',
+              key:'action',
+              render: (h, params) => {
+                return h('div', [
+                    h('a', {
+                    style: {
+                        // 样式
+                    },
+                    on: {
+                        click: () => {
+                            this.changeaddr(params.index)
+                        }
+                    }
+                    },'设为当前地址')
+                ])
+              }
+          }
+      ],
+      address:[],
+      pcaa: pcaa,
+      addrdetails:'',
+      remarksList: [
+          {
+              value: '学校',
+              label: '学校'
+          },
+          {
+              value: '家',
+              label: '家'
+          },
+          {
+              value: '单位',
+              label: '单位'
+          },
+      ],
+      remarks:'',
+      defaultaddr:'',
     }
   },
   computed: {
@@ -113,13 +223,18 @@ export default {
       }
       this.indeterminate = false;
         if (this.checkAll) {
-          this.checkAllGroup = ['1', '2', '3'];
+          this.checkAllGroup = [];
+          for (let i=0;i<this.list.length ;i++) {
+              this.checkAllGroup.push(i)
+          }
+        //   console.log(this.checkAllGroup);
+          
         } else {
           this.checkAllGroup = [];
         }
     },
     checkAllGroupChange (data) {
-        if (data.length === 3) {
+        if (data.length === this.list.length) {
             this.indeterminate = false;
             this.checkAll = true;
         } else if (data.length > 0) {
@@ -129,9 +244,10 @@ export default {
             this.indeterminate = false;
             this.checkAll = false;
         }
+        
     },
-    price1 (a,b){
-        return a*b;
+    numchange(index){
+        this.list[index].subtotal = this.list[index].num*this.list[index].price
     },
      ok () {
          
@@ -141,25 +257,171 @@ export default {
     },
     del (){
         this.list.splice(this.deleteid,1);
-        this.modal=false;
+        this.modal2=false;
     },
     icon (id){
-        this.modal=true;
+        this.modal2=true;
         this.deleteid=id;
-        console.log(this.deleteid);
+        // console.log(this.deleteid);
     },
     totalprice (){
         let total=0;
-        for (const key in this.list) {
-            total+=this.list[key].count*this.list[key].price
+        for (let i =0;i<this.checkAllGroup.length;i++) { 
+            let j = this.checkAllGroup[i]   
+            console.log(j);
+                     
+            total+=this.list[j].subtotal
         }
-        console.log(total);
+        // console.log(total);
         return total;
     },
-    goorder(){
-        this.$router.push('userorder')
+    changeaddrbtn(){
+       this.showaddr=true 
+    },
+    changeaddr(index){
+        this.currentaddr = this.resaddr[index].area+' '+this.resaddr[index].street
+    },
+    addaddrbtn(){
+        this.modal1 = true
+    },
+    //
+    saveaddr(){
+      let isdefault
+      if(this.defaultaddr){
+        isdefault=1
+      }
+      else{
+        isdefault=0
+      }
+      let data = {
+        username:this.$cookies.get("username"),
+        province:this.address[0],
+        city:this.address[1],
+        county:this.address[2],
+        street:this.addrdetails,
+        addressname:this.remarks,
+        default:isdefault,
+      }
+      // console.log(data);
+      if(!data.province||!data.city||!data.county||!data.street){
+        this.$Message.error("地址或详细地址未填");
+      }
+      else{
+         this.axios
+      .post(this.serverUrl+'/address',this.qs.stringify(data), this.headconfig)
+      .then(res => {
+          // console.log(res);
+        if(res.data.code==0){
+            this.$Message.success(res.data.data.msg);
+            let key = this.resaddr.length
+            this.resaddr.push(data)
+            this.resaddr[key].area = this.resaddr[key].province+' '+this.resaddr[key].city+' '+this.resaddr[key].county
+            this.modal1 = false
+        }
+        else{
+            this.$Message.error(res.data.data.msg);
+        }
+      })
+      .catch(error => {
+        this.$Message.error('保存失败');
+        console.log(error)
+        // this.errored = true
+      })
+      }
+  },
+  settleaccount(){
+    if(this.checkAllGroup.length==0){
+            this.$Message.error('未选择任何商品')
+        }
+    else{
+        let data={
+      username:this.$cookies.get("username"),
     }
-},
+    this.axios
+      .get(this.serverUrl+'/query/address',{params:data},this.headconfig)
+      .then(res => {
+          // console.log(res.data);
+        if(res.data.code==0){
+            this.resaddr=res.data.data
+            console.log(this.resaddr);
+            
+            if(this.resaddr.length!=0){
+            for (const key in this.resaddr) {
+              this.resaddr[key].area = this.resaddr[key].province+' '+this.resaddr[key].city+' '+this.resaddr[key].county
+            }
+            // console.log(this.resaddr);
+            this.currentaddr = this.resaddr[0].area+' '+this.resaddr[0].street
+            }
+        }
+        else{
+            this.$Message.error('获取地址信息失败');
+        }
+      })
+      .catch(error => {
+        this.$Message.error('获取信息失败');
+        console.log(error)
+        // this.errored = true
+      })
+        this.modal=true
+    }
+    },
+    buyaffirm(){
+        // console.log(this.list);
+        let data = {
+            goods:[]
+        }
+        if(this.currentaddr){
+            for(let i = 0;i<this.checkAllGroup.length;i++)
+            {
+                let j = this.checkAllGroup[i]
+                data.goods.push(this.list[j])
+            }
+            for(let k = 0;k<data.goods.length;k++){
+                data.goods[k].username = this.$cookies.get('username')
+                data.goods[k].address = this.currentaddr
+            }
+            console.log(data);
+            
+            this.axios
+            .post(this.serverUrl+'/buy',this.qs.stringify(data), this.headconfig)
+            .then(res => {
+                // console.log(res);
+                if(res.data.code==0){
+                    this.$Message.success('购买成功，请查看订单');
+                    this.modal=false
+                    this.$store.state.goodsList=null
+                    this.$router.push('userorder')
+                }
+                else{
+                    this.$Message.error('购买失败，请稍后重试');
+                }
+            })
+            .catch(error => {
+                this.$Message.error('购买失败，请稍后重试');
+                console.log(error)
+                // this.errored = true
+            }) 
+        }
+        else{
+            this.$Message.error('地址未填写')
+        }
+        
+    }
+  },
+  created:function(){
+    if(this.$store.state.goodsList){
+        this.list = this.$store.state.goodsList
+        for (let i=0;i<this.list.length ;i++) {
+            this.checkAllGroup.push(i)
+        }
+    }
+    else{
+        this.listshow = false
+    }
+  },
+  beforeDestroy:function(){
+    
+  },
   components: {
     Bottom,
     Top
@@ -327,5 +589,68 @@ export default {
     width: 11%;
     font-size:15px;
     text-align: center;
+}
+.nolist{
+    font-size:30px;
+    color:rgb(200, 200, 200);
+    font-weight: 700;
+    letter-spacing:10px;
+    margin-left:10%;
+    margin-right:10%;
+    padding-top:100px;
+    text-align: center;
+    min-height: 350px;
+}
+
+/* 详情页复制 */
+.modal-body{
+    margin-left:5%;
+    margin-right:5%;
+}
+.modal-body-title{
+    font-size:15px;
+}
+.modal-body-content1{
+    margin-left:5%;
+    margin-top:10px;
+    font-size:16px;
+}
+.modal-body-change-body{
+
+}
+
+
+/* 个人中心样式复制 */
+.center-info-info{
+  margin-bottom:10px;
+  margin-left:5%;
+}
+.center-info-detail{
+  margin-bottom:10px;
+  margin-left:6%;
+}
+.center-info-detail-input{
+  width:75%;
+  /* margin-left:5%; */
+}
+.center-info-remarks{
+  margin-bottom:10px;
+  margin-left:6%;
+}
+.center-info-remarks-input{
+  width: 30%;
+}
+.center-info-default{
+  font-size: 14px;
+  margin-top:10px;
+  margin-left:6%;
+  display: block;
+  width: 80px;
+}
+.center-savebtn{
+  margin-top:10px;
+  margin-left:3%;
+  width: 70px;
+  margin-bottom:20px;
 }
 </style>

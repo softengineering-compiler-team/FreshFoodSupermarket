@@ -46,7 +46,7 @@ async function retrieve(ctx, next) {
 	        user: '18365225454@163.com',
 	        pass: 'yetiandi123'
 	    }
-	}
+	} 
 
 	let username = ctx.request.body.username
 	let sql = `select username, email from user where username = '${username}'`
@@ -56,7 +56,7 @@ async function retrieve(ctx, next) {
         from: '18365225454@163.com', 
         to: email, 
         subject: '叶鲜生生鲜超市找回密码', 
-        html: `<a href='http://${domain}:3000/reset.html?token=${token}'><b>请在五分钟内点击链接完成验证，并进行密码重置</b></a>` 
+        html: `<a href='http://${domain}:8000/#/reset?token=${token}'><b>请在五分钟内点击链接完成验证，并进行密码重置</b></a>` 
     }
 
     const transporter = nodemailer.createTransport(params)

@@ -32,6 +32,11 @@ async function signup(ctx, next) {
 				msg : "注册成功！"
 			}
 		}
+		let sql = `alter table \`similarity\` add column \`${username}\` float(9, 6) default 0`
+		console.log(sql)
+		await db.MySQL_db(sql)
+		sql = `insert into similarity (username) values ('${username}')`
+		await db.MySQL_db(sql)
 	}
 }
 

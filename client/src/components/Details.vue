@@ -5,7 +5,7 @@
             <Divider/>
         </div>
         <div class="details">
-            <img class="details-img" src="../assets/default.png">
+            <img class="details-img" :src="imgurl">
             <div class="details-right">
                 <div class="details-name">{{Goods.goodsName}}</div>
                 <div class="details-price">价格：<span style="font-size:25px;color:red"> ￥{{Goods.price}}</span></div>
@@ -91,6 +91,7 @@ export default {
             goodscount:1,
             modal:false,
             modal1:false,
+            imgurl:'../assets/default.png',
             resaddr:[
                 {
                     area:'',
@@ -311,7 +312,7 @@ export default {
   },
   created:function(){
       let name = this.$route.params.name
-
+      this.imgurl = this.$route.params.url
       if(this.$store.state.goodsName&&!name){
           name=this.$store.state.goodsName
       }

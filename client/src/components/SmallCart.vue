@@ -1,15 +1,15 @@
 <template>
     <div>
-        <div class="box">
-            <div class="list" v-for="index in list" :key="index.id">
-                <div class="imgbox"><img class="img" :src="index.url"></div>
-                <div class="introbox"><div class="intro">{{index.intro}}</div></div>
+        <div v-if="listshow" class="box">
+            <div class="list" v-for="(goods,index) in list" :key="index">
+                <div class="imgbox"><img class="img" src="/static/default.png"></div>
+                <div class="introbox"><div class="intro">{{goods.goodsName}}</div></div>
                 <div class="countbox">
                         <div class="count">
-                            {{index.count}}
+                            {{goods.num}}
                         </div>
-                </div>
-                <div class="pricebox1"><div class="price1">￥{{price1(index.price,index.count)}}</div></div>
+                </div> 
+                <div class="pricebox1"><div class="price1">￥{{goods.subtotal}}</div></div>
             </div>
             <div class="totalbox1">
             <div class="total1">
@@ -30,32 +30,30 @@ export default {
       checkAll: true,
       checkAllGroup: ['1', '2', '3'],
       deleteid:-1,
-      list: [
+      listshow:true,
+     list: [
         {
-          id:0,
-          name:'1',
           url:"/static/default.png",
-          count:2,
+          num:2,
           price:200,
-          intro:"介绍介绍"
+          goodsName:"介绍介绍介绍介绍介绍介绍介绍介绍",
+          subtotal:0
         },
         {
-          id:1,
-          name:'2',
           url:"/static/default.png",
-          count:1,
+          num:1,
           price:100,
-          intro:"介绍介绍"
+          goodsName:"介绍介绍介绍介绍介绍介绍介绍介绍",
+          subtotal:0
         },
         {
-          id:2,
-          name:'3' ,
           url:"/static/default.png",
-          count:1,
+          num:1,
           price:50,
-          intro:"介绍介绍"
+          goodsName:"介绍介绍介绍介绍介绍介绍介绍介绍",
+          subtotal:0
         },
-      ]
+      ],
     }
   },
   computed: {
@@ -107,12 +105,20 @@ export default {
     totalprice (){
         let total=0;
         for (const key in this.list) {
-            total+=this.list[key].count*this.list[key].price
+            total+=this.list[key].subtotal
         }
         console.log(total);
         return total;
     }
 },
+    created:function(){
+        if(this.$store.state.goodsList){
+            this.list = this.$store.state.goodsList
+        }
+        else{
+            this.listshow = false
+        }
+    }
 }
 </script>
 

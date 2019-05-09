@@ -1,11 +1,11 @@
 <template>
     <div>
         <div>
-            <img @click="goods('fruits')" class="cimg" src="../assets/default.png">
-            <img @click="goods('vegetables')" class="cimg" src="../assets/default.png">
-            <img @click="goods('seafoods')" class="cimg" src="../assets/default.png">
-            <img @click="goods('meat')" class="cimg" src="../assets/default.png">
-            <img @click="goods('dairy')" class="cimg" src="../assets/default.png">
+            <img @click="goods('fruits')" class="cimg" src="/static/classification/新鲜水果.jpg">
+            <img @click="goods('vegetables')" class="cimg" src="/static/classification/时令蔬菜.jpg">
+            <img @click="goods('seafoods')" class="cimg" src="/static/classification/海鲜水产.jpg">
+            <img @click="goods('meat')" class="cimg" src="/static/classification/肉禽蛋品.jpg">
+            <img @click="goods('dairy')" class="cimg" src="/static/classification/乳品烘培.jpg">
         </div>
         <div>
             <span class="c-intro">新鲜水果</span>

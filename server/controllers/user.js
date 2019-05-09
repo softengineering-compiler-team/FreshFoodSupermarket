@@ -26,17 +26,22 @@ async function signup(ctx, next) {
 	} else {
 		let sql2 = `insert into user (username, password, email) values ('${username}', '${password}', '${email}')`
 		await db.MySQL_db(sql2)
+		
+		let sql = `alter table \`similarity\` add column \`${username}\` float(9, 6) default 0`
+
+		console.log(sql)
+
+		await db.MySQL_db(sql)
+		sql = `insert into similarity (username) values ('${username}')`
+		await db.MySQL_db(sql)
+
 		ctx.body = {
 			code: 0,
 			data: {
 				msg : "注册成功！"
 			}
 		}
-		let sql = `alter table \`similarity\` add column \`${username}\` float(9, 6) default 0`
-		console.log(sql)
-		await db.MySQL_db(sql)
-		sql = `insert into similarity (username) values ('${username}')`
-		await db.MySQL_db(sql)
+		
 	}
 }
 
@@ -290,11 +295,16 @@ async function fav(ctx, next) {
 
 	let goods1 = null
 	let goods2 = null
+
 	/*按照相似度排序未实现*/
 	for(i=0; i<names.length; i++) {
-		if(names[i] != username && similarity_obj[names[i]]>=50) {
+		if(names[i] != username && similarity_obj[names[i]]>=10) {
 
 			sql = `select username, goodsNo, sum(num) as num from receive where username = '${names[i]}' group by username, goodsNo order by num desc limit 2`
+		
+			if((await db.MySQL_db(sql)).length === 0) {
+				continue
+			}
 
 			goods1 = ((await db.MySQL_db(sql))[0]).goodsNo
 
@@ -308,6 +318,15 @@ async function fav(ctx, next) {
 				lst.push(goods2)
 			}
 		}
+	}
+
+	if(lst.length === 0) {
+		ctx.body = {
+			code: 0,
+			data: []
+		}
+
+		return
 	}
 
 	sql = `select * from goods where goodsNo in (`

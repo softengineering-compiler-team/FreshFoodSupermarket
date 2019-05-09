@@ -2,7 +2,7 @@
     <div>
         <div v-if="listshow" class="box">
             <div class="list" v-for="(goods,index) in list" :key="index">
-                <div class="imgbox"><img class="img" src="/static/default.png"></div>
+                <div class="imgbox"><img class="img" :src="'/static/goodsimg/'+goods.goodsName+'.jpg'"></div>
                 <div class="introbox"><div class="intro">{{goods.goodsName}}</div></div>
                 <div class="countbox">
                         <div class="count">

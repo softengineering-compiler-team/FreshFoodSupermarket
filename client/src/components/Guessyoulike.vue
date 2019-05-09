@@ -4,7 +4,7 @@
         <div class="guess-goods" v-for="(goods,index) in list" :key="index">
         <Card @click.native="details(goods.goodsName)" style="width:160px;cursor:pointer;">
             <div style="text-align:center">
-                <img class="guess-img" src="../assets/default.png">
+                <img class="guess-img" :src="'/static/goodsimg/'+goods.goodsName+'.jpg'">
                 <div class="guess-money">￥{{goods.price}}</div>
                 <span class="inventory">库存:</span><span class="inventory">{{goods.inventory}}</span>
                 <div class="guess-intro">{{goods.goodsName}}

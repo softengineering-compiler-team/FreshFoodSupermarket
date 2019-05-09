@@ -13,9 +13,9 @@
     <div v-if="list" v-for="(sub,index) in list" :key="index" class="Goods" :ref="'fruit'+index">
     <div class="Name">{{tablist[index]}}</div>
         <div class="guess-goods" v-for="(goods,index1) in sub" :key="index1">
-        <Card @click.native="details(goods.goodsName,'/static/'+goodscls+'/'+tablist[index]+'_'+(index1+1)+'.jpg')" class="goods-card">
+        <Card @click.native="details(goods.goodsName)" class="goods-card">
             <div style="text-align:center">
-                <img class="goods-img" :src="'/static/'+goodscls+'/'+tablist[index]+'_'+(index1+1)+'.jpg'">
+                <img class="goods-img" :src="'/static/'+'goodsimg'+'/'+goods.goodsName+'.jpg'">
                 <div class="money">￥{{goods.price}}</div>
                 <span class="inventory">库存:</span><span class="inventory">{{goods.inventory}}</span>
                 <div class="goods-intro">{{goods.goodsName}}</div>
@@ -87,13 +87,12 @@ export default {
     }
   },
   methods: {
-    details (goodsName,url) {
+    details (goodsName) {
       console.log(goodsName);
       this.$router.push({
         name:'Details',
         params:{
           name:goodsName,
-          url:url
         }
       })
     },

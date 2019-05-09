@@ -5,7 +5,7 @@
             <Divider/>
         </div>
         <div class="details">
-            <img class="details-img" :src="imgurl">
+            <img class="details-img" :src="'/static/goodsimg/'+Goods.goodsName+'.jpg'">
             <div class="details-right">
                 <div class="details-name">{{Goods.goodsName}}</div>
                 <div class="details-price">价格：<span style="font-size:25px;color:red"> ￥{{Goods.price}}</span></div>
@@ -312,7 +312,6 @@ export default {
   },
   created:function(){
       let name = this.$route.params.name
-      this.imgurl = this.$route.params.url
       if(this.$store.state.goodsName&&!name){
           name=this.$store.state.goodsName
       }

@@ -13,7 +13,7 @@
     <div v-if="list" v-for="(sub,index) in list" :key="index" class="Goods" :ref="'fruit'+index">
     <div class="Name">{{tablist[index]}}</div>
         <div class="guess-goods" v-for="(goods,index1) in sub" :key="index1">
-        <Card @click.native="details(goods.goodsName)" class="goods-card">
+        <Card @click.native="details(goods.goodsName,'/static/'+goodscls+'/'+tablist[index]+'_'+(index1+1)+'.jpg')" class="goods-card">
             <div style="text-align:center">
                 <img class="goods-img" :src="'/static/'+goodscls+'/'+tablist[index]+'_'+(index1+1)+'.jpg'">
                 <div class="money">￥{{goods.price}}</div>
@@ -87,12 +87,13 @@ export default {
     }
   },
   methods: {
-    details (goodsName) {
+    details (goodsName,url) {
       console.log(goodsName);
       this.$router.push({
         name:'Details',
         params:{
-          name:goodsName
+          name:goodsName,
+          url:url
         }
       })
     },
@@ -168,6 +169,8 @@ export default {
     this.goodscls=classification
     console.log(classification);
     this.tabswitch(classification)
+    console.log(this.serverUrl+'/query/'+classification);
+    
     this.axios
       .get(this.serverUrl+'/query/'+classification,this.headconfig)
       .then(res => {

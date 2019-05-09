@@ -105,6 +105,7 @@ export default {
               this.info_l=""
             //   this.$store.state.username=this.data.username
             this.username=null
+            this.$store.state.goodsList=[]
             this.$router.push('/')
         }
         else{
@@ -156,6 +157,13 @@ export default {
       this.username=this.$cookies.get("username")
     }
     },
+  mounted:function(){
+    setInterval(() => {
+      if (!this.$cookies.get("FFSM")){
+        this.username='';
+      }
+    }, 5000)
+  },
   components :{
     SmallCart
   }

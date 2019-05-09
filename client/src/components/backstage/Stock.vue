@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import Sigh from '@/components/sigh'
+import Sigh from '@/components/backstage/sigh'
 export default {
   data() {
     return {

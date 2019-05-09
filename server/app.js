@@ -28,7 +28,7 @@ app.use(session({
   overwrite: false,
   signed: false,
   store: new Store(),
-  maxAge: 1000*60*5
+  maxAge: 1000*60*20
 }))
 
 

@@ -67,6 +67,7 @@ export default {
               this.info_l=""
             //   this.$store.state.username=this.data.username
              this.$router.push('/')
+            this.$store.state.goodsList=null
         }
         else{
             this.info_l=res.data.data.msg

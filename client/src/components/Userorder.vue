@@ -4,27 +4,27 @@
         <Tabs class="tabs" value="name1">
             <TabPane label="我的订单" name="name1"></TabPane>
         </Tabs>
-        <div v-for="index in list" :key="index.id"  class="order">
+        <div v-for="(order,index) in list" :key="index"  class="order">
             <div class="orderinfo">
-                <div class="orderid">订单编号：{{index.id}}</div>
-                <div class="ordercreatetime">创建时间：2019/4/8 21：00：23</div>
-                <div class="orderstatus">订单状态：<span style="color:lightgreen">已送达</span> </div>
+                <div class="orderid">订单编号：{{order.orderNo}}</div>
+                <div class="ordercreatetime">创建时间：{{order.orderTime|dateformat('YYYY-MM-DD HH:mm:ss')}}</div>
+                <div class="orderstatus">订单状态：<span style="color:lightgreen">{{changestatus(order.status)}}</span> </div>
             </div>
-            <div v-for="index1 in index.data" :key="index1.id" class="order-inside">
-                <div class="imgbox2"><img class="img2" :src="index1.url"></div>
-                <div class="introbox2"><div class="intro2">{{index1.intro}}</div></div>
-                <div class="pricebox2"><div class="price2">单价：￥{{index1.price}}</div></div>
+            <div v-for="(goods,index1) in order.goodsList" :key="index1" class="order-inside">
+                <div class="imgbox2"><img class="img2" :src="'/static/goodsimg/'+goods.goodsName+'.jpg'"></div>
+                <div class="introbox2"><div class="intro2">{{goods.goodsName}}</div></div>
+                <div class="pricebox2"><div class="price2">单价：￥10</div></div>
                 <div class="countbox2">
                         <div class="count2">
-                            数量：{{index1.count}}
+                            数量：{{goods.num}}
                         </div>
                 </div>
-                <div class="pricebox2"><div class="price2">小计：￥{{price1(index1.price,index1.count)}}</div></div>
+                <div class="pricebox2"><div class="price2">小计：￥{{price1(10,goods.num)}}</div></div>
             </div>
             <div class="totalpricebox">
-                <div class="goodsprice">商品总价：￥{{totalprice(index.data)}}</div>
+                <div class="goodsprice">商品总价：￥{{order.total}}</div>
                 <div class="carriage">运费：￥5</div>
-                <div class="totalexpense">总价：￥555</div>
+                <div class="totalexpense">总价：￥{{add(order.total,5)}}</div>
                 <div class="btnbox">
                     <Button size="large" type="primary" class="hastenbtn">催单</Button>
                     <Button size="large" type="primary" class="hastenbtn">退款</Button>
@@ -112,13 +112,28 @@ export default {
         console.log(total);
         return total;
     },
+    changestatus(status){
+        if (status==0) {
+            return '已送达'
+        }
+        else{
+            return '未送达'
+        }
+    },
+    add(a,b){
+        return a+b
+    }
   },
   created:function(){
+      let data={
+      username:this.$cookies.get("username"),
+    }
       this.axios
-      .get(this.serverUrl+'/query/order',this.headconfig)
+      .get(this.serverUrl+'/query/order',{params:data},this.headconfig)
       .then(res => {
         if(res.data.code==0){
              console.log(res.data.data);
+             this.list = res.data.data
         }
         else{
             this.$Message.error('获取信息失败');

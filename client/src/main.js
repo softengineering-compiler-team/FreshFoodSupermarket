@@ -15,6 +15,12 @@ import VueCookies from 'vue-cookies'
 import AreaData from 'area-data' //地区插件
 import 'vue-area-linkage/dist/index.css'; //地区插件
 import VueAreaLinkage from 'vue-area-linkage';//地区插件
+import moment from 'moment'
+
+Vue.filter('dateformat', function(dataStr, pattern = 'YYYY-MM-DD HH:mm:ss') {
+    return moment(dataStr).format(pattern)
+
+})
 Vue.use(VueAreaLinkage);//地区插件
 
 

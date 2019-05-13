@@ -172,7 +172,9 @@ async function monthprofit(ctx,next){
 
 async function order(ctx, next) {
 	ctx.session.refresh()
-	let username = ctx.session.user.userName
+	let username = ctx.request.query.username
+	console.log("hhhhh")
+	console.log(username)
 	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 0 and username ='${username}' order by orderTime desc, orderNo desc`
 	//console.log(sql)
 	let data = await db.MySQL_db(sql)
@@ -211,6 +213,7 @@ async function order(ctx, next) {
 		orderData['status'] = data1[0].status
 		totalData.push(orderData)
 	}
+	console.log(totalData)
 	ctx.body = {
 		code: 0,
 		data: totalData

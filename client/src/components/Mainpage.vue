@@ -17,11 +17,10 @@
           <TabPane class="top-lebel-left" label="首页" name="name1">
             <Homepage></Homepage>
           </TabPane>
-          <TabPane class="top-lebel-right" label="分类" name="name2">
-            <Classfication></Classfication>
-          </TabPane>
       </Tabs>
       <Divider />
+      <div class="classname">分类</div>
+      <Classfication class="classcontent"></Classfication>
       <guessyoulike></guessyoulike>
     </div>
     <Bottom></Bottom>
@@ -72,9 +71,18 @@ export default {
   margin-left:10%;
   margin-right:10%;
 }
+.classcontent{
+  text-align:center
+}
 .top-label{
   text-align: center;
 }
 .top-lebel-left{
+}
+.classname{
+  font-size:20px;
+  position: relative;
+  /* right:45%; */
+  margin-top:20px;
 }
 </style>

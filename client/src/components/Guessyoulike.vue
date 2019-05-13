@@ -37,7 +37,7 @@ export default {
       
     
     let data = {
-      username:'叶田地'
+      username:this.$cookies.get('username')
     }
     this.axios
     .post(this.serverUrl+'/query/fav',this.qs.stringify(data),this.headconfig)

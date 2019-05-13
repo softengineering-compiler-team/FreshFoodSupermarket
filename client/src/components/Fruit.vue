@@ -1,6 +1,14 @@
 <template>
     <div>
     <Top></Top>
+    <div class="fixbox">
+      <div class="fixbox-title">分类</div>
+      <div @click="goods('fruits')" class="fixbox-content">新鲜水果</div>
+      <div @click="goods('vegetables')" class="fixbox-content">时令蔬菜</div>
+      <div @click="goods('seafoods')" class="fixbox-content">海鲜水产</div>
+      <div @click="goods('meat')" class="fixbox-content">肉禽蛋品</div>
+      <div @click="goods('dairy')" class="fixbox-content">乳品烘培</div>
+    </div>
     <Tabs @on-click="gofruit($event)" class="main" value="name1">
         <TabPane :label="tablist[0]" name="name1"></TabPane>
         <TabPane :label="tablist[1]" name="name2"></TabPane>
@@ -161,31 +169,36 @@ export default {
         default:
           break;
       }
+    },
+    getquery(classification){
+      this.goodscls=classification
+      console.log(classification);
+      this.tabswitch(classification)    
+      this.axios
+        .get(this.serverUrl+'/query/'+classification,this.headconfig)
+        .then(res => {
+          if(res.data.code==0){
+              console.log(res.data.data);
+              this.list=res.data.data
+              this.$store.state.classification = classification
+          }
+          else{
+              this.$Message.error('获取信息失败');
+          }
+        })
+        .catch(error => {
+          this.$Message.error('获取信息失败');
+          console.log(error)
+          // this.errored = true
+        })
+    },
+    goods(name){
+      this.getquery(name)
     }
   },
   created:function(){
     let classification = this.$store.state.classification
-    this.goodscls=classification
-    console.log(classification);
-    this.tabswitch(classification)
-    console.log(this.serverUrl+'/query/'+classification);
-    
-    this.axios
-      .get(this.serverUrl+'/query/'+classification,this.headconfig)
-      .then(res => {
-        if(res.data.code==0){
-             console.log(res.data.data);
-             this.list=res.data.data
-        }
-        else{
-            this.$Message.error('获取信息失败');
-        }
-      })
-      .catch(error => {
-        this.$Message.error('获取信息失败');
-        console.log(error)
-        // this.errored = true
-      })
+    this.getquery(classification)
     },
   components: {
     Bottom,
@@ -249,5 +262,34 @@ export default {
 }
 .errorlist{
   min-height:500px;
+}
+.fixbox{
+  text-align: center;
+  display: absolute;
+  position:fixed;
+  width:100px;
+  left:10px;
+  background: rgb(250, 250, 250);
+  border-radius: 10%;
+  font-size:16px;
+  box-shadow: 0px 0px 5px #888888;
+  letter-spacing: 2px;
+  z-index: 1003;
+}
+.fixbox-title{
+  text-align: center;
+  width: 60px;
+  margin-left:20px;
+  margin-right:20px;
+  font-size:16px;
+  border-top:1px solid rgb(240, 240, 240);
+  margin-bottom:2px;
+  line-height: 150%;
+}
+.fixbox-content{
+  text-align: center;
+  border-top:1px solid rgb(240, 240, 240);
+  margin-bottom:5px;
+  cursor: pointer;
 }
 </style>

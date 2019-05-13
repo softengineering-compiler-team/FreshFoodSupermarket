@@ -4,6 +4,11 @@
         <div class="fenge" >
             <Divider/>
         </div>
+        <Breadcrumb class="menu2">
+            <BreadcrumbItem to="/">首页</BreadcrumbItem>
+            <BreadcrumbItem to="/fruit">{{judgeclass()}}</BreadcrumbItem>
+            <BreadcrumbItem>{{Goods.goodsName}}</BreadcrumbItem>
+        </Breadcrumb>
         <div class="details">
             <img class="details-img" :src="'/static/goodsimg/'+Goods.goodsName+'.jpg'">
             <div class="details-right">
@@ -308,7 +313,29 @@ export default {
         else{
             this.$Message.error('地址未填写');
         }
-    }
+    },
+    judgeclass(){
+        let name = this.$store.state.classification
+        switch (name) {
+        case 'fruits':
+         return '新鲜水果'
+          break;
+        case 'vegetables':
+          return '时令蔬菜'
+          break;
+        case 'seafoods':
+          return '海鲜水产'
+          break;
+        case 'meat':
+          return '肉禽蛋品'
+          break;
+        case 'dairy':
+          return '乳品烘培'
+          break;
+        default:
+          break;
+      }
+    },
   },
   created:function(){
       let name = this.$route.params.name
@@ -345,6 +372,10 @@ export default {
 }
 </script>
 <style>
+.menu2{
+    margin-left:10%;
+    margin-right:10%;
+}
 .details{
     margin-left:100px;
     margin-right:100px;

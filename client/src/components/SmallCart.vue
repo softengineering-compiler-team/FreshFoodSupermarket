@@ -14,7 +14,7 @@
             <div class="totalbox1">
             <div class="total1">
                 <div class="totalprice1">总计：￥{{totalprice()}}</div>
-                <Button class="totalicon1" size="small" type="warning">结算</Button>
+                <Button @click="shoppingcar" class="totalicon1" size="small" type="warning">查看详情</Button>
             </div>
         </div>
         </div>
@@ -109,6 +109,9 @@ export default {
         }
         console.log(total);
         return total;
+    },
+    shoppingcar () {
+      this.$router.push('shoppingcar')
     }
 },
     created:function(){

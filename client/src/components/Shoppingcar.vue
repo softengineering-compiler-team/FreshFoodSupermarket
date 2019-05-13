@@ -18,7 +18,7 @@
             <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
                 <div class="list" v-for="(goods,index) in list" :key="index">
                     <Checkbox class="checkbox" :label="index"></Checkbox>
-                    <div class="imgbox"><img class="img" :src="goods.url"></div>
+                    <div class="imgbox"><img class="img" :src="'/static/goodsimg/'+goods.goodsName+'.jpg'"></div>
                     <div class="introbox"><div class="intro">{{goods.goodsName}}</div></div>
                     <div class="pricebox"><div class="price">￥{{goods.price}}</div></div>
                     <div class="countbox">

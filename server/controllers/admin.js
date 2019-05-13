@@ -268,9 +268,16 @@ async function finishorder(ctx, next) {
 }
 async function allorder(ctx, next) {
 	ctx.session.refresh()
-	//let username = ctx.request.query.username
+	let status = ctx.request.query.status
 	//let username = ctx.session.user.userName
-	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 0 order by orderTime desc, orderNo desc`
+	let sql=''
+	if (status) {
+		sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = '${status}' order by orderTime desc, orderNo desc`
+	}
+	else{
+		sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo order by orderTime desc, orderNo desc`
+	}
+	
 	let data = await db.MySQL_db(sql)
 	var totalData = []
 	let orderNo = data[0].orderNo
@@ -286,7 +293,14 @@ async function allorder(ctx, next) {
 	}
 	for(let i=0;i<orderNum.length;i++){
 		let temporder = orderNum[i]
-		let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = 0 AND orderNo = '${temporder}'`
+		let sql1 = ''
+		if (status) {
+			sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = '${status}' AND orderNo = '${temporder}'`
+		}
+		else{
+			 sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND orderNo = '${temporder}'`
+		}
+		
 		let data1 = await db.MySQL_db(sql1)
 		var goodsList = new Array()
 

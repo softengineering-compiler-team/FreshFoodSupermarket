@@ -172,17 +172,15 @@ async function monthprofit(ctx,next){
 
 async function order(ctx, next) {
 	ctx.session.refresh()
-	let username = ctx.request.query.username
-	console.log("hhhhh")
-	console.log(username)
+
+	//let username = ctx.request.query.username
+	let username = ctx.session.user.userName
 	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 0 and username ='${username}' order by orderTime desc, orderNo desc`
-	//console.log(sql)
 	let data = await db.MySQL_db(sql)
 	var totalData = []
 	let orderNo = data[0].orderNo
 	var orderNum = new Array()
 	orderNum.push(orderNo)
-
 	for(let i=0;i<data.length;i++){
 		let temporder = data[i].orderNo
 		if(temporder != orderNo){
@@ -192,14 +190,14 @@ async function order(ctx, next) {
 	}
 	for(let i=0;i<orderNum.length;i++){
 		let temporder = orderNum[i]
-		let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = 0 AND orderNo = '${temporder}' and username ='${username}' `
+		let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = 0 AND orderNo = '${temporder}' and username ='${username}' order by orderTime desc`
 		let data1 = await db.MySQL_db(sql1)
 		var goodsList = new Array()
-		var goodsObj = {}
 		var orderData = {}
 		let total = 0
 		orderData['orderNo'] = data1[0].orderNo
 		for(let j=0;j<data1.length;j++){
+			var goodsObj = {} 
 			goodsObj['goodsName'] = data1[j].goodsName
 			goodsObj['num'] = data1[j].num
 			goodsList.push(goodsObj)
@@ -213,7 +211,6 @@ async function order(ctx, next) {
 		orderData['status'] = data1[0].status
 		totalData.push(orderData)
 	}
-	console.log(totalData)
 	ctx.body = {
 		code: 0,
 		data: totalData
@@ -249,7 +246,8 @@ async function takeorder(ctx, next) {
 
 async function delivery(ctx, next) {
 	ctx.session.refresh()
-	
+	//let username = ctx.request.query.username
+	let username = ctx.session.user.userName
 	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 1 order by orderTime desc, orderNo desc`
 	let data = await db.MySQL_db(sql)
 	var totalData = []
@@ -269,11 +267,12 @@ async function delivery(ctx, next) {
 		let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = 1 AND orderNo = '${temporder}'`
 		let data1 = await db.MySQL_db(sql1)
 		var goodsList = new Array()
-		var goodsObj = {}
+
 		var orderData = {}
 		let total = 0
 		orderData['orderNo'] = data1[0].orderNo
 		for(let j=0;j<data1.length;j++){
+			var goodsObj = {}
 			goodsObj['goodsName'] = data1[j].goodsName
 			goodsObj['num'] = data1[j].num
 			goodsList.push(goodsObj)

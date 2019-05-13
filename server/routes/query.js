@@ -12,6 +12,7 @@ router.get('/dairy', controllers.goods.dairy)
 router.get('/address', controllers.user.address)
 
 router.get('/order', controllers.admin.order)
+router.get('/allorder', controllers.admin.allorder)
 router.get('/delivery', controllers.admin.delivery)
 router.get('/dayheat', controllers.admin.dayheat)//得到日销售热度(取5个)
 router.get('/weekheat', controllers.admin.weekheat)//得到周销售热度(取5个)

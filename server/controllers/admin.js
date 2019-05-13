@@ -242,7 +242,30 @@ async function takeorder(ctx, next) {
 		}
 	}
 }
+async function finishorder(ctx, next) {
+	ctx.session.refresh()
 
+	let orderNo = ctx.request.body.orderNo
+	let sql = `UPDATE receive SET STATUS = 2 WHERE orderNo = '${orderNo}'`
+	let data = await db.MySQL_db(sql)
+	if (data.length === 0) {
+		ctx.body = {
+			code: -1,
+			data:{
+				msg : "完成订单失败!"
+			}
+		} 
+		return
+
+	} else {
+		ctx.body = {
+			code: 0,
+			data:{
+				msg : "完成订单!"
+			}
+		}
+	}
+}
 async function allorder(ctx, next) {
 	ctx.session.refresh()
 	//let username = ctx.request.query.username
@@ -342,6 +365,7 @@ module.exports = {
 	order: order,
 	allorder: allorder,
 	takeorder: takeorder,
+	finishorder: finishorder,
 	delivery: delivery,
 	dayheat: dayheat,
 	weekheat: weekheat,

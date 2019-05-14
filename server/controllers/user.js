@@ -3,7 +3,8 @@ const nodemailer = require('nodemailer')
 const md5 = require('md5')
 const Redis_db = (require('../utils/db')).Redis_db
 const domain = require('../config/Domain-config')
-const batchUpdate = require('../utils/batchUpdate')
+const Neo4j_db = (require('../utils/db')).Neo4j_db
+const randomNos = require('../utils/randomNos')
 
 /*注册*/
 async function signup(ctx, next) {
@@ -27,13 +28,11 @@ async function signup(ctx, next) {
 		let sql2 = `insert into user (username, password, email) values ('${username}', '${password}', '${email}')`
 		await db.MySQL_db(sql2)
 		
-		let sql = `alter table \`similarity\` add column \`${username}\` float(9, 6) default 0`
+		let cypher = `create(user:User{username:'${username}'})`
+		
+		let neo4j_data = await Neo4j_db(cypher)
 
-		console.log(sql)
-
-		await db.MySQL_db(sql)
-		sql = `insert into similarity (username) values ('${username}')`
-		await db.MySQL_db(sql)
+		console.log(neo4j_data)
 
 		ctx.body = {
 			code: 0,
@@ -230,18 +229,30 @@ async function buy(ctx, next) {
 
 	let orderTime = (new Date()).toLocaleString()
 
+	let username = goodsList[0].username
+
 	let sql = `insert into receive (username, goodsNo, orderNo, num, orderTime, subtotal, address) values `
 
 	for(let i=0; i<goodsList.length; i++) {
 		if(i < goodsList.length - 1) {
-			sql += `('${goodsList[i].username}', '${goodsList[i].goodsNo}', '${md5(goodsList[i].username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}'), `
+			sql += `('${username}', '${goodsList[i].goodsNo}', '${md5(username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}'), `
 
 		} else {
-			sql += `('${goodsList[i].username}', '${goodsList[i].goodsNo}', '${md5(goodsList[i].username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}')`
+			sql += `('${username}', '${goodsList[i].goodsNo}', '${md5(username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}')`
 		}
 	}
 
 	await db.MySQL_db(sql)
+
+	let cypher = `match(user:User{username: '${username}'}) create`
+	for(let i=0; i<goodsList.lenght; i++) {
+		if(i < goodsList.length - 1) {
+			cypher += `(user)-[:Buy{num:${goodsList[i].num}}]->(:Goods{goodsNo: ${goodsList[i].goodsNo}}), `
+		} else {
+			cypher += `(user)-[:Buy{num:${goodsList[i].num}}]->(:Goods{goodsNo: ${goodsList[i].goodsNo}})`
+		}
+		
+	}
 
 	ctx.body = {
 		code: 0,
@@ -250,101 +261,39 @@ async function buy(ctx, next) {
 		}
 	}
 
-	await batchUpdate(goodsList)
+	await Neo4j_db(cypher)
 
 }
 
 /*个人推荐（猜你喜欢）*/
 async function fav(ctx, next) {
 	ctx.session.refresh()
-
 	let username = ctx.request.body.username
-	let sql = `select * from fav where username = '${username}'`
-	let vector = (await db.MySQL_db(sql))[0]
-	sql = `select * from fav`
-	let matrix = await db.MySQL_db(sql)
-	
-	/*除数不为零！可能出错！*/
-	let mul = 0
-	let div1 = 0
-	let div2 = 0
-	let similarity = 0
-	let keys = Object.keys(vector)
-	for(let i=0; i<matrix.length; i++) {
-		mul = 0
-		div1 = 0
-		div2 = 0
-		for(let j=0; j<keys.length-1; j++) {
-			mul = mul + vector[keys[j]]*(matrix[i])[keys[j]]
-			div1 +=  Math.pow(vector[keys[j]], 2) 
-			div2 +=  Math.pow((matrix[i])[keys[j]], 2)
+	let cypher = `match p=(host:User)-[:SimilarTo|Buy*1..6]-(pg:Goods)
+                    where host.username = '${username}'
+                    and not (host)-[:Buy]->(pg)
+                    return pg.goodsNo as goodsNo
+                    limit 5`
 
-		}
-		similarity = 100*mul/(Math.sqrt(div1)*Math.sqrt(div2))
-		sql = `update similarity set \`${matrix[i].username}\` = '${similarity}' where username = '${username}'`
-		await db.MySQL_db(sql)
-		
-	}
 
-	sql = `select * from similarity where username = '${username}'`
-	let similarity_obj = (await db.MySQL_db(sql))[0]
 
-	let lst = new Array()
+    let goodsList = (await Neo4j_db(cypher)).data
 
-	let names = Object.keys(similarity_obj).slice(1, Object.keys(similarity_obj).length)
+    if(goodsList.length === 0) {
+    	cypher = `match (goods:Goods)
+    				return goods.goodsNo`
+    	goodsList = randomNos()
 
-	let goods1 = null
-	let goods2 = null
+    }
 
-	/*按照相似度排序未实现*/
-	for(i=0; i<names.length; i++) {
-		if(names[i] != username && similarity_obj[names[i]]>=10) {
+    let sql = `select goodsNo, goodsName, type, subtype, price, inventory, validity, description from goods where goodsNo in (${goodsList[0]}, ${goodsList[1]}, ${goodsList[2]}, ${goodsList[3]}, ${goodsList[4]})`
 
-			sql = `select username, goodsNo, sum(num) as num from receive where username = '${names[i]}' group by username, goodsNo order by num desc limit 2`
-		
-			if((await db.MySQL_db(sql)).length === 0) {
-				continue
-			}
+    let data = await db.MySQL_db(sql)
 
-			goods1 = ((await db.MySQL_db(sql))[0]).goodsNo
-
-			if(lst.indexOf(goods1) === -1) {
-				lst.push(goods1)
-			}
-
-			goods2 = ((await db.MySQL_db(sql))[1]).goodsNo
-
-			if(lst.indexOf(goods2) === -1) {
-				lst.push(goods2)
-			}
-		}
-	}
-
-	if(lst.length === 0) {
-		ctx.body = {
-			code: 0,
-			data: []
-		}
-
-		return
-	}
-
-	sql = `select * from goods where goodsNo in (`
-	for(i=0; i<lst.length; i++) {
-		if(i != lst.length-1) {
-			sql += lst[i] + `,`
-		} else {
-			sql += `${lst[i]})`
-		}
-	}
-
-	let data = await db.MySQL_db(sql)
-
-	ctx.body = {
-		code: 0,
-		data: data
-	}
-
+    ctx.body = {
+    	code: 0,
+    	data: data
+    }
 }
 
 module.exports = {

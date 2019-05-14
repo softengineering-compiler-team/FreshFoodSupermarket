@@ -217,7 +217,17 @@ async function order(ctx, next) {
 	}
 }
 
-
+async function inventory(ctx, next) {
+	ctx.session.refresh()
+	let sql = `SELECT subtype,goodsName,cost,DATE_SUB(import_time,INTERVAL validity HOUR) AS guarantee_period,inventory FROM goods ORDER BY guarantee_period  `
+	let invent = await db.MySQL_db(sql)
+	var data = []
+	data.push(invent)
+	ctx.body = {
+		code: 0,
+		data: data
+	}
+}
 async function takeorder(ctx, next) {
 	ctx.session.refresh()
 
@@ -246,7 +256,8 @@ async function finishorder(ctx, next) {
 	ctx.session.refresh()
 
 	let orderNo = ctx.request.body.orderNo
-	let sql = `UPDATE receive SET STATUS = 2 WHERE orderNo = '${orderNo}'`
+	let finishTime = (new Date()).toLocaleString()
+	let sql = `UPDATE receive SET STATUS = 2 and '${finishTime}' WHERE orderNo = '${orderNo}'`
 	let data = await db.MySQL_db(sql)
 	if (data.length === 0) {
 		ctx.body = {
@@ -380,6 +391,7 @@ module.exports = {
 	allorder: allorder,
 	takeorder: takeorder,
 	finishorder: finishorder,
+	inventory: inventory,
 	delivery: delivery,
 	dayheat: dayheat,
 	weekheat: weekheat,

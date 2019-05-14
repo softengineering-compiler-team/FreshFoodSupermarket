@@ -11,9 +11,10 @@ router.get('/meat', controllers.goods.meat)
 router.get('/dairy', controllers.goods.dairy)
 router.get('/address', controllers.user.address)
 
-router.get('/order', controllers.admin.order)
-router.get('/allorder', controllers.admin.allorder)
-router.get('/delivery', controllers.admin.delivery)
+router.get('/order', controllers.admin.order)//前端用户的订单
+router.get('/inventory', controllers.admin.inventory)//库存管理员查看库存
+router.get('/allorder', controllers.admin.allorder)//配送员查看所有状态为0的订单
+router.get('/delivery', controllers.admin.delivery)//配送员接的单
 router.get('/dayheat', controllers.admin.dayheat)//得到日销售热度(取5个)
 router.get('/weekheat', controllers.admin.weekheat)//得到周销售热度(取5个)
 router.get('/monthheat', controllers.admin.monthheat)//得到周销售热度(取5个)

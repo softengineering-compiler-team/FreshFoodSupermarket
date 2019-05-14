@@ -243,7 +243,11 @@ async function buy(ctx, next) {
 	}
 
 	await db.MySQL_db(sql)
-
+	for (let i=0; i<goodsList.length;i++){
+		let sql = `UPDATE goods SET inventory = inventory - '${goodsList[i].num}' WHERE goodsNo = '${goodsList[i].goodsNo}'`
+		await db.MySQL_db(sql)
+	}
+	
 	let cypher = `match(user:User{username: '${username}'}) create`
 	for(let i=0; i<goodsList.lenght; i++) {
 		if(i < goodsList.length - 1) {

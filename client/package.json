@@ -13,6 +13,7 @@
   "dependencies": {
     "area-data": "^5.0.6",
     "axios": "^0.18.0",
+    "chart.js": "^2.8.0",
     "echarts": "^4.2.1",
     "iview": "^3.3.3",
     "jquery": "^3.4.0",
@@ -21,6 +22,7 @@
     "vue": "^2.5.2",
     "vue-area-linkage": "^5.1.0",
     "vue-chart-js": "^1.4.1",
+    "vue-chartjs": "^3.4.2",
     "vue-cookies": "^1.5.13",
     "vue-echart": "^1.0.5",
     "vue-router": "^3.0.1",

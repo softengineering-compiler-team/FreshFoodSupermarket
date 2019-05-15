@@ -284,10 +284,10 @@ async function saleall(ctx, next) {
 
 	for(let i=0; i<goodsName.length; i++) {
 		if(i < goodsName.length - 1) {
-			sql += `goodsName = '${goodsName[i]}' OR`
+			sql += `goodsName = '${goodsName[i].goodsName}' OR `
 
 		} else {
-			sql += `goodsName = '${goodsName[i]}'`
+			sql += `goodsName = '${goodsName[i].goodsName}'`
 		}
 	}
 	await db.MySQL_db(sql)
@@ -301,8 +301,10 @@ async function saleall(ctx, next) {
 async function purchase(ctx, next) {
 	ctx.session.refresh()
 	let goodsList = ctx.request.body.goods
+	console.log(goodsList);
+	
 	let import_time = (new Date()).toLocaleString()
-	for(let i=0; i<goodsName.length; i++) {
+	for(let i=0; i<goodsList.length; i++) {
 		let sql = `UPDATE goods SET inventory = inventory + '${goodsList[i].num}' AND import_time = '${import_time}' WHERE goodsName = '${goodsList[i].goodsName}'`
 		await db.MySQL_db(sql)
 	}

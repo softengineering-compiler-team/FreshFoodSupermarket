@@ -4,19 +4,19 @@
         <Tabs value="name1">
             <TabPane label="销售额" name="name1">
                 <div class="selling-top">
-                    <div class="title">日销售</div>
+                    <div class="selling-title">日销售</div>
                     <div class="daysellchart">
                         <Sale :type="'day'" />
                     </div>
                 </div>
                 <div class="middle">
-                    <div class="title">周销售</div>
+                    <div class="selling-title">周销售</div>
                     <div class="daysellchart">
                         <Sale :type="'week'" />
                     </div>
                 </div>
                 <div class="selling-bottom">
-                    <div class="title">月销售</div>
+                    <div class="selling-title">月销售</div>
                     <div class="daysellchart">
                         <Sale :type="'month'" />
                     </div>
@@ -24,20 +24,20 @@
             </TabPane>
             <TabPane label="盈利额" name="name2">
                 <div class="selling-top">
-                    <div class="title">日盈利</div>
+                    <div class="selling-title">日盈利</div>
                     <div class="daysellchart">
                         <Profit :type="'day'" />
                     </div>
                     <!-- <vue-chart type="bar" :data="chartData"></vue-chart> -->
                 </div>
                 <div class="middle">
-                    <div class="title">周盈利</div>
+                    <div class="selling-title">周盈利</div>
                     <div class="daysellchart">
                         <Profit :type="'week'" />
                     </div>
                 </div>
                 <div class="selling-bottom">
-                    <div class="title">月盈利</div>
+                    <div class="selling-title">月盈利</div>
                     <div class="daysellchart">
                         <Profit :type="'month'" />
                     </div>
@@ -45,20 +45,20 @@
             </TabPane>
             <TabPane label="商品热度" name="name3">
                 <div class="selling-top">
-                    <div class="title">日热度</div>
+                    <div class="selling-title">日热度</div>
                     <!-- <vue-chart type="bar" :data="chartData"></vue-chart> -->
                     <div class="daysellchart">
                         <Heat :type="'day'" />
                     </div>
                 </div>
                 <div class="middle">
-                    <div class="title">周热度</div>
+                    <div class="selling-title">周热度</div>
                     <div class="daysellchart">
                         <Heat :type="'week'" />
                     </div>
                 </div>
                 <div class="selling-bottom">
-                    <div class="title">月热度</div>
+                    <div class="selling-title">月热度</div>
                     <div class="daysellchart">
                         <Heat :type="'month'" />
                     </div>
@@ -94,7 +94,7 @@ export default {
     height: 500px;
     text-align: center;
 }
-.title{
+.selling-title{
     font-size:20px;
     text-align: center;
 }

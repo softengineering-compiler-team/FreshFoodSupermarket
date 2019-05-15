@@ -38,6 +38,7 @@ export default {
     margin:40px;
     border-radius: 50%;
     cursor:pointer;
+    border:solid 1px rgb(100,100,100,0.5);
 }
 .c-intro{
     font-size: 20px;

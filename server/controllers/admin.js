@@ -277,6 +277,42 @@ async function finishorder(ctx, next) {
 		}
 	}
 }
+async function saleall(ctx, next) {
+	ctx.session.refresh()
+	let goodsName = ctx.request.body.goods
+	let sql = `UPDATE goods SET inventory = 0 WHERE `
+
+	for(let i=0; i<goodsName.length; i++) {
+		if(i < goodsName.length - 1) {
+			sql += `goodsName = '${goodsName[i]}' OR`
+
+		} else {
+			sql += `goodsName = '${goodsName[i]}'`
+		}
+	}
+	await db.MySQL_db(sql)
+	ctx.body = {
+		code: 0,
+		data:{
+			msg : "卖出成功!"
+		}
+	}
+}
+async function purchase(ctx, next) {
+	ctx.session.refresh()
+	let goodsList = ctx.request.body.goods
+	let import_time = (new Date()).toLocaleString()
+	for(let i=0; i<goodsName.length; i++) {
+		let sql = `UPDATE goods SET inventory = inventory + '${goodsList[i].num}' AND import_time = '${import_time}' WHERE goodsName = '${goodsList[i].goodsName}'`
+		await db.MySQL_db(sql)
+	}
+	ctx.body = {
+		code: 0,
+		data:{
+			msg : "买入成功!"
+		}
+	}
+}
 async function allorder(ctx, next) {
 	ctx.session.refresh()
 	let status = ctx.request.query.status
@@ -391,6 +427,8 @@ module.exports = {
 	allorder: allorder,
 	takeorder: takeorder,
 	finishorder: finishorder,
+	saleall: saleall,
+	purchase: purchase,
 	inventory: inventory,
 	delivery: delivery,
 	dayheat: dayheat,

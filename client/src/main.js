@@ -6,7 +6,7 @@ import router from './router'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import echarts from 'echarts'
-import VueChart from 'vue-chart-js'
+import VueCharts from 'vue-chartjs'
 //axios
 import axios from 'axios'
 import Qs from 'qs'
@@ -37,11 +37,11 @@ Vue.prototype.headconfig = {
 }
 Vue.config.productionTip = false
 Vue.use(iView)
-Vue.use(VueChart)
+Vue.use(VueCharts)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: { App,VueCharts },
   template: '<App/>'
 })

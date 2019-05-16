@@ -4,7 +4,8 @@ Vue.use(Vuex);
 //初始化数据
 const state = {
   count: 0,
-  goodsList:[]
+  goodsList:[],
+  backbuygoodsList:[],
 };
 var vuexStore = new Vuex.Store({
   classification:'',

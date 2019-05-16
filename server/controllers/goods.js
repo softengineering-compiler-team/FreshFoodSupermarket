@@ -3,7 +3,7 @@ const db = require('../utils/db.js')
 async function all(ctx, next) {
 	ctx.session.refresh()
 
-	let goodsName = ctx.request.query.goodsName
+	let goodsName = ctx.request.query.goodsName 
 	let sql = `select goodsNo, goodsName, type, subtype, price, inventory, validity, description from goods where goodsName = '${goodsName}'`
 	let data = await db.MySQL_db(sql)
 	ctx.body = {

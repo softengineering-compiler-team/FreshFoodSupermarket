@@ -123,7 +123,7 @@ export default {
       page(index){
           this.listshow = index
           if(this.data1.length){
-          console.log(index);
+        //   console.log(index);
           this.data2=[]
           for(let i = (index-1)*10; i < index*10; i++) {
               if (this.data1[i]) {
@@ -141,7 +141,7 @@ export default {
         .get(this.serverUrl+'/query/allorder',{params:data},this.headconfig)
         .then(res => {
           if(res.data.code==0){
-              console.log(res.data.data);
+            //   console.log(res.data.data);
               for (let j = 0; j < res.data.data.length; j++) {
                   if (res.data.data[j].status==1) {
                       this.data1.push(res.data.data[j])

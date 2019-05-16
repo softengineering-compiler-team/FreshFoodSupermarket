@@ -217,7 +217,17 @@ async function order(ctx, next) {
 	}
 }
 
-
+async function inventory(ctx, next) {
+	ctx.session.refresh()
+	let sql = `SELECT subtype,goodsName,cost,DATE_SUB(import_time,INTERVAL validity HOUR) AS guarantee_period,inventory FROM goods ORDER BY guarantee_period  `
+	let invent = await db.MySQL_db(sql)
+	var data = []
+	data.push(invent)
+	ctx.body = {
+		code: 0,
+		data: data
+	}
+}
 async function takeorder(ctx, next) {
 	ctx.session.refresh()
 
@@ -246,7 +256,8 @@ async function finishorder(ctx, next) {
 	ctx.session.refresh()
 
 	let orderNo = ctx.request.body.orderNo
-	let sql = `UPDATE receive SET STATUS = 2 WHERE orderNo = '${orderNo}'`
+	let finishTime = (new Date()).toLocaleString()
+	let sql = `UPDATE receive SET STATUS = 2 and '${finishTime}' WHERE orderNo = '${orderNo}'`
 	let data = await db.MySQL_db(sql)
 	if (data.length === 0) {
 		ctx.body = {
@@ -263,6 +274,46 @@ async function finishorder(ctx, next) {
 			data:{
 				msg : "完成订单!"
 			}
+		}
+	}
+}
+async function saleall(ctx, next) {
+	ctx.session.refresh()
+	let goodsName = ctx.request.body.goods
+	let sql = `UPDATE goods SET inventory = 0 WHERE `
+
+	for(let i=0; i<goodsName.length; i++) {
+		if(i < goodsName.length - 1) {
+			sql += `goodsName = '${goodsName[i].goodsName}' OR `
+
+		} else {
+			sql += `goodsName = '${goodsName[i].goodsName}'`
+		}
+	}
+	await db.MySQL_db(sql)
+	ctx.body = {
+		code: 0,
+		data:{
+			msg : "卖出成功!"
+		}
+	}
+}
+async function purchase(ctx, next) {
+	ctx.session.refresh()
+	let goodsList = ctx.request.body.goods
+	console.log(goodsList);
+	
+	let import_time = (new Date()).toLocaleString()
+	for(let i=0; i<goodsList.length; i++) {
+		let sql = `UPDATE goods SET inventory = inventory + '${goodsList[i].num}' , import_time = '${import_time}' WHERE goodsName = '${goodsList[i].goodsName}'`
+		console.log(sql);
+		
+		await db.MySQL_db(sql)
+	}
+	ctx.body = {
+		code: 0,
+		data:{
+			msg : "买入成功!"
 		}
 	}
 }
@@ -380,6 +431,9 @@ module.exports = {
 	allorder: allorder,
 	takeorder: takeorder,
 	finishorder: finishorder,
+	saleall: saleall,
+	purchase: purchase,
+	inventory: inventory,
 	delivery: delivery,
 	dayheat: dayheat,
 	weekheat: weekheat,

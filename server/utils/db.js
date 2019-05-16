@@ -2,7 +2,7 @@ const MySQL_config = require('../config/MySQL-config')
 const Redis_config = require('../config/Redis-config') 
 const db = require('../config/Neo4j-config')
 const mysql = require('mysql'),
-     	pool  = mysql.createPool(MySQL_config);
+     	pool  = mysql.createPool(MySQL_config)
 const redis = require('ioredis'),
 		client = redis.createClient(Redis_config.rds_port, Redis_config.rds_host, Redis_config.rds_opts);
 

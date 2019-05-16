@@ -6,4 +6,5 @@ module.exports = {
 	        'user': 'root',
 	        'password': '158728',
 	        'database': 'freshfood',
+	        'multipleStatements': true
 	    }

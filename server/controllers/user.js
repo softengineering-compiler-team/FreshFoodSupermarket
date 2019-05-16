@@ -16,31 +16,30 @@ async function signup(ctx, next) {
 	let sql1 = `select * from user where username = '${username}'`
 	let data1 = await db.MySQL_db(sql1)
 
+	let msg = ``
+	let code = 0
+
 	if(data1.length != 0) {
-		ctx.body = {
-			code: -1,
-			data: {
-				msg: "用户名已存在！"
-			}
-		}
-		return
+		code = -1
+		msg = "用户名已存在！"
+
 	} else {
+
 		let sql2 = `insert into user (username, password, email) values ('${username}', '${password}', '${email}')`
 		await db.MySQL_db(sql2)
 		
 		let cypher = `create(user:User{username:'${username}'})`
+		await Neo4j_db(cypher)
+			
+		code = 0
+		msg = "注册成功！"
 		
-		let neo4j_data = await Neo4j_db(cypher)
-
-		console.log(neo4j_data)
-
-		ctx.body = {
-			code: 0,
-			data: {
-				msg : "注册成功！"
-			}
+	}
+	ctx.body = {
+		code: code,
+		data: {
+			msg : msg
 		}
-		
 	}
 }
 
@@ -128,14 +127,11 @@ async function signin(ctx, next) {
 
 	let data = await db.MySQL_db(sql)
 
+	let code = 0
+	let msg = ``
 	if(data.length === 0) {
-		ctx.body = {
-			code: -1,
-			data: {
-				msg : "用户名或密码错误！"
-			}
-		}
-		return 
+			code = -1
+			msg = "用户名或密码错误！"
 	} else {
 
 		ctx.cookies.set('username', encodeURIComponent(username) , {
@@ -149,13 +145,16 @@ async function signin(ctx, next) {
 
 		ctx.session.user = {userName: data[0].username}
 
-		ctx.body = {
-			code: 0,
-			data: {
-				msg : "登录成功！"
-			}
+		code = 0
+		msg = "登录成功！"
+	
+	}
+
+	ctx.body = {
+		code: code,
+		data: {
+			msg : msg
 		}
-		
 	}
 }
 
@@ -238,22 +237,42 @@ async function buy(ctx, next) {
 			sql += `('${username}', '${goodsList[i].goodsNo}', '${md5(username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}'), `
 
 		} else {
-			sql += `('${username}', '${goodsList[i].goodsNo}', '${md5(username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}')`
+			sql += `('${username}', '${goodsList[i].goodsNo}', '${md5(username + orderTime + goodsList[i].subtotal)}', '${goodsList[i].num}', '${orderTime}', ${goodsList[i].subtotal}, '${goodsList[i].address}');`
 		}
 	}
 
-	await db.MySQL_db(sql)
-	for (let i=0; i<goodsList.length;i++){
-		let sql = `UPDATE goods SET inventory = inventory - '${goodsList[i].num}' WHERE goodsNo = '${goodsList[i].goodsNo}'`
-		await db.MySQL_db(sql)
-	}
-	
-	let cypher = `match(user:User{username: '${username}'}) create`
-	for(let i=0; i<goodsList.lenght; i++) {
+
+	for (let i=0; i<goodsList.length; i++) {
+
 		if(i < goodsList.length - 1) {
-			cypher += `(user)-[:Buy{num:${goodsList[i].num}}]->(:Goods{goodsNo: ${goodsList[i].goodsNo}}), `
+			sql += `UPDATE goods SET inventory = inventory - '${goodsList[i].num}' WHERE goodsNo = '${goodsList[i].goodsNo}';`
 		} else {
-			cypher += `(user)-[:Buy{num:${goodsList[i].num}}]->(:Goods{goodsNo: ${goodsList[i].goodsNo}})`
+			sql += `UPDATE goods SET inventory = inventory - '${goodsList[i].num}' WHERE goodsNo = '${goodsList[i].goodsNo}'`
+		}
+	
+	}
+
+	await db.MySQL_db(sql)
+	
+	let cypher = `match(user:User{username: '${username}'}),`
+
+	for(let j=0; j<goodsList.length; j++) {
+		let node_name = '_' + j 
+		if(j < goodsList.length - 1) {
+			cypher += `(${node_name}:Goods{goodsNo:${goodsList[j].goodsNo}}),`
+		} else {
+			cypher += `(${node_name}:Goods{goodsNo:${goodsList[j].goodsNo}})`
+		}
+	}
+
+	cypher += `create`
+
+	for(let i=0; i<goodsList.length; i++) {
+		node_name = '_' + i
+		if(i < goodsList.length - 1) {
+			cypher += `(user)-[:Buy{num:${goodsList[i].num}}]->(${node_name}), `
+		} else {
+			cypher += `(user)-[:Buy{num:${goodsList[i].num}}]->(${node_name})`
 		}
 		
 	}
@@ -284,10 +303,15 @@ async function fav(ctx, next) {
 
     let goodsList = (await Neo4j_db(cypher)).data
 
-    if(goodsList.length === 0) {
+
+
+    if(goodsList.length != 5) {
     	cypher = `match (goods:Goods)
-    				return goods.goodsNo`
-    	goodsList = randomNos()
+    				return count(goods) as goodsCount`
+
+    	let max = (await Neo4j_db(cypher)).data[0]
+
+    	goodsList = randomNos(goodsList, 5, max) 
 
     }
 

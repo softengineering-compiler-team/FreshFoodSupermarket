@@ -306,7 +306,9 @@ async function purchase(ctx, next) {
 	
 	let import_time = (new Date()).toLocaleString()
 	for(let i=0; i<goodsList.length; i++) {
-		let sql = `UPDATE goods SET inventory = inventory + '${goodsList[i].num}' AND import_time = '${import_time}' WHERE goodsName = '${goodsList[i].goodsName}'`
+		let sql = `UPDATE goods SET inventory = inventory + '${goodsList[i].num}' , import_time = '${import_time}' WHERE goodsName = '${goodsList[i].goodsName}'`
+		console.log(sql);
+		
 		await db.MySQL_db(sql)
 	}
 	ctx.body = {

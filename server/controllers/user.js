@@ -254,14 +254,15 @@ async function buy(ctx, next) {
 		
 	}
 
+	await Neo4j_db(cypher)
+
 	ctx.body = {
 		code: 0,
 		data: {
 			msg: "下单成功！"
 		}
 	}
-
-	await Neo4j_db(cypher)
+	
 
 }
 

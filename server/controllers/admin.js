@@ -298,7 +298,7 @@ async function saleall(ctx, next) {
 		}
 	}
 }
-//Jenkins测试
+//Jenkins测试2
 async function purchase(ctx, next) {
 	ctx.session.refresh()
 	let goodsList = ctx.request.body.goods

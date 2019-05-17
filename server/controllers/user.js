@@ -292,6 +292,7 @@ async function buy(ctx, next) {
 /*个人推荐（猜你喜欢）*/
 async function fav(ctx, next) {
 	ctx.session.refresh()
+	/*每次推荐五个商品，类别未做限制*/
 	let username = ctx.request.body.username
 	let cypher = `match p=(host:User)-[:SimilarTo|Buy*1..6]-(pg:Goods)
                     where host.username = '${username}'

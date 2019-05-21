@@ -1,14 +1,16 @@
-module.exports = function() {
-  var ids = [0, 0, 0, 0]
-  var id = Math.floor(Math.random() * 175 + 1)
-  ids[0] = id
-  for (var i = 1; i <= 4; i++) {
-    var id = Math.floor(Math.random() * 100 + 1)
-    while (id === ids[0] || id === ids[1] || id === ids[2] || id === ids[3]) {
-      id = Math.floor(Math.random() * 100 + 1)
-    }
-    ids[i] = id
+/*fetch ${num} goodsNos and all of them haven't been in the given list*/
+module.exports = function(list, num, max) {
+  if(list.length >= num) {
+    return list
   }
-  return ids
+
+  for (var i = list.length; i < num; i++) {
+    let id = Math.floor(Math.random() * max + 1)
+    while (~list.indexOf(id)) {
+      id = Math.floor(Math.random() * max + 1)
+    }
+    list.push(id)
+  }
+  return list
 }
 

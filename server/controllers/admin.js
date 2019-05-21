@@ -209,6 +209,7 @@ async function order(ctx, next) {
 		orderData['orderTime'] = data1[0].orderTime
 		orderData['username'] = data1[0].username
 		orderData['status'] = data1[0].status
+		orderData['address'] = data1[0].address
 		totalData.push(orderData)
 	}
 	ctx.body = {
@@ -219,7 +220,7 @@ async function order(ctx, next) {
 
 async function inventory(ctx, next) {
 	ctx.session.refresh()
-	let sql = `SELECT subtype,goodsName,cost,DATE_SUB(import_time,INTERVAL validity HOUR) AS guarantee_period,inventory FROM goods ORDER BY guarantee_period  `
+	let sql = `SELECT subtype,goodsName,cost,DATE_SUB(import_time,INTERVAL validity HOUR) AS guarantee_period,inventory FROM goods ORDER BY inventory,guarantee_period  `
 	let invent = await db.MySQL_db(sql)
 	var data = []
 	data.push(invent)
@@ -257,7 +258,7 @@ async function finishorder(ctx, next) {
 
 	let orderNo = ctx.request.body.orderNo
 	let finishTime = (new Date()).toLocaleString()
-	let sql = `UPDATE receive SET STATUS = 2 and '${finishTime}' WHERE orderNo = '${orderNo}'`
+	let sql = `UPDATE receive SET STATUS = 2 and finishTime = '${finishTime}' WHERE orderNo = '${orderNo}'`
 	let data = await db.MySQL_db(sql)
 	if (data.length === 0) {
 		ctx.body = {
@@ -298,7 +299,6 @@ async function saleall(ctx, next) {
 		}
 	}
 }
-//Jenkins测试5
 async function purchase(ctx, next) {
 	ctx.session.refresh()
 	let goodsList = ctx.request.body.goods
@@ -372,6 +372,7 @@ async function allorder(ctx, next) {
 		orderData['orderTime'] = data1[0].orderTime
 		orderData['username'] = data1[0].username
 		orderData['status'] = data1[0].status
+		orderData['address'] = data1[0].address
 		totalData.push(orderData)
 	}
 	ctx.body = {
@@ -419,6 +420,7 @@ async function delivery(ctx, next) {
 		orderData['orderTime'] = data1[0].orderTime
 		orderData['username'] = data1[0].username
 		orderData['status'] = data1[0].status
+		orderData['address'] = data1[0].address
 		totalData.push(orderData)
 	}
 	ctx.body = {

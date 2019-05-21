@@ -258,7 +258,7 @@ async function finishorder(ctx, next) {
 
 	let orderNo = ctx.request.body.orderNo
 	let finishTime = (new Date()).toLocaleString()
-	let sql = `UPDATE receive SET STATUS = 2 and finishTime = '${finishTime}' WHERE orderNo = '${orderNo}'`
+	let sql = `UPDATE receive SET STATUS = 2, finishTime = '${finishTime}' WHERE orderNo = '${orderNo}'`
 	let data = await db.MySQL_db(sql)
 	if (data.length === 0) {
 		ctx.body = {

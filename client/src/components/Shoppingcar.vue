@@ -317,6 +317,7 @@ export default {
             this.resaddr.push(data)
             this.resaddr[key].area = this.resaddr[key].province+' '+this.resaddr[key].city+' '+this.resaddr[key].county
             this.modal1 = false
+            this.currentaddr = this.resaddr[key].area+' '+this.resaddr[0].street
         }
         else{
             this.$Message.error(res.data.data.msg);

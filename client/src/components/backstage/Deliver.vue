@@ -115,7 +115,7 @@ export default {
         }
       })
       .catch(error => {
-        this.$Message.error(res.data.data.msg);
+        this.$Message.error('失败，请稍后再试');
         console.log(error)
         // this.errored = true
       })
@@ -141,7 +141,7 @@ export default {
         .get(this.serverUrl+'/query/allorder',{params:data},this.headconfig)
         .then(res => {
           if(res.data.code==0){
-            //   console.log(res.data.data);
+              console.log(res.data.data);
               for (let j = 0; j < res.data.data.length; j++) {
                   if (res.data.data[j].status==1) {
                       this.data1.push(res.data.data[j])

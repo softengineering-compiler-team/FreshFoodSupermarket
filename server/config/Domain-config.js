@@ -1,2 +1,2 @@
-let domain = 'localhost'
+let domain = 'www.datastreams.club'
 module.exports = domain

@@ -37,6 +37,11 @@ export default {
                         type: 'text',
                         value: this.data[params.index].num,
                     },
+                     on:{
+                          'on-blur':(event) => {
+                              this.data[params.index].num = event.target.value;
+                          }
+                      },
                 });
             },
         },
@@ -51,6 +56,8 @@ export default {
         this.data[i].num=num
         this.data.push('1')
         this.data.splice(this.data.length-1,1)
+        console.log(1);
+        
       }
     },
     buygoods(){
@@ -63,6 +70,8 @@ export default {
           num:this.data[i].num
         })
       }
+      console.log(data);
+      
       this.axios
       .post(this.serverUrl + `/purchase` ,this.qs.stringify(data), this.headconfig)
       .then(res => {

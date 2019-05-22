@@ -4,11 +4,11 @@
         <Tabs class="tabs" value="name1">
             <TabPane label="我的订单" name="name1"></TabPane>
         </Tabs>
-        <div v-for="(order,index) in list" :key="index"  class="order">
+        <div v-if="listshow" v-for="(order,index) in list" :key="index"  class="order">
             <div class="orderinfo">
                 <div class="orderid">订单编号：{{order.orderNo}}</div>
                 <div class="ordercreatetime">创建时间：{{order.orderTime|dateformat('YYYY-MM-DD HH:mm:ss')}}</div>
-                <div class="orderstatus">订单状态：<span style="color:lightgreen">{{changestatus(order.status)}}</span> </div>
+                <div class="orderstatus">订单状态：<span :style="changecolor(order.status)">{{changestatus(order.status)}}</span> </div>
             </div>
             <div v-for="(goods,index1) in order.goodsList" :key="index1" class="order-inside">
                 <div class="imgbox2"><img class="img2" :src="'/static/goodsimg/'+goods.goodsName+'.jpg'"></div>
@@ -31,6 +31,7 @@
                 </div>
             </div>
         </div>
+        <div v-if="!listshow" class="nolist">还没有订单哦</div>
         <bottom></bottom>
     </div>
 </template>
@@ -40,6 +41,7 @@ import Top from '@/components/Top'
 export default {
   data () {
     return {
+      listshow:true,
       list: [
          {
             data:[{
@@ -114,10 +116,24 @@ export default {
     },
     changestatus(status){
         if (status==0) {
-            return '已送达'
+            return '未接单'
+        }
+        else if(status==1){
+            return '在路上'
         }
         else{
-            return '未送达'
+            return '已送达'
+        }
+    },
+    changecolor(status){
+        if (status==0) {
+            return 'color:rgb(10,10,10);'
+        }
+        else if(status==1){
+            return 'color:red;'
+        }
+        else{
+            return 'color:lightgreen;'
         }
     },
     add(a,b){
@@ -131,6 +147,7 @@ export default {
       this.axios
       .get(this.serverUrl+'/query/order',{params:data},this.headconfig)
       .then(res => {
+          console.log(res.data);
         if(res.data.code==0){
              console.log(res.data.data);
              this.list = res.data.data
@@ -140,8 +157,7 @@ export default {
         }
       })
       .catch(error => {
-        this.$Message.error('获取信息失败');
-        console.log(error)
+        this.listshow=false;
         // this.errored = true
       })
   },
@@ -277,5 +293,16 @@ export default {
 .hastenbtn{
     margin-right:20px;
     width:100px;
+}
+.nolist{
+    font-size:30px;
+    color:rgb(200, 200, 200);
+    font-weight: 700;
+    letter-spacing:10px;
+    margin-left:10%;
+    margin-right:10%;
+    padding-top:100px;
+    text-align: center;
+    min-height: 350px;
 }
 </style>

@@ -42,7 +42,28 @@ async function signup(ctx, next) {
 		}
 	}
 }
-
+/*删除不需要的地址*/
+async function deleteaddress(ctx, next){
+	addressNo = ctx.request.body.addressNo
+	let sql = `DELETE FROM address WHERE addressNo = '${addressNo}'`
+	let data = await db.MySQL_db(sql)
+	let code = 0
+	let msg = ''
+	if( data.length != 0){
+		code = 0
+		msg = "删除成功!"
+	}
+	else{
+		code = -1
+		msg = "删除失败!"
+	}
+	ctx.body = {
+		code: code,
+		data:{
+			msg: msg
+		}
+	}
+}
 /*找回密码*/
 async function retrieve(ctx, next) {
 
@@ -328,6 +349,7 @@ async function fav(ctx, next) {
 
 module.exports = {
 	signup: signup,
+	deleteaddress : deleteaddress,
 	retrieve: retrieve,
 	reset: reset,
 	signin: signin,

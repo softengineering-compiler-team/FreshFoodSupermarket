@@ -28,7 +28,7 @@ Vue.use(VueCookies) //cookie插件
 axios.defaults.withCredentials=true 
 Vue.prototype.axios = axios;
 Vue.prototype.qs = Qs;
-Vue.prototype.serverUrl = 'http://www.datastreams.club:3000'
+Vue.prototype.serverUrl = 'http://localhost:3000'
 Vue.prototype.$echarts = echarts
 Vue.prototype.headconfig = {
   headers: {

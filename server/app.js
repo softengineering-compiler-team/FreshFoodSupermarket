@@ -12,8 +12,7 @@ const md5 = require('md5')
 const Redis_db = (require('./utils/db')).Redis_db
 const Store = require('./utils/Store')
 const user = require('./routes/user')
-const query = require('./routes/query')
-const insert = require('./routes/insert')
+const goods = require('./routes/goods')
 const update = require('./routes/update')
 
 // error handler
@@ -93,7 +92,6 @@ app.use(cors({
 // routes
 app.use(user.routes(), user.allowedMethods())
 app.use(query.routes(), query.allowedMethods())
-app.use(insert.routes(), insert.allowedMethods())
 app.use(update.routes(), update.allowedMethods())
 
 // error-handling

@@ -10,5 +10,4 @@ router.post('/saleall', controllers.admin.saleall)
 //采购物品
 router.post('/purchase', controllers.admin.purchase)
 //删除地址
-router.post('/deleteaddress', controllers.user.deleteaddress)
 module.exports = router

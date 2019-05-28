@@ -17,6 +17,8 @@ import Userorder from '@/components/Userorder'
 import Login from '@/components/login'
 import PersonalCenter from '@/components/PersonalCenter'
 import Reset from '@/components/reset'
+import Search from '@/components/search'
+
 Vue.use(Router)
 
 export default new Router({
@@ -65,6 +67,11 @@ export default new Router({
       path:'/reset',
       name:'Reset',
       component:Reset
+    },
+    {
+      path:'/search',
+      name:'Search',
+      component:Search
     },
     {
       path: '/backstage',

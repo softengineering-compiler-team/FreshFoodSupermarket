@@ -4,7 +4,15 @@ async function all(ctx, next) {
 	ctx.session.refresh()
 
 	let goodsName = ctx.request.query.goodsName 
-	let sql = `select goodsNo, goodsName, type, subtype, price, inventory, validity, description from goods where goodsName = '${goodsName}'`
+
+    let keylist = goodsName.split('')
+    let re = '.*'
+    for(let i = 0; i < keylist.length; i ++) {
+        re += keylist[i] + '.*';
+    }
+	
+	let sql = `select goods.goodsNo, goods.goodsName, goods.type, goods.subtype, goods.price, goods.inventory, goods.validity, goods.description, total from goods left join sale on goods.goodsNo = sale.goodsNo where goods.goodsName regexp '${re}' order by total desc`
+	
 	let data = await db.MySQL_db(sql)
 	ctx.body = {
 		code: 0,

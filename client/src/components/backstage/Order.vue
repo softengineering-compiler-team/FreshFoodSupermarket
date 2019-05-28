@@ -40,10 +40,6 @@ export default {
           title: "状态",
           key: "status"
         },
-        {
-          title: "操作",
-          key: "operation"
-        },
       ],
       data1: [
       ],

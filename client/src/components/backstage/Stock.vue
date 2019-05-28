@@ -2,7 +2,6 @@
     <div>
         <Table border @on-selection-change="handleSelectRow()" ref="selection" :columns="columns4" :data="data2"></Table>
         <div class="stock-bottom">
-            <Button size="large" class="button" type="primary" icon="md-cart">推荐订货</Button>
             <Button @click="sell" size="large" class="button" type="primary" icon="md-cart">卖出</Button>
             <Button @click="addgoods" size="large" class="button" type="primary" icon="md-add-circle">加入采购列表</Button>
             <Button @click="buy" size="large" class="button" type="primary" icon="md-cart">去采购</Button>

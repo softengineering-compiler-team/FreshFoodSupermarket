@@ -47,13 +47,15 @@ async function deleteaddress(ctx, next){
 	addressNo = ctx.request.body.addressNo
 	let sql = `DELETE FROM address WHERE addressNo = '${addressNo}'`
 	let data = await db.MySQL_db(sql)
+	let code = 0
+	let msg = ''
 	if( data.length != 0){
-		let code = 0
-		let msg = "删除成功!"
+		code = 0
+		msg = "删除成功!"
 	}
 	else{
-		let code = -1
-		let msg = "删除失败!"
+		code = -1
+		msg = "删除失败!"
 	}
 	ctx.body = {
 		code: code,
@@ -311,6 +313,7 @@ async function buy(ctx, next) {
 /*个人推荐（猜你喜欢）*/
 async function fav(ctx, next) {
 	ctx.session.refresh()
+	/*每次推荐五个商品，类别未做限制*/
 	let username = ctx.request.body.username
 	let cypher = `match p=(host:User)-[:SimilarTo|Buy*1..6]-(pg:Goods)
                     where host.username = '${username}'

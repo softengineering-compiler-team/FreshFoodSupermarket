@@ -13,13 +13,18 @@ async function MySQL_db(sql) {
 				console.error(err)
 				reject(err)
 			}
-			connection.query(sql, (err, result)=> {
-				if(err) {
-					reject(err)
-				}
-				connection.release()
-				resolve(result)
-			})
+			if(connection) {
+				connection.query(sql, (err, result)=> {
+					if(err) {
+						reject(err)
+					}
+					connection.release()
+					resolve(result)
+				})
+			} else {
+				console.log("Connection === undefined")
+				resolve(``)
+			}
 		})
 	}) 	
 }

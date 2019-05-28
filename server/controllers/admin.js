@@ -175,7 +175,7 @@ async function order(ctx, next) {
 
 	//let username = ctx.request.query.username
 	let username = ctx.session.user.userName
-	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 0 and username ='${username}' order by orderTime desc, orderNo desc`
+	let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where username ='${username}' order by orderTime desc, orderNo desc`
 	let data = await db.MySQL_db(sql)
 	var totalData = []
 	let orderNo = data[0].orderNo
@@ -190,7 +190,7 @@ async function order(ctx, next) {
 	}
 	for(let i=0;i<orderNum.length;i++){
 		let temporder = orderNum[i]
-		let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = 0 AND orderNo = '${temporder}' and username ='${username}' order by orderTime desc`
+		let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND orderNo = '${temporder}' and username ='${username}' order by orderTime desc`
 		let data1 = await db.MySQL_db(sql1)
 		var goodsList = new Array()
 		var orderData = {}
@@ -258,7 +258,7 @@ async function finishorder(ctx, next) {
 
 	let orderNo = ctx.request.body.orderNo
 	let finishTime = (new Date()).toLocaleString()
-	let sql = `UPDATE receive SET STATUS = 2 and finishTime = '${finishTime}' WHERE orderNo = '${orderNo}'`
+	let sql = `UPDATE receive SET STATUS = 2, finishTime = '${finishTime}' WHERE orderNo = '${orderNo}'`
 	let data = await db.MySQL_db(sql)
 	if (data.length === 0) {
 		ctx.body = {

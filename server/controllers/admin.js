@@ -3,7 +3,19 @@ const AdminModel = require('../Models/AdminModel')
 async function dayheat(ctx,next){
 	ctx.session.refresh()
 
+<<<<<<< HEAD
 	let data = await AdminModel.dayheat()
+=======
+	var data = new Array()
+	let sql1 = 'SELECT SUM(num) as num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 24 HOUR) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY num DESC limit 5'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['num'] = dayData[i].num
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+>>>>>>> eb64db47a71c82d5abfd2d451a4aef62fcf4cf16
 	ctx.body = {
 		code:0,
 		data:data
@@ -13,7 +25,19 @@ async function dayheat(ctx,next){
 async function weekheat(ctx,next){
 	ctx.session.refresh()
 
+<<<<<<< HEAD
 	let data = await AdminModel.weekheat()
+=======
+	var data = new Array()
+	let sql1 = 'SELECT SUM(num) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY num DESC limit 5'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['num'] = dayData[i].num
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+>>>>>>> eb64db47a71c82d5abfd2d451a4aef62fcf4cf16
 	ctx.body = {
 		code:0,
 		data:data
@@ -23,7 +47,19 @@ async function weekheat(ctx,next){
 async function monthheat(ctx,next){
 	ctx.session.refresh()
 
+<<<<<<< HEAD
 	let data = await AdminModel.monthheat()
+=======
+	var data = new Array()
+	let sql1 = 'SELECT SUM(num) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY num DESC limit 5'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['num'] = dayData[i].num
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+>>>>>>> eb64db47a71c82d5abfd2d451a4aef62fcf4cf16
 	ctx.body = {
 		code:0,
 		data:data
@@ -33,7 +69,19 @@ async function monthheat(ctx,next){
 async function daysale(ctx,next){
 	ctx.session.refresh()
 
+<<<<<<< HEAD
 	let data = await AdminModel.daysale()
+=======
+	var data = new Array()
+	let sql1 = 'SELECT SUM(num) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+>>>>>>> eb64db47a71c82d5abfd2d451a4aef62fcf4cf16
 	ctx.body = {
 		code:0,
 		data:data
@@ -43,7 +91,19 @@ async function daysale(ctx,next){
 async function weeksale(ctx,next){
 	ctx.session.refresh()
 
+<<<<<<< HEAD
 	let data = await AdminModel.weeksale()
+=======
+	var data = new Array()
+	let sql1 = 'SELECT SUM(num) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+>>>>>>> eb64db47a71c82d5abfd2d451a4aef62fcf4cf16
 	ctx.body = {
 		code:0,
 		data:data
@@ -53,7 +113,19 @@ async function weeksale(ctx,next){
 async function monthsale(ctx,next){
 	ctx.session.refresh()
 
+<<<<<<< HEAD
 	let data = await AdminModel.monthsale()
+=======
+	var data = new Array()
+	let sql1 = 'SELECT SUM(num) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+>>>>>>> eb64db47a71c82d5abfd2d451a4aef62fcf4cf16
 	ctx.body = {
 		code:0,
 		data:data
@@ -63,7 +135,19 @@ async function monthsale(ctx,next){
 async function dayprofit(ctx,next){
 	ctx.session.refresh()
 
+<<<<<<< HEAD
 	let data = await AdminModel.dayprofit()
+=======
+	var data = new Array()
+	let sql1 = 'SELECT SUM(num) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+>>>>>>> eb64db47a71c82d5abfd2d451a4aef62fcf4cf16
 	ctx.body = {
 		code:0,
 		data:data
@@ -73,7 +157,19 @@ async function dayprofit(ctx,next){
 async function weekprofit(ctx,next){
 	ctx.session.refresh()
 
+<<<<<<< HEAD
 	let data = await AdminModel.weekprofit()
+=======
+	var data = new Array()
+	let sql1 = 'SELECT SUM(num) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+>>>>>>> eb64db47a71c82d5abfd2d451a4aef62fcf4cf16
 	ctx.body = {
 		code:0,
 		data:data
@@ -83,7 +179,19 @@ async function weekprofit(ctx,next){
 async function monthprofit(ctx,next){
 	ctx.session.refresh()
 
+<<<<<<< HEAD
 	let data = await AdminModel.monthprofit()
+=======
+	var data = new Array()
+	let sql1 = 'SELECT SUM(num) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
+	let dayData = await db.MySQL_db(sql1)
+	for(let i=0;i<dayData.length;i++){
+		var dayheat = {}
+		dayheat['total'] = dayData[i].total
+		dayheat['subType'] = dayData[i].subType
+		data.push(dayheat)
+	}
+>>>>>>> eb64db47a71c82d5abfd2d451a4aef62fcf4cf16
 	ctx.body = {
 		code:0,
 		data:data

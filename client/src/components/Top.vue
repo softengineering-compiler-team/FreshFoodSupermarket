@@ -23,7 +23,7 @@
     </div>
     <div class="search">
       <img @click="gomain" class="logo" src="../assets/logo.png">
-      <Input class="input" size="large" search enter-button="搜索" placeholder="输入你想要的生鲜" />
+      <Input class="input" size="large" @on-search="search" search enter-button="搜索" placeholder="输入你想要的生鲜" />
     </div>
     </div>
 </template>
@@ -147,6 +147,33 @@ export default {
           centershow:'1'
         }
       })
+    },
+    search(value){
+      if(value){
+        let data = {
+          goodsName:value,
+        }
+        this.axios
+        .get(this.serverUrl+'/query/',{params:data},this.headconfig)
+        .then(res => {
+          if(res.data.code==0){
+              // console.log(res.data.data);
+              this.$store.state.searchlist=res.data.data
+              this.$router.push('search')
+          }
+          else{
+              this.$Message.error('获取信息失败');
+          }
+        })
+        .catch(error => {
+          this.$Message.error('获取信息失败');
+          console.log(error)
+          // this.errored = true
+        })
+      }
+      else{
+        this.$Message.error("搜索内容不能为空");
+      }
     }
   },
   created:function(){

@@ -6,6 +6,7 @@ const state = {
   count: 0,
   goodsList:[],
   backbuygoodsList:[],
+  searchlist:[],
 };
 var vuexStore = new Vuex.Store({
   classification:'',

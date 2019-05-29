@@ -154,7 +154,7 @@ class UserModel {
 		cypher += `create`
 
 		for(let i=0; i<goodsList.length; i++) {
-			node_name = '_' + i
+			let node_name = '_' + i
 			if(i < goodsList.length - 1) {
 				cypher += `(user)-[:Buy{num:${goodsList[i].num}}]->(${node_name}), `
 			} else {

@@ -9,7 +9,7 @@ router.post('/signout', controllers.User.signout)
 router.post('/buy', controllers.User.buy)
 router.post('/address', controllers.User.insertAddress)
 router.post('/deleteaddress', controllers.User.deleteaddress)
-router.get('/address', controllers.User.address)
-router.post('/fav', controllers.User.fav) //个人推荐（猜你喜欢）
+router.get('/query/address', controllers.User.address)
+router.post('/query/fav', controllers.User.fav) //个人推荐（猜你喜欢）
 
 module.exports = router

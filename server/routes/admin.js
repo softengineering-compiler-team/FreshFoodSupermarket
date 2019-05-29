@@ -14,5 +14,9 @@ router.get('/monthsale', controllers.Admin.monthsale)//月销售额
 router.get('/dayprofit', controllers.Admin.dayprofit)//日盈利额
 router.get('/weekprofit', controllers.Admin.weekprofit)//周盈利额
 router.get('/monthprofit', controllers.Admin.monthprofit)//月盈利额
+router.post('/takeorder', controllers.Admin.takeorder)//点击接单
+router.post('/finishorder', controllers.Admin.finishorder)//点击完成
+router.post('/saleall', controllers.Admin.saleall)//点击一键卖出,把inventory清空
+router.post('/purchase', controllers.Admin.purchase)//采购物品
 
 module.exports = router

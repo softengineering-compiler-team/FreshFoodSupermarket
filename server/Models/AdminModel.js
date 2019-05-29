@@ -17,7 +17,7 @@ class AdminModel {
 	static async weekheat() {
 		var data = new Array()
 		let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY COUNT(*) DESC limit 5'
-		let dayData = await db.MySQL_db(sql1)
+		let dayData = await MySQL_db(sql1)
 		for(let i=0;i<dayData.length;i++){
 			var dayheat = {}
 			dayheat['num'] = dayData[i].num
@@ -30,7 +30,7 @@ class AdminModel {
 	static async monthheat() {
 		var data = new Array()
 		let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY COUNT(*) DESC limit 5'
-		let dayData = await db.MySQL_db(sql1)
+		let dayData = await MySQL_db(sql1)
 		for(let i=0;i<dayData.length;i++){
 			var dayheat = {}
 			dayheat['num'] = dayData[i].num
@@ -43,7 +43,7 @@ class AdminModel {
 	static async daysale() {
 		var data = new Array()
 		let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
-		let dayData = await db.MySQL_db(sql1)
+		let dayData = await MySQL_db(sql1)
 		for(let i=0;i<dayData.length;i++){
 			var dayheat = {}
 			dayheat['total'] = dayData[i].total
@@ -56,7 +56,7 @@ class AdminModel {
 	static async weeksale() {
 		var data = new Array()
 		let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
-		let dayData = await db.MySQL_db(sql1)
+		let dayData = await MySQL_db(sql1)
 		for(let i=0;i<dayData.length;i++){
 			var dayheat = {}
 			dayheat['total'] = dayData[i].total
@@ -69,7 +69,7 @@ class AdminModel {
 	static async monthsale() {
 		var data = new Array()
 		let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`) AS total FROM receive,goods  WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo`  GROUP BY goods.`subType` ORDER BY total DESC'
-		let dayData = await db.MySQL_db(sql1)
+		let dayData = await MySQL_db(sql1)
 		for(let i=0;i<dayData.length;i++){
 			var dayheat = {}
 			dayheat['total'] = dayData[i].total
@@ -82,7 +82,7 @@ class AdminModel {
 	static async dayprofit() {
 		var data = new Array()
 		let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 1 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
-		let dayData = await db.MySQL_db(sql1)
+		let dayData = await MySQL_db(sql1)
 		for(let i=0;i<dayData.length;i++){
 			var dayheat = {}
 			dayheat['total'] = dayData[i].total
@@ -95,7 +95,7 @@ class AdminModel {
 	static async weekprofit() {
 		var data = new Array()
 		let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
-		let dayData = await db.MySQL_db(sql1)
+		let dayData = await MySQL_db(sql1)
 		for(let i=0;i<dayData.length;i++){
 			var dayheat = {}
 			dayheat['total'] = dayData[i].total
@@ -108,7 +108,7 @@ class AdminModel {
 	static async monthprofit() {
 		var data = new Array()
 		let sql1 = 'SELECT COUNT(*) AS num,goods.`subType`,any_value(receive.`orderTime`) AS orderTime,SUM(receive.`subtotal`)-SUM(goods.`cost`) AS total FROM receive,goods WHERE DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= DATE(receive.`orderTime`) AND receive.`goodsNo`=goods.`goodsNo` GROUP BY goods.`subType` ORDER BY total DESC'
-		let dayData = await db.MySQL_db(sql1)
+		let dayData = await MySQL_db(sql1)
 		for(let i=0;i<dayData.length;i++){
 			var dayheat = {}
 			dayheat['total'] = dayData[i].total
@@ -120,7 +120,7 @@ class AdminModel {
 
 	static async order(username) {
 		let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where username ='${username}' order by orderTime desc, orderNo desc`
-		let data = await db.MySQL_db(sql)
+		let data = await MySQL_db(sql)
 		var totalData = []
 		let orderNo = data[0].orderNo
 		var orderNum = new Array()
@@ -135,7 +135,7 @@ class AdminModel {
 		for(let i=0;i<orderNum.length;i++){
 			let temporder = orderNum[i]
 			let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND orderNo = '${temporder}' and username ='${username}' order by orderTime desc`
-			let data1 = await db.MySQL_db(sql1)
+			let data1 = await MySQL_db(sql1)
 			var goodsList = new Array()
 			var orderData = {}
 			let total = 0
@@ -161,7 +161,7 @@ class AdminModel {
 
 	static async inventory() {
 		let sql = `SELECT subtype,goodsName,cost,DATE_SUB(import_time,INTERVAL validity HOUR) AS guarantee_period,inventory FROM goods ORDER BY inventory,guarantee_period  `
-		let invent = await db.MySQL_db(sql)
+		let invent = await MySQL_db(sql)
 		var data = []
 		data.push(invent)
 		return data
@@ -171,7 +171,7 @@ class AdminModel {
 		let code = 0
 		let msg = ''
 		let sql = `UPDATE receive SET STATUS = 1 WHERE orderNo = '${orderNo}'`
-		let data = await db.MySQL_db(sql)
+		let data = await MySQL_db(sql)
 		if (data.length === 0) {
 			code = -1
 			msg = "接单失败!"
@@ -184,7 +184,7 @@ class AdminModel {
 
 	static async finishorder(orderNo, finishTime) {
 		let sql = `UPDATE receive SET STATUS = 2, finishTime = '${finishTime}' WHERE orderNo = '${orderNo}'`
-		let data = await db.MySQL_db(sql)
+		let data = await MySQL_db(sql)
 		if (data.length === 0) {
 			code = -1
 			msg = "完成订单失败!"			
@@ -206,14 +206,14 @@ class AdminModel {
 				sql += `goodsName = '${goodsName[i].goodsName}'`
 			}
 		}
-		await db.MySQL_db(sql)
+		await MySQL_db(sql)
 		return 
 	}
 
 	static async purchase(goodsList, import_time) {
 		for(let i=0; i<goodsList.length; i++) {
 			let sql = `UPDATE goods SET inventory = inventory + '${goodsList[i].num}' , import_time = '${import_time}' WHERE goodsName = '${goodsList[i].goodsName}'`
-			await db.MySQL_db(sql)
+			await MySQL_db(sql)
 		}
 		return 
 	}
@@ -226,7 +226,7 @@ class AdminModel {
 			sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo order by orderTime desc, orderNo desc`
 		}
 		
-		let data = await db.MySQL_db(sql)
+		let data = await MySQL_db(sql)
 		var totalData = []
 		let orderNo = data[0].orderNo
 		var orderNum = new Array()
@@ -249,7 +249,7 @@ class AdminModel {
 				 sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND orderNo = '${temporder}'`
 			}
 			
-			let data1 = await db.MySQL_db(sql1)
+			let data1 = await MySQL_db(sql1)
 			var goodsList = new Array()
 
 			var orderData = {}
@@ -276,7 +276,7 @@ class AdminModel {
 
 	static async delivery() {
 		let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where status = 1 order by orderTime desc, orderNo desc`
-		let data = await db.MySQL_db(sql)
+		let data = await MySQL_db(sql)
 		var totalData = []
 		let orderNo = data[0].orderNo
 		var orderNum = new Array()
@@ -292,7 +292,7 @@ class AdminModel {
 		for(let i=0;i<orderNum.length;i++){
 			let temporder = orderNum[i]
 			let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND STATUS = 1 AND orderNo = '${temporder}'`
-			let data1 = await db.MySQL_db(sql1)
+			let data1 = await MySQL_db(sql1)
 			var goodsList = new Array()
 
 			var orderData = {}
@@ -317,3 +317,5 @@ class AdminModel {
 		return totalData
 	}
 }
+
+module.exports = AdminModel

@@ -13,7 +13,7 @@ class Goods {
 		}
 	}
 
-	static async function fruits(ctx, next) {
+	static async fruits(ctx, next) {
 		ctx.session.refresh()
 
 		let data = await GoodsModel.fruits()
@@ -24,7 +24,7 @@ class Goods {
 		}
 	}
 
-	static async function vegetables(ctx, next) {
+	static async vegetables(ctx, next) {
 		ctx.session.refresh()
 
 		let data = await GoodsModel.fruits()
@@ -35,7 +35,7 @@ class Goods {
 		}
 	}
 
-	static async function seafoods(ctx, next) {
+	static async seafoods(ctx, next) {
 		ctx.session.refresh()
 
 		let data = await GoodsModel.seafoods()
@@ -46,7 +46,7 @@ class Goods {
 		}
 	}
 
-	static async function meat(ctx, next) {
+	static async meat(ctx, next) {
 		ctx.session.refresh()
 
 		let data = await GoodsModel.meat()
@@ -57,7 +57,7 @@ class Goods {
 		}
 	}
 
-	static async function dairy(ctx, next) {
+	static async dairy(ctx, next) {
 		ctx.session.refresh()
 		
 		let data = await GoodsModel.dairy()

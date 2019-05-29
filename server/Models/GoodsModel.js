@@ -1,7 +1,7 @@
 const MySQL_db = (require('../utils/db')).MySQL_db
 
 class GoodsModel {
-	static async all(username) {
+	static async all(goodsName) {
 	    let keylist = goodsName.split('')
 	    let re = '.*'
 	    for(let i = 0; i < keylist.length; i ++) {
@@ -69,3 +69,5 @@ class GoodsModel {
 		return data
 	}
 }
+
+module.exports = GoodsModel

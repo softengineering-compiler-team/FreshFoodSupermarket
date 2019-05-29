@@ -48,7 +48,7 @@ class GoodsModel {
 	}
 
 	static async meat() {
-		var subtypeList = ['火鸡', '牛肉', '羊肉', '烤鸭', '鹅肉', '猪肉', '鸡肉']
+		var subtypeList = ['火鸡', '牛肉', '羊肉', '烤鸭', '烤鹅', '乳猪', '鸡肉']
 		var data = new Array()
 		for(let subtype of subtypeList) {
 			let sql = `select goodsNo, goodsName, type, subtype, price, inventory, validity, description from goods where type = '肉类' and subtype = '${subtype}' limit 5`
@@ -59,7 +59,7 @@ class GoodsModel {
 	}
 
 	static async dairy() {
-		var subtypeList = ['奶酪', '奶油', '奶粉', '酸奶', '巴氏鲜奶', '炼乳', '冰淇淋']
+		var subtypeList = ['奶酪', '奶油', '奶粉', '酸奶', '巴士奶', '炼乳', '冰淇淋']
 		var data = new Array()
 		for(let subtype of subtypeList) {
 			let sql = `select goodsNo, goodsName, type, subtype, price, inventory, validity, description from goods where type = '乳制品' and subtype = '${subtype}' limit 5`

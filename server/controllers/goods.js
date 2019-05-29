@@ -27,7 +27,7 @@ class Goods {
 	static async vegetables(ctx, next) {
 		ctx.session.refresh()
 
-		let data = await GoodsModel.fruits()
+		let data = await GoodsModel.vegetables()
 		
 		ctx.body = {
 			code: 0,

@@ -1,4 +1,4 @@
-const MySQL_db = require('../utils/db.js')
+const MySQL_db = require('../utils/db.js').MySQL_db
 
 class AdminModel {
 	static async dayheat() {

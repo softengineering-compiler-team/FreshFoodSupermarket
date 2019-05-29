@@ -140,8 +140,8 @@ class User {
 	/*新增个人地址*/
 	static async insertAddress(ctx, next) {
 		ctx.session.refresh()
-
-		let {username, province, city, county, street, addressname, default_} = ctx.request.body
+		let {username, province, city, county, street, addressname} = ctx.request.body
+		let default_ = ctx.request.body.default
 		await UserModel.insertAddress(username, province, city, county, street, addressname, default_)
 		ctx.body = {
 			code: 0,

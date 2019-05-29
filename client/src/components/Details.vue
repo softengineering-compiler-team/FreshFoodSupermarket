@@ -13,10 +13,10 @@
             <img class="details-img" :src="'/static/goodsimg/'+Goods.goodsName+'.jpg'">
             <div class="details-right">
                 <div class="details-name">{{Goods.goodsName}}</div>
+                <div class="details-description">"{{Goods.description}}"</div>
                 <div class="details-price">价格：<span style="font-size:25px;color:red"> ￥{{Goods.price}}</span></div>
-                <div class="details-yunfei">运费</div>
-                <div class="details-jinghan">净含量</div>
-                <div class="details-yuexiao">月销量</div>
+                <div class="details-jinghan">库存：{{Goods.inventory}}</div>
+                <div class="details-yuexiao">月销量：{{totalchange(Goods.total)}}</div>
                 <div class="details-count">数量
                     <div class="details-counts">
                             <InputNumber  :min="1" :step="1" v-model="goodscount"></InputNumber>
@@ -337,6 +337,14 @@ export default {
           break;
       }
     },
+    totalchange(total){
+        if(total){
+            return total
+        }
+        else{
+            return 0
+        }
+    }
   },
   created:function(){
       let name = this.$route.params.name
@@ -407,17 +415,18 @@ export default {
 }
 .details-price{
     position: absolute;
-    top:70px;
+    top:100px;
     margin-left:50px;
     height: 20px;
     font-size: 18px;
 }
-.details-yunfei{
+.details-description{
     position: absolute;
-    top:130px;
-    margin-left:50px;
+    top:45px;
+    margin-left:70px;
     height: 20px;
-    font-size: 18px;
+    font-size: 16px;
+    color:rgb(200, 200 , 200);
 }
 .details-jinghan{
     position: absolute;

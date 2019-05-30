@@ -147,6 +147,8 @@ class Admin {
 
 	static async purchase(ctx, next) {
 		ctx.session.refresh()
+		let goodsList = ctx.request.body.goods
+		let import_time = (new Date()).toLocaleString()
 		await AdminModel.purchase(goodsList, import_time)
 		
 		ctx.body = {

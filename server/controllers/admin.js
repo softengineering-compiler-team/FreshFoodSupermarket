@@ -82,17 +82,6 @@ class Admin {
 		}
 	}
 
-	static async order(ctx, next) {
-		ctx.session.refresh()
-		let username = ctx.session.user.userName
-		let data = await AdminModel.order(username)
-
-		ctx.body = {
-			code: 0,
-			data: data
-		}
-	}
-
 	static async inventory(ctx, next) {
 		ctx.session.refresh()
 		let data = await AdminModel.inventory()

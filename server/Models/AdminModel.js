@@ -118,47 +118,6 @@ class AdminModel {
 		return data
 	}
 
-	static async order(username) {
-		let sql = `select  receive.*, goods.goodsName from receive inner join goods on receive.goodsNo = goods.goodsNo where username ='${username}' order by orderTime desc, orderNo desc`
-		let data = await MySQL_db(sql)
-		var totalData = []
-		let orderNo = data[0].orderNo
-		var orderNum = new Array()
-		orderNum.push(orderNo)
-		for(let i=0;i<data.length;i++){
-			let temporder = data[i].orderNo
-			if(temporder != orderNo){
-				orderNum.push(temporder)
-				orderNo = temporder
-			}
-		}
-		for(let i=0;i<orderNum.length;i++){
-			let temporder = orderNum[i]
-			let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND orderNo = '${temporder}' and username ='${username}' order by orderTime desc`
-			let data1 = await MySQL_db(sql1)
-			var goodsList = new Array()
-			var orderData = {}
-			let total = 0
-			orderData['orderNo'] = data1[0].orderNo
-			for(let j=0;j<data1.length;j++){
-				var goodsObj = {} 
-				goodsObj['goodsName'] = data1[j].goodsName
-				goodsObj['num'] = data1[j].num
-				goodsList.push(goodsObj)
-				total += data1[j].subtotal
-			}
-			
-			orderData['goodsList'] = goodsList
-			orderData['total'] = total
-			orderData['orderTime'] = data1[0].orderTime
-			orderData['username'] = data1[0].username
-			orderData['status'] = data1[0].status
-			orderData['address'] = data1[0].address
-			totalData.push(orderData)
-		}
-		return totalData
-	}
-
 	static async inventory() {
 		let sql = `SELECT subtype,goodsName,cost,DATE_SUB(import_time,INTERVAL validity HOUR) AS guarantee_period,inventory FROM goods ORDER BY inventory,guarantee_period  `
 		let invent = await MySQL_db(sql)

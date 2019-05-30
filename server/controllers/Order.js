@@ -23,6 +23,18 @@ class Order {
 		}
 	}
 
+	static async search(ctx, next) {
+		ctx.session.refresh()
+		let username = ctx.session.user.userName
+		console.log(ctx.session.user)
+		let data = await OrderModel.search(username)
+
+		ctx.body = {
+			code: 0,
+			data: data
+		}
+	}
+
 	
 }
 

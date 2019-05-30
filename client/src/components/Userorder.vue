@@ -4,6 +4,17 @@
         <Tabs class="tabs" value="name1">
             <TabPane label="我的订单" name="name1"></TabPane>
         </Tabs>
+        <Dropdown class="userorder-menu">
+            <a href="javascript:void(0)">
+                类型：{{menushow}}
+                <Icon type="ios-arrow-down"></Icon>
+            </a>
+            <DropdownMenu slot="list">
+                <DropdownItem @click.native="ordermenu('未接单')">未接单</DropdownItem>
+                <DropdownItem @click.native="ordermenu('未送达')">未送达</DropdownItem>
+                <DropdownItem @click.native="ordermenu('已送达')">已送达</DropdownItem>
+            </DropdownMenu>
+        </Dropdown>
         <div v-if="listshow" v-for="(order,index) in list" :key="index"  class="order">
             <div class="orderinfo">
                 <div class="orderid">订单编号：{{order.orderNo}}</div>
@@ -26,12 +37,12 @@
                 <div class="carriage">运费：￥5</div>
                 <div class="totalexpense">总价：￥{{add(order.total,5)}}</div>
                 <div class="btnbox">
-                    <Button size="large" type="primary" class="hastenbtn">催单</Button>
-                    <Button size="large" type="primary" class="hastenbtn">退款</Button>
+                    <Button size="large" type="primary" @click="reminder" class="hastenbtn">催单</Button>
+                    <Button size="large" type="primary" @click="refund" class="hastenbtn">退款</Button>
                 </div>
             </div>
         </div>
-        <div v-if="!listshow" class="nolist">还没有订单哦</div>
+        <div v-if="!listshow" class="nolist">没有订单哦</div>
         <bottom></bottom>
     </div>
 </template>
@@ -42,6 +53,10 @@ export default {
   data () {
     return {
       listshow:true,
+      menushow:"未接单",
+      list0:[],
+      list1:[],
+      list2:[],
       list: [
          {
             data:[{
@@ -119,7 +134,7 @@ export default {
             return '未接单'
         }
         else if(status==1){
-            return '在路上'
+            return '未送达'
         }
         else{
             return '已送达'
@@ -138,6 +153,30 @@ export default {
     },
     add(a,b){
         return a+b
+    },
+    reminder(){
+        this.$Message.success("已催单~商品会尽快送达哦~")
+    },
+    refund(){
+        this.$Message.success("已自动进行申请，请等待通知哦")
+    },
+    ordermenu(name){
+        this.menushow = name
+        if(name=="未接单"){
+            this.list = this.list0
+        } 
+        else if(name=="未送达"){
+            this.list = this.list1
+        }
+        else{
+            this.list = this.list2
+        }
+        if(this.list.length==0){
+            this.listshow=false
+        }
+        else{
+            this.listshow=true
+        }
     }
   },
   created:function(){
@@ -150,7 +189,19 @@ export default {
           console.log(res.data);
         if(res.data.code==0){
              console.log(res.data.data);
-             this.list = res.data.data
+             let order = res.data.data
+             for (let i = 0; i < order.length; i++) {
+                 if(order[i].status==0){
+                     this.list0.push(order[i])
+                 }                
+                 else if(order[i].status==1){
+                     this.list1.push(order[i])
+                 } 
+                 else{
+                     this.list2.push(order[i])
+                 }
+             }
+             this.list = this.list0
         }
         else{
             this.$Message.error('获取信息失败');
@@ -304,5 +355,10 @@ export default {
     padding-top:100px;
     text-align: center;
     min-height: 350px;
+}
+.userorder-menu{
+    margin-left:12%;
+    margin-bottom:30px;
+    font-size:16px;
 }
 </style>

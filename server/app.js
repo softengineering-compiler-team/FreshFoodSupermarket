@@ -14,7 +14,7 @@ const Store = require('./utils/Store')
 const user = require('./routes/user')
 const goods = require('./routes/goods')
 const admin = require('./routes/admin')
-
+const order = require('./routes/order')
 // error handler
 onerror(app)
 
@@ -93,6 +93,7 @@ app.use(cors({
 app.use(user.routes(), user.allowedMethods())
 app.use(goods.routes(), goods.allowedMethods())
 app.use(admin.routes(), admin.allowedMethods())
+app.use(order.routes(), order.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

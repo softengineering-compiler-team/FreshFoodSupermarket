@@ -163,26 +163,6 @@ class User {
 		}
 	}
 
-	/*用户购买商品*/
-	static async buy(ctx, next) {
-		ctx.session.refresh()
-		
-		let goodsList = ctx.request.body.goods
-
-		let orderTime = (new Date()).toLocaleString()
-
-		let username = goodsList[0].username
-
-		await UserModel.buy(goodsList, orderTime, username) 
-
-		ctx.body = {
-			code: 0,
-			data: {
-				msg: "下单成功！"
-			}
-		}
-	}
-
 	/*个人推荐（猜你喜欢）*/
 	static async fav(ctx, next) {
 		ctx.session.refresh()

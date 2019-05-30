@@ -134,7 +134,7 @@ class AdminModel {
 		}
 		for(let i=0;i<orderNum.length;i++){
 			let temporder = orderNum[i]
-			let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND orderNo = '${temporder}' and username ='${username}' order by orderTime desc`
+			let sql1 = `SELECT  receive.*, goods.goodsName FROM receive ,goods WHERE receive.goodsNo = goods.goodsNo AND orderNo = '${temporder}' and username ='${username}' order by status,orderTime`
 			let data1 = await MySQL_db(sql1)
 			var goodsList = new Array()
 			var orderData = {}

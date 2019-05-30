@@ -1,25 +1,32 @@
 const domain = require('../config/Domain-config')
 const OrderModel = require('../Models/OrderModel')
+const GoodsModel = require('../Models/GoodsModel')
 
 class Order {
 
 	/*用户购买商品*/
 	static async add(ctx, next) {
 		ctx.session.refresh()
-		
+		let code = 0
+
 		let goodsList = ctx.request.body.goods
 
 		let orderTime = (new Date()).toLocaleString()
 
 		let username = goodsList[0].username
 
-		await OrderModel.add(goodsList, orderTime, username) 
+		let [status, invalidGoodsNo] = await OrderModel.add(goodsList, orderTime, username) 
+
+		if(status === 0) {
+			let data = await GoodsModel.goodsNos2goodsNames(invalidGoodsNo)
+			code = -1
+		} else {
+			data = "下单成功！"
+		}
 
 		ctx.body = {
-			code: 0,
-			data: {
-				msg: "下单成功！"
-			}
+			code: code,
+			data: data
 		}
 	}
 

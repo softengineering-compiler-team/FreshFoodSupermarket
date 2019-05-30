@@ -1,6 +1,16 @@
 const MySQL_db = (require('../utils/db')).MySQL_db
 
 class GoodsModel {
+	static async goodsNos2goodsNames(list) {
+		let sql = `select goodsName from goods where goodsNo in (`
+		for(let i=0; i<list.length-1; i++) {
+			sql += `${list[i]},`
+		}
+		sql += `${list[list.length-1]})`
+		let data = await MySQL_db(sql)
+		return data
+	}
+
 	static async all(goodsName) {
 	    let keylist = goodsName.split('')
 	    let re = '.*'

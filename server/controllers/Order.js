@@ -8,7 +8,7 @@ class Order {
 	static async add(ctx, next) {
 		ctx.session.refresh()
 		let code = 0
-
+		let data = null
 		let goodsList = ctx.request.body.goods
 
 		let orderTime = (new Date()).toLocaleString()
@@ -18,7 +18,7 @@ class Order {
 		let [status, invalidGoodsNo] = await OrderModel.add(goodsList, orderTime, username) 
 
 		if(status === 0) {
-			let data = await GoodsModel.goodsNos2goodsNames(invalidGoodsNo)
+			data = await GoodsModel.goodsNos2goodsNames(invalidGoodsNo)
 			code = -1
 		} else {
 			data = "下单成功！"

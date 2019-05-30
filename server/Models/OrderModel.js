@@ -8,11 +8,11 @@ class OrderModel {
 		let seekSql = ``
 		let invalidGoodsNo = []
 		for(let j=0; j<goodsList.length; j++) {
-			seekSql = `select inventory from goods where goodsNo = '${goodsList[i].goodsNo}'`
+			seekSql = `select inventory from goods where goodsNo = '${goodsList[j].goodsNo}'`
 			let seekData = await MySQL_db(seekSql)
-			let inventory = data[0].inventory
-			if((inventory - goodsList[i].num) < 0) {
-				invalidGoodsNo.push(goodsList[j])
+			let inventory = seekData[0].inventory
+			if((inventory - goodsList[j].num) < 0) {
+				invalidGoodsNo.push(goodsList[j].goodsNo)
 			} 
 		}
 

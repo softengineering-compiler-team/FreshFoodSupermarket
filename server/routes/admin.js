@@ -1,8 +1,6 @@
 const router = require('koa-router')()
 const controllers = require('require-dir-all')('../controllers')
 
-
-router.get('/query/order', controllers.Admin.order)//前端用户的订单
 router.get('/query/inventory', controllers.Admin.inventory)//库存管理员查看库存
 router.get('/query/allorder', controllers.Admin.allorder)//配送员查看所有状态为0的订单
 router.get('/query/delivery', controllers.Admin.delivery)//配送员接的单

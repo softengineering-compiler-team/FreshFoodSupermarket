@@ -32,8 +32,8 @@ class Order {
 
 	static async search(ctx, next) {
 		ctx.session.refresh()
-		let username = ctx.session.user.userName
-		console.log(ctx.session.user)
+
+		let username = decodeURI(ctx.cookies.get('username'))
 		let data = await OrderModel.search(username)
 
 		ctx.body = {

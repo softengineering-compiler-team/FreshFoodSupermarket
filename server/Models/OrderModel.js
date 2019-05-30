@@ -1,4 +1,6 @@
 const MySQL_db = require('../utils/db.js').MySQL_db
+const md5 = require('md5')
+const Neo4j_db = (require('../utils/db')).Neo4j_db
 
 class OrderModel {
 	static async add(goodsList, orderTime, username) {
@@ -54,3 +56,5 @@ class OrderModel {
 		return 
 	}
 }
+
+module.exports = OrderModel

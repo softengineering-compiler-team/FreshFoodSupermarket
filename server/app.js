@@ -44,10 +44,16 @@ app.use(views(__dirname + '/views', {
   extension: 'ejs'
 }))
 
+// 解决跨域
+app.use(cors({
+  credentials: true,
+  origin: 'http://' + domain + ':8000'
+}))
+
 // 生成登录验证码token
 app.use(async (ctx, next) => {
 
-  if(!ctx.cookies.get('FFSM') && ctx.path === '/gen_code'){
+  if(!(ctx.cookies.get('FFSM') && ctx.cookies.get('username')) && ctx.path === '/gen_code'){
     let token = md5((new Date()).toLocaleString()+ Math.random()) 
     let check_code = md5(Math.random()).substring(0, 4)
     await Redis_db.set(token, check_code);
@@ -65,11 +71,13 @@ app.use(async (ctx, next) => {
 
 // 登录拦截
 app.use(async (ctx, next) => {
-
-  if(!ctx.cookies.get('FFSM') && ctx.path !== '/signin' && ctx.path !== '/signup' && ctx.path !== '/retrieve' && ctx.path !== '/reset'){
-    await ctx.render('index',{
-      title:'请登录'
-    })
+  if(!(ctx.cookies.get('FFSM') && ctx.cookies.get('username')) && ctx.path !== '/signin' && ctx.path !== '/signup' && ctx.path !== '/retrieve' && ctx.path !== '/reset'){
+    ctx.body = {
+      code: -1,
+      data: {
+        msg: '请登录'
+      }
+    }
     return
   }
   await next()
@@ -82,12 +90,6 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
-
-// 解决跨域
-app.use(cors({
-  credentials: true,
-  origin: 'http://' + domain + ':8000'
-}))
 
 // routes
 app.use(user.routes(), user.allowedMethods())

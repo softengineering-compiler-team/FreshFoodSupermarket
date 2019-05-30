@@ -17,11 +17,32 @@ class OrderModel {
 
 
 		for (let i=0; i<goodsList.length; i++) {
-
+			seekSql = `select inventory from goods where goodsNo = '${goodsList[i].goodsNo}'`
+			let data = await MySQL_db(seekSql)
+			let inventory = data[0].inventory
 			if(i < goodsList.length - 1) {
-				sql += `UPDATE goods SET inventory = inventory - '${goodsList[i].num}' WHERE goodsNo = '${goodsList[i].goodsNo}';`
+				
+				if((inventory - goodsList[i].num)>=0)
+				{
+					sql += `UPDATE goods SET inventory = inventory - '${goodsList[i].num}' WHERE goodsNo = '${goodsList[i].goodsNo}';`
+				}
+				else{
+					ctx.body = {
+						code:-1,
+						data:"已经没有库存了。"
+					}
+				}
 			} else {
-				sql += `UPDATE goods SET inventory = inventory - '${goodsList[i].num}' WHERE goodsNo = '${goodsList[i].goodsNo}'`
+				if((inventory - goodsList[i].num)>=0)
+				{
+					sql += `UPDATE goods SET inventory = inventory - '${goodsList[i].num}' WHERE goodsNo = '${goodsList[i].goodsNo}'`
+				}
+				else{
+					ctx.body = {
+						code:-1,
+						data:"已经没有库存了。"
+					}
+				}
 			}
 		
 		}

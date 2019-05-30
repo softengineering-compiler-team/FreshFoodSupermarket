@@ -12,7 +12,7 @@
     <Tabs class="main" value="name1">
         <TabPane label="搜索结果" name="name1"></TabPane>
     </Tabs>
-    <div v-if="list" class="guessyoukile search-width">
+    <div v-if="list.length!=0" class="guessyoukile search-width">
         <div class="guess-goods" v-for="(goods,index) in list" :key="index">
         <Card @click.native="details(goods.goodsName)" style="width:160px;cursor:pointer;">
             <div style="text-align:center">
@@ -25,8 +25,8 @@
         </Card>
         </div>
     </div>
-      <div class="errorlist" v-if="!list">
-          123
+      <div class="errorlist" v-if="list.length==0">
+          没有您要找的商品哦~~试试别的吧~~
       </div>
           <img @click="backtop" class="backtop" src="/static/backtop.png" alt="">
         <Bottom></Bottom>
@@ -101,6 +101,13 @@ export default {
   created:function(){
     this.getquery()
     },
+  mounted:function(){
+    setInterval(() => {
+      if(this.list!= this.$store.state.searchlist){
+        this.list = this.$store.state.searchlist
+      }
+    }, 500)
+  },
   components: {
     Bottom,
     Top
@@ -163,6 +170,14 @@ export default {
 }
 .errorlist{
   min-height:500px;
+   font-size:30px;
+    color:rgb(200, 200, 200);
+    font-weight: 700;
+    letter-spacing:10px;
+    margin-left:10%;
+    margin-right:10%;
+    padding-top:100px;
+    text-align: center;
 }
 .fixbox{
   text-align: center;
@@ -230,6 +245,7 @@ export default {
   font-size:11px;
 }
 .search-width{
+    min-height: 500px;
     margin-left:10%;
     margin-right:10%;
 }

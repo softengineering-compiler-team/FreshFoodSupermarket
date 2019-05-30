@@ -96,6 +96,7 @@ class UserModel {
 
 	static async insertAddress(username, province, city, county, street, addressname, default_) {
 		let sql = `insert into address (username, province, city, county, street, addressname, isdefault) values ('${username}', '${province}', '${city}', '${county}', '${street}', '${addressname}', ${default_})`
+		console.log(sql)
 		await MySQL_db(sql)
 		return 
 	}

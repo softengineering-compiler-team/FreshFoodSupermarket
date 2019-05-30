@@ -64,8 +64,7 @@ export default {
           
         if(res.data.code==0){
              this.$Message.success(res.data.data.msg);
-              this.info_l=""
-            //   this.$store.state.username=this.data.username
+             this.info_l=""
              this.$router.push('/')
             this.$store.state.goodsList=null
         }
@@ -75,8 +74,6 @@ export default {
       })
       .catch(error => {
         this.$Message.error('登陆失败');
-        console.log(error)
-        // this.errored = true
       })
     },
     //注册
@@ -92,6 +89,8 @@ export default {
             this.axios
             .post(this.serverUrl+'/signup', this.qs.stringify(data), this.headconfig)
             .then(res => {
+                console.log(res.data);
+                
                 if(res.data.code==0){
                     this.$Message.success(res.data.data.msg);
                     this.info_r=""
@@ -101,7 +100,7 @@ export default {
                     
                 }
                 else{
-                    this.info_=res.data.data.msg
+                    this.info_r=res.data.data.msg
                 }
             })
             .catch(error => {

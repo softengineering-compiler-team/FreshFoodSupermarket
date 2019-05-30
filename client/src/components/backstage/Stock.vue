@@ -24,23 +24,28 @@ export default {
         },
         {
           title: "生鲜分类",
-          key: "subtype"
+          key: "subtype",
+          sortable: true
         },
         {
           title: "生鲜名称",
-          key: "goodsName"
+          key: "goodsName",
+          sortable: true
         },
         {
           title: "单价(斤)",
-          key: "cost"
+          key: "cost",
+          sortable: true
         },
         {
           title: "到期时间",
-          key: "guarantee_period"
+          key: "guarantee_period",
+          sortable: true
         },
         {
           title: "库存剩余",
-          key: "inventory"
+          key: "inventory",
+          sortable: true
         }
       ],
       data: [

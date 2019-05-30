@@ -18,6 +18,7 @@ import Login from '@/components/login'
 import PersonalCenter from '@/components/PersonalCenter'
 import Reset from '@/components/reset'
 import Search from '@/components/search'
+import Fpass from '@/components/Fpass'
 
 Vue.use(Router)
 
@@ -72,6 +73,11 @@ export default new Router({
       path:'/search',
       name:'Search',
       component:Search
+    },
+    {
+      path:'/fpass',
+      name:'Fpass',
+      component:Fpass
     },
     {
       path: '/backstage',

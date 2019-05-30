@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="order-title">订单管理页面</div> 
-        <Table border ref="selection" :columns="columns4" :data="data2"></Table>
+        <Table @on-sort-change="sortchange" border ref="selection" :columns="columns4" :data="data2"></Table>
         <Page @on-change="page" :total="listsize" show-elevator />
     </div>
 </template>
@@ -18,27 +18,33 @@ export default {
         },
         {
           title: "生鲜名称",
-          key: "name"
+          key: "name",
+          sortable: true
         },
         {
           title: "总价",
-          key: "total"
+          key: "total",
+          sortable: true
         },
         {
           title: "下单时间",
-          key: "orderTime"
+          key: "orderTime",
+          sortable: true
         },
         {
           title: "下单用户",
-          key: "username"
+          key: "username",
+          sortable: true
         },
         {
             title:"用户地址",
-            key: "address"
+            key: "address",
+            sortable: true
         },
         {
           title: "状态",
-          key: "status"
+          key: "status",
+          sortable: true
         },
       ],
       data1: [
@@ -58,6 +64,10 @@ export default {
               }
           }
           }
+      },
+      sortchange(column,key,order){
+          console.log(column);
+          
       }
   },
   created:function(){

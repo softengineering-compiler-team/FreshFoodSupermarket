@@ -257,6 +257,14 @@ export default {
     },
     del (){
         this.list.splice(this.deleteid,1);
+        if(this.list.length==0){
+            this.$store.state.goodsList = null
+        }
+        this.checkAllGroup.splice(this.checkAllGroup.length-1,1)
+        let i = this.checkAllGroup.length
+        for(let j=0;j<i;j++){
+            this.checkAllGroup[j]=j
+        }
         this.modal2=false;
     },
     icon (id){
@@ -268,7 +276,7 @@ export default {
         let total=0;
         for (let i =0;i<this.checkAllGroup.length;i++) { 
             let j = this.checkAllGroup[i]   
-            console.log(j);
+            // console.log(j);
                      
             total+=this.list[j].subtotal
         }

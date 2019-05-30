@@ -183,6 +183,8 @@ class AdminModel {
 	}
 
 	static async finishorder(orderNo, finishTime) {
+		let code = 0
+		let msg = ''
 		let sql = `UPDATE receive SET STATUS = 2, finishTime = '${finishTime}' WHERE orderNo = '${orderNo}'`
 		let data = await MySQL_db(sql)
 		if (data.length === 0) {

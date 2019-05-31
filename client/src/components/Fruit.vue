@@ -169,7 +169,7 @@ export default {
         default:
           break;
       }
-    },
+    }, 
     getquery(classification){
       this.goodscls=classification
       console.log(classification);
@@ -177,10 +177,21 @@ export default {
       this.axios
         .get(this.serverUrl+'/query/'+classification,this.headconfig)
         .then(res => {
+          console.log(res.data);
+          
           if(res.data.code==0){
               console.log(res.data.data);
               this.list=res.data.data
               this.$store.state.classification = classification
+          }
+          else if(res.data.code==-1){
+            this.$Message.error("请登录")
+              this.$router.push({
+                name:'Login',
+                params:{
+                  id:true
+                }
+              })
           }
           else{
               this.$Message.error('获取信息失败');

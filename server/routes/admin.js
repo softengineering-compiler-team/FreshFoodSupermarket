@@ -2,7 +2,6 @@ const router = require('koa-router')()
 const controllers = require('require-dir-all')('../controllers')
 
 router.get('/query/inventory', controllers.Admin.inventory)//库存管理员查看库存
-router.get('/query/allorder', controllers.Admin.allorder)//配送员查看所有状态为0的订单
 router.get('/query/delivery', controllers.Admin.delivery)//配送员接的单
 router.get('/query/dayheat', controllers.Admin.dayheat)//得到日销售热度(取5个)
 router.get('/query/weekheat', controllers.Admin.weekheat)//得到周销售热度(取5个)

@@ -147,15 +147,7 @@ class Admin {
 			}
 		}
 	}
-	static async allorder(ctx, next) {
-		ctx.session.refresh()
-		let status = ctx.request.query.status
-		let totalData = await AdminModel.allorder(status)
-		ctx.body = {
-			code: 0,
-			data: totalData
-		}
-	}
+	
 	static async delivery(ctx, next) {
 		ctx.session.refresh()
 		let totalData = await AdminModel.delivery()

@@ -7,6 +7,9 @@
                 </div>
                 <Input @input="clearinfo_l" size="large" placeholder="账户" class="username" v-model="data.username"/>
                 <Input @input="clearinfo_l" size="large" placeholder="密码" class="password" type="password" v-model="data.password"/>
+                <div></div>
+                <Input @input="clearinfo_l" size="large" placeholder="验证码" class="checkcode-input" v-model="check_code"/>
+                <checkcode class="checkcode" :identifyCode="identifyCode"></checkcode>
                 <div class="info_l">{{info_l}}</div>
                 <Button @click="login" size="large" class="login-btn" type="primary">登陆</Button>
                 <div class="login-href">没有账号？<a @click="goreg">注册</a> &nbsp;&nbsp; 忘记密码？<a @click="gofpass">去找回</a></div>
@@ -29,6 +32,8 @@
 </template>
 <script>
 import store from "../store/store.js";
+import checkcode from "@/components/checkcode";
+
 export default {
     store,
   data () {
@@ -44,6 +49,10 @@ export default {
         password_r:'',
         password_r2:'',
         email_r:'',
+        identifyCodes: '',
+        identifyCode: '',
+        token:'',
+        check_code:'',
     }
   },
   methods:{
@@ -56,9 +65,16 @@ export default {
     //登陆
     login(){
         console.log(this.serverUrl);
+        let data = {
+            username:this.data.username,
+            password:this.data.password,
+            token:this.token,
+            check_code:this.check_code
+        }
+        console.log(data);
         
         this.axios
-      .post(this.serverUrl+'/signin', this.qs.stringify(this.data), this.headconfig)
+      .post(this.serverUrl+'/signin', this.qs.stringify(data), this.headconfig)
       .then(res => {
           console.log(res);
           
@@ -120,6 +136,21 @@ export default {
     },
     gofpass(){
         this.$router.push('/fpass')
+    },
+     randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+    },
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
+      }
+      console.log(this.identifyCode);
     }
   },
   created:function(){
@@ -134,7 +165,8 @@ export default {
       .then(res => {
          console.log(res.data);
         if (res.data.code == 0) {
-
+            this.identifyCode = res.data.data.check_code
+            this.token = res.data.data.token
         } else {
           this.$Message.error("获取验证码失败");
         }
@@ -144,6 +176,9 @@ export default {
         // console.log(error);
         // this.errored = true
       });
+  },
+  components:{
+      checkcode
   }
 }
 </script>
@@ -209,5 +244,18 @@ export default {
     position: relative;
     left:12%;
     bottom:5%;
+}
+.checkcode-input{
+     width:60%;
+    margin-bottom:1%;
+    display: inline-block;
+    margin-top:3%;
+    width: 140px;
+}
+.checkcode{
+    display: inline-block;
+    position: relative;
+    top:15px;
+    margin-left:10px;
 }
 </style>

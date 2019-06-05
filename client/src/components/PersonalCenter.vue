@@ -251,6 +251,7 @@ export default {
     }
   },
   created: function() {
+    if(this.$cookies.get("username")){  
     console.log(this.$route.params);
 
     if (this.$route.params.centershow) {
@@ -287,6 +288,14 @@ export default {
         console.log(error);
         // this.errored = true
       });
+    }else{
+      this.$router.push({
+        name:'Login',
+        params:{
+          id:true
+        }
+      })
+    }
   },
   components: {
     Bottom,

@@ -54,7 +54,7 @@ export default {
       }
     },
     admin () {
-      this.$router.push('admin')
+      this.$router.push('selling')
     },
     gomain () {
       this.$router.push('/')
@@ -157,7 +157,7 @@ export default {
         .get(this.serverUrl+'/query/',{params:data},this.headconfig)
         .then(res => {
           if(res.data.code==0){
-              // console.log(res.data.data);
+              console.log(res.data.data);
               this.$store.state.searchlist=res.data.data
               this.$router.push('search')
           }

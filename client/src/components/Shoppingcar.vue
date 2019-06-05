@@ -418,14 +418,24 @@ export default {
     }
   },
   created:function(){
-    if(this.$store.state.goodsList){
-        this.list = this.$store.state.goodsList
-        for (let i=0;i<this.list.length ;i++) {
-            this.checkAllGroup.push(i)
+      if(this.$cookies.get("username")){
+        if(this.$store.state.goodsList){
+            this.list = this.$store.state.goodsList
+            for (let i=0;i<this.list.length ;i++) {
+                this.checkAllGroup.push(i)
+            }
+        }
+        else{
+            this.listshow = false
         }
     }
     else{
-        this.listshow = false
+        this.$router.push({
+        name:'Login',
+        params:{
+          id:true
+        }
+      })
     }
   },
   beforeDestroy:function(){

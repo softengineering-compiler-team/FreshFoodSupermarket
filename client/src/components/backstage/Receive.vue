@@ -140,7 +140,7 @@ export default {
         .get(this.serverUrl+'/query/allorder',{params:data},this.headconfig)
         .then(res => {
           if(res.data.code==0){
-            //   console.log(res.data.data);
+              console.log(res.data.data);
               for (let j = 0; j < res.data.data.length; j++) {
                   if (res.data.data[j].status==0) {
                       this.data1.push(res.data.data[j])
@@ -164,9 +164,11 @@ export default {
               }
               this.listsize = this.data1.length
               
-              for (let i = 0; i < 10; i++) {
+              for (let i = 0; i < this.data1.length; i++) {
                   this.data2.push(this.data1[i])
               }
+              console.log(this.data2);
+              
           }
           else{
               this.$Message.error('获取信息失败');

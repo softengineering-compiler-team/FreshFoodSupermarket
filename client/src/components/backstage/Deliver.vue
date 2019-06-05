@@ -164,7 +164,7 @@ export default {
                   }
               }
               this.listsize = this.data1.length
-              for (let i = 0; i < 10; i++) {
+              for (let i = 0; i < this.data1.length; i++) {
                   if (this.data1[i]) {
                     this.data2.push(this.data1[i])
                   }

@@ -47,7 +47,7 @@ class User {
 		if(isCodeValid === -1) {
 			code = 2
 			msg = '验证码失效！'
-		} else if(isValid === 0) {
+		} else if(isCodeValid === 0) {
 			code = 3
 			msg = '验证码输入错误！'
 		} else {

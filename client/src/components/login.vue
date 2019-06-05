@@ -9,7 +9,7 @@
                 <Input @input="clearinfo_l" size="large" placeholder="密码" class="password" type="password" v-model="data.password"/>
                 <div></div>
                 <Input @input="clearinfo_l" size="large" placeholder="验证码" class="checkcode-input" v-model="check_code"/>
-                <checkcode class="checkcode" :identifyCode="identifyCode"></checkcode>
+                <checkcode @click.native="changecode" class="checkcode" :identifyCode="identifyCode"></checkcode>
                 <div class="info_l">{{info_l}}</div>
                 <Button @click="login" size="large" class="login-btn" type="primary">登陆</Button>
                 <div class="login-href">没有账号？<a @click="goreg">注册</a> &nbsp;&nbsp; 忘记密码？<a @click="gofpass">去找回</a></div>
@@ -151,6 +151,26 @@ export default {
         ];
       }
       console.log(this.identifyCode);
+    },
+    changecode(){
+        console.log(1);
+        
+         this.axios
+      .get(this.serverUrl + "/gen_code", null,this.headconfig)
+      .then(res => {
+         console.log(res.data);
+        if (res.data.code == 0) {
+            this.identifyCode = res.data.data.check_code
+            this.token = res.data.data.token
+        } else {
+          this.$Message.error("获取验证码失败");
+        }
+      })
+      .catch(error => {
+        this.$Message.error("获取验证码失败");
+        // console.log(error);
+        // this.errored = true
+      });
     }
   },
   created:function(){

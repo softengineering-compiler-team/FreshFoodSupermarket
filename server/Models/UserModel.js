@@ -33,6 +33,20 @@ class UserModel {
 		return true
 	}
 
+	static async isCodeValid(token, check_code) {
+		let response = await Redis_db.exists(token)
+		if(response === 1) {
+			let db_code = await Redis_db.get(token)
+			if(check_code === db_code) {
+				return 1 //验证码未失效且输入正确
+			} else {
+				return 0 //验证码未失效但是输入错误
+			}
+		} else if(response === 0){
+			return -1 //验证码失效
+		} 
+	}
+
 	static async retrieve(username) {
 		let sql = `select username, email from user where username = '${username}'`
 		let email = (await MySQL_db(sql))[0].email

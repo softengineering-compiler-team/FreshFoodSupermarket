@@ -40,31 +40,41 @@ class User {
 	static async signin(ctx, next) {
 		let code = 0
 		let msg = ``
-		let {username, password} = ctx.request.body
+		let {username, password, token, check_code} = ctx.request.body
 
-		let isValid = await UserModel.signin(username, password)
+		let isCodeValid = await UserModel.isCodeValid(token, check_code)
 
-		if(!isValid) {
-				code = -1
-				msg = "用户名或密码错误！"
+		if(isValid === -1) {
+			code = 2
+			msg = '验证码失效！'
+		} else if(isValid === 0) {
+			code = 3
+			msg = '验证码输入错误！'
 		} else {
+			let isValid = await UserModel.signin(username, password)
 
-			ctx.cookies.set('username', encodeURIComponent(username) , {
-				signed: false,
-	           	domain: domain,
-	         	path:'*',   
-	         	maxAge:1000*60*30,
-	         	httpOnly:false,
-	         	overwrite:false
-			})
+			if(!isValid) {
+					code = -1
+					msg = "用户名或密码错误！"
+			} else {
 
-			ctx.session.user = {userName: username}
+				ctx.cookies.set('username', encodeURIComponent(username) , {
+					signed: false,
+		           	domain: domain,
+		         	path:'*',   
+		         	maxAge:1000*60*30,
+		         	httpOnly:false,
+		         	overwrite:false
+				})
 
-			code = 0
-			msg = "登录成功！"
-		
+				ctx.session.user = {userName: username}
+
+				code = 0
+				msg = "登录成功！"
+			
+			}
 		}
-
+		
 		ctx.body = {
 			code: code,
 			data: {

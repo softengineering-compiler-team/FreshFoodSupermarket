@@ -44,7 +44,7 @@ class User {
 
 		let isCodeValid = await UserModel.isCodeValid(token, check_code)
 
-		if(isValid === -1) {
+		if(isCodeValid === -1) {
 			code = 2
 			msg = '验证码失效！'
 		} else if(isValid === 0) {

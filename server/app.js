@@ -56,12 +56,13 @@ app.use(async (ctx, next) => {
   if(!(ctx.cookies.get('FFSM') && ctx.cookies.get('username')) && ctx.path === '/gen_code'){
     let token = md5((new Date()).toLocaleString()+ Math.random()) 
     let check_code = md5(Math.random()).substring(0, 4)
-    await Redis_db.set(token, check_code);
-    await Redis_db.expire(token, 120);//验证码120s后失效
+    await Redis_db.set(token, check_code)
+    await Redis_db.expire(token, 120)//验证码120s后失效
     ctx.body = {
       code: 0,
       data: {
-        token: token
+        token: token,
+        check_code: check_code
       }
     }
     return 

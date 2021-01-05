@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "area-data": "^5.0.6",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "chart.js": "^2.8.0",
     "echarts": "^4.2.1",
     "iview": "^3.3.3",

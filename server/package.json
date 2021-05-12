@@ -26,7 +26,7 @@
     "md5": "^2.2.1",
     "mysql": "^2.16.0",
     "node-neo4j": "^2.0.3",
-    "nodemailer": "^6.1.1",
+    "nodemailer": "^6.4.16",
     "require-dir-all": "^0.4.15"
   },
   "devDependencies": {
